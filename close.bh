@@ -1,0 +1,6 @@
+#!/bin/bash
+STR=$( ps aux | grep web2py | awk {'print $2'})
+
+for x in $STR; do
+    kill -SIGTERM $x 
+done
