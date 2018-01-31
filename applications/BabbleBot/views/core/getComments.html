@@ -1,0 +1,19 @@
+<h1>
+    Group {{=name}} selected!
+</h1>
+<p>
+    HERE: 
+</p>
+{{if fileFound == True:}}
+<p>File Found</p><br/>
+<p>{{=comments}} Comments need to be Updated <br/>
+This may take some time <br/></p>
+<form method="get" action="/BabbleBot/core/downloadComments">
+    <input type=submit value="Update Group Information"></form>
+{{else:}}
+<p>File Not Found.<br/>
+{{=comments}} Comments need to be processed<br/>
+This will take some time<br/></p>
+<form method="get" action="/BabbleBot/core/downloadComments">
+    <input type=submit value="Process Group Information"></form>
+{{pass}}

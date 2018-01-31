@@ -1,0 +1,13 @@
+<meta http-equiv="refreash" content="5">
+
+<h1>
+    Updating Information
+</h1>
+<p> This page will auto-refreash </p>
+
+{{if finished == False:}}
+<progress value={{=prog}} max={{=max}}></progress>
+{{else:}}
+<form method="get" action="/BabbleBot/core/featureList">
+    <input type=submit value="Update Done! Continue"></form>
+{{=pass}}
