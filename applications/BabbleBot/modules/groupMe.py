@@ -4,11 +4,13 @@ from gluon import *
 import requests
 import subprocess
 import os
-
+import json
+import copy
 
 # GLOBALS
 progression = {}
 finished = {}
+commentsDicts = {}
 
 def checkValidAuth(auth):
     # checks if auth inputed is legit
@@ -26,20 +28,25 @@ def checkValidGroupID(auth,groupID):
     else:
         return False
 
-def fileInfo(auth,id):
+def fileInfo(auth,groupid):
     #checks if we have file
-    fileExists = os.path.isfile('/GroupMeDir/'+str(id))
-
+    f = None
+    try:
+        f = open('GroupMeDir/'+str(groupid),'r')
+        fileExists = True
+    except:
+        fileExists = False
     # find total amount of comments of group
-    totalComments = totalCommentsInGroup(auth,id)
-    comments = 0
+    totalComments = totalCommentsInGroup(auth,groupid)
+    newcomments = 0
     if fileExists:
-        # TODO once files are created
-        comments = 100
+        jj = json.load(f)
+        oldComments = jj['LASTCOUNT']
+        newcomments = int(totalComments) - int(oldComments)
     else:
-        comments = totalComments
+        newcomments = totalComments
     # returns T/F, and # of comments need to be updated
-    return [fileExists,comments]
+    return [fileExists,totalComments, newcomments]
 
 def totalCommentsInGroup(auth,id):
     output = requests.get("https://api.groupme.com/v3/groups/"+id+"?token=" + auth)
@@ -58,50 +65,112 @@ def isThread(auth,id):
     if id in finished:
         return True
 
-def downloadFromAPI(auth,id, isFile,max):
+def downloadFromAPI(auth,groupID, isFile,maxCom):
     global progression
     global finished
-    finished[id] = False
-    progression[id] = 0
+    global commentsDicts
+    finished[groupID] = False
+    progression[groupID] = 0
     
     if isFile == False:
         # if No File, download EVERYTHING!
         # create file
-        writer = open("groupMeDir/" + id,"wa")
+        writer = open("GroupMeDir/" + groupID,"w+")
+        writer = open("GroupMeDir/" + groupID,"wa")
         # start progression from 0
-        progression[id] = 0
+        progression[groupID] = 0
         allComments = {}
         beforeID = ''
-        for x in range(max,0,-1):
-            output = requests.get("htpps://api.groupme.com/v3/groups/"+id+"/messages?token="+auth+";limit=1;before_id=" + beforeID)
+        firstID = ''
+        for x in range(maxCom,0,-1):
+            output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"/messages?token="+auth+";limit=1;before_id=" + beforeID)
             output = output.json()
             #update beforeID
-            beforeID = output['response']['messages']['id']
+            for y in output['response']['messages']:
+                if beforeID == '':
+                    firstID = y['id']
+                beforeID = y['id']
             #populate the dictionary
-            allComments[x] = output['response']['messages']
+            allComments[x] = json.dumps(output['response']['messages'][0])
             # increase progression
-            progression[id] += 1
+            progression[groupID] += 1
+            #update last count
         # all comments in the DICT
-        # write Dict to FILE!
-        for key,value in allComments.iteritems():
-            json.dump(value,writer)
+        # Stores the last comment (most recent posted) 's ID. for dif equations
+        allComments['LASTID'] = firstID
+        allComments['LASTCOUNT'] = maxCom #stores the max comment values
+        # write Dict to FILE! NO ORDER (by ID though)
+        json.dump(allComments,writer)
+        commentsDicts[groupID] = allComments
     else:
         # file exists, get last message timestamp. Go till then
-        writer = open("groupMeDir/" + id,"w")
-        pass
+        writer = open("GroupMeDir/" + groupID,"r")
+        jj = json.load(writer)
+        ## jj is the json object. need to figure out how to read through it
+        lastID = jj['LASTID'] # finds the last comment id
+        oldMax = int(jj['LASTCOUNT']) # the dictionary # of last comment
+        beforeID = ''
+        firstID = ''
+        newComments = {}
+        for x in range(maxCom,oldMax,-1): # Goes from New MAX comments, to the old max
+            output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"/messages?token="+auth+";limit=1;before_id=" + beforeID)
+            output = output.json()
+            for y in output['response']['messages']:
+                if beforeID == '':
+                    firstID = y['id']
+                beforeID = y['id']
+            if beforeID == lastID:
+                # We caught up! Do not add this to New Comments
+                break
+            else:
+                # Catching up... add to new Comments
+                newComments[x] = json.dumps(output['response']['messages'][0])
+            progression[groupID] += 1
+        # NewComments now is a dict of new comments, need to join with comments in file.
+
+        # Read comments in file, add to new Comments
+        for x in range(oldMax, 0, -1):
+            oldComment = json.loads(jj[str(x)])
+            try:
+                oldComment = oldComment[0]
+            except:
+                pass
+            newComments[x] = json.dumps(oldComment)
+        # Overright JSON file
+        subprocess.check_output("echo '' > GroupMeDir/" + str(groupID),shell=True)
+        writer = open("GroupMeDir/" + str(groupID), 'w')
+        # all comments in the DICT
+        # Stores the last comment (most recent posted) 's ID. for dif equations
+        newComments['LASTID'] = firstID
+        newComments['LASTCOUNT'] = maxCom #stores the previous last comment #
+        # write Dict to FILE! NO ORDER (by ID though)
+        json.dump(newComments,writer)
+        commentsDicts[groupID] = newComments
+        
     # Say we are done!
-    finished[id] = True
+    finished[groupID] = True
     
-def checker(id):
+def checker(groupID):
     global progression
     global finished
-    prog = progress[id]
-    fini = finished[id]
+    prog = progression[groupID]
+    fini = finished[groupID]
     if fini == True:
         # its finished!
         # delete values!
-        del prog[id]
-        del fini[id]
-        return True
+        del progression[groupID]
+        del finished[groupID]
+        return [True,100000]
     # not finished
     return [False,prog]
+
+def getComments(groupID):
+    # Returns dictionary of comments
+    global commentsDicts
+    try:
+        ret = copy.deepcopy(commentsDicts[groupID])
+        del commentsDicts[groupID]
+        # TODO, add AUTH CHECK!
+    except:
+        pass
+    return ret

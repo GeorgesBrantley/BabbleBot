@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import groupMe
 import thread
+import time
+import json
 
 # Get information from Guest
 def guestSignIn():
@@ -30,32 +32,38 @@ def guestCheck():
 def getComments():
     # Call GroupMeAPI functions
     # Function1: check if file exists / find last comment
-    fileFound,comments = groupMe.fileInfo(session.myAuth, session.myGroupID)
+    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, session.myGroupID)
     session.fileFound = fileFound
-    session.maxComments = comments
+    session.maxComments = totalComments
     # Function2: download comments THREAD?
     # work out method for progress bar (start a clock in GroupMe, 
     # Returns groupname, filefound, and # of comments needed
-    return dict(name="test",fileFound=False, comments=comments)
+    return dict(name="test",fileFound=fileFound, comments=newComments)
 
 def downloadComments():
     # start wheel if first time
     if not groupMe.isThread(session.myAuth, session.myGroupID):
-        thread.start_new_thread(groupMe.updateComments, (session.myAuth, session.myGroupID, session.fileFound, session.maxComments,))
+        thread.start_new_thread(groupMe.downloadFromAPI, (session.myAuth, session.myGroupID, session.fileFound, session.maxComments,))
+        time.sleep(1)
     # is it done? Check the ticker
     finished,prog = groupMe.checker(session.myGroupID)
 
     if finished:
-        # If done!
-        # Code to save dictionary...
-        return dict(finished=True, prog=session.maxComments,max=session.maxComments)
-    else:
-        return dict(finished=False, prog=prog ,max=session.maxComments)
-
-    return dict()
+        session.dictComments = groupMe.getComments(session.myGroupID)
+    return dict(finished=finished, prog= prog, max=session.maxComments)
 
 def featureList():
     #GroupMe api function, returns dictionary of information
     #HTML is a list of features to links, new controller?
     # dictionary saved to session?
-    return dict()
+   
+    com = session.dictComments
+    # example for json
+    comments = []
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            comments.append(v['text'].encode("utf-8") +'\n')
+        except:
+            pass
+    return dict(com = comments)
