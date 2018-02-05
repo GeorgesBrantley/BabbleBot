@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import groupMe
-import groupMeFeatures
 import thread
 import time
 import json
@@ -18,7 +17,6 @@ def guestCheck():
     botID = request.vars.botID
     auth = groupMe.checkValidAuth(personAuth)
     group = False
-    name = ''
     if auth == True:
         group = groupMe.checkValidGroupID(personAuth,groupID)
     # if both are true:
@@ -53,29 +51,20 @@ def downloadComments():
 
     if finished:
         session.dictComments = groupMe.getComments(session.myGroupID)
-        com = session.dictComments
-        translate = {}
-        for k,val in com.iteritems():
-            try:
-                v = json.loads(val)
-                translate[v['user_id']] = str(v['name'].encode('utf-8'))
-            except:
-                pass
-        session.translator = translate
     return dict(finished=finished, prog= prog, max=session.maxComments)
 
 def featureList():
     #GroupMe api function, returns dictionary of information
     #HTML is a list of features to links, new controller?
     # dictionary saved to session?
+    groupName = session.name
 
     # example for json
-    # com = session.dictComments
-    #comments = []
+    #feature = []
     #for k,val in com.iteritems():
     #    try:
     #        v = json.loads(val)
     #        comments.append(v['text'].encode("utf-8") +'\n')
     #    except:
     #        pass
-    return dict(name = session.groupName,)
+    return dict(name = session.groupName)
