@@ -8,7 +8,7 @@
 
 {{if 'message' in globals():}}
 <h2>{{=message}}</h2>
-<p class="lead">{{=T('How did you get here?')}}</p>
+<p class="lead">How did you get here?</p>
 <ol>
   <li>{{=T('You are successfully running web2py')}}</li>
   <li>{{=XML(T('You visited the url %s', A(request.env.path_info,_href=request.env.path_info)))}}</li>
@@ -38,6 +38,3 @@
 {{else:}}
 {{=BEAUTIFY(response._vars)}}
 {{pass}}
-
-
-

@@ -1,0 +1,10 @@
+<h>Guest Sign In</h>
+
+<form action="/BabbleBot/core/guestCheck.html">
+    <p>
+        Personal Auth Token:  <br/> <input type="text" name="auth"> <br/>
+        Group ID: <br/> <input type="text" name="groupID"> <br/>
+        Bot ID:  <br/> <input type="text" name="botID">
+    </p>
+    <input type="submit" value="Submit">
+</form>
