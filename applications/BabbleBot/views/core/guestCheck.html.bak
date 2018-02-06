@@ -1,0 +1,29 @@
+<h1>
+    Checking Inputted Information
+</h1>
+
+{{if auth == True:}}
+    <p>Personal Authentication Token Works!  </p>
+{{else:}}
+    <p>Personal Authentication Token Fails </p>
+{{pass}}
+
+{{if group == True:}}
+    <p>Group ID Valid!<br/>
+    Group '{{=name}}' Identified!</p>
+{{else:}}
+    <p>Group ID Invalid!</p>
+{{pass}}
+
+{{if group == True and auth == True:}}
+<form method="get" action="/BabbleBot/core/getComments">
+    <input type="submit" value="Success! Select Group!">
+    <p>
+        <br/>It may take a few minutes for BabbleBot to update your records
+    </p>
+</form>
+{{else:}}
+<form method="get" action="/BabbleBot/core/guestSignIn">
+        <input type="submit" value="Try Again !">
+</form>
+{{pass}}

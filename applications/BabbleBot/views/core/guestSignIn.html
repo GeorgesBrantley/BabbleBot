@@ -1,11 +1,22 @@
-{{extend 'layout.html'}}
-<h>Guest Sign In</h>
+{{extend 'layout.html'}} <!-- This adds in everything from layout.html like the navbar -->
 
-<form action="/BabbleBot/core/guestCheck.html">
-    <p>
-        Personal Auth Token:  <br/> <input type="text" name="auth"> <br/>
-        Group ID: <br/> <input type="text" name="groupID"> <br/>
-        Bot ID:  <br/> <input type="text" name="botID">
-    </p>
-    <input type="submit" value="Submit">
+<!-- This is where we can append stuff inside the <head>, such as page-specific CSS. -->
+{{block head}}
+<style>
+	
+</style>
+{{end}}
+
+<h1>Guest Sign In</h1>
+<form class="login" action="/BabbleBot/core/guestCheck.html">
+<!--         <label>Personal Auth Token:</label>  -->
+    <input type="text" class="form-input" name="auth" placeholder="Personal Auth Token"> <br/> <br/>
+    
+<!--         <label>Group ID:</label> -->
+    <input type="text" class="form-input" name="groupID" placeholder="Group ID"> <br/> <br/>
+
+<!--         <label>Bot ID:</label> -->
+    <input type="text" class="form-input" name="botID" placeholder="Bot ID"> <br/> <br/>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
