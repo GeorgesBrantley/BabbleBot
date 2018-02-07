@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import groupMe
+import groupMeFeatures
 import thread
 import time
 import json
@@ -56,7 +57,7 @@ def featureList():
     #GroupMe api function, returns dictionary of information
     #HTML is a list of features to links, new controller?
     # dictionary saved to session?
-   
+
     com = session.dictComments
     # example for json
     comments = []
@@ -67,3 +68,7 @@ def featureList():
         except:
             pass
     return dict(com = comments)
+
+def likesPerUser():
+    userDict = groupMeFeatures.getLikesPerUser(session.myGroupID)
+    return userDict.items()
