@@ -1,3 +1,10 @@
 # -*- coding: utf-8 -*-
-# try something like
-def index(): return dict(message="hello from features.py")
+import groupMeFeatures
+
+
+def groupMarkov():
+    # Display Markov Chains for entire Group
+    comments = session.dictComments # get comments
+    results = groupMeFeatures.createMarkChain('all',10,comments)
+    
+    return dict(marks = results)
