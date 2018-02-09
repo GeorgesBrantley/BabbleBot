@@ -31,21 +31,21 @@
     {{block head}}{{end}}
   </head>
   <body>
-    <div class="w2p_flash alert alert-dismissable">{{=response.flash or ''}}</div>
     <!-- Navbar ======================================= -->
-    <nav class="navbar navbar-toggleable-md navbar-dark" style="background-color: #3696F7;">
+    <nav class="navbar navbar-toggleable-md navbar-light" style="background-color: #3696F7;">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand" href="http://web2py.com">BabbleBot</a>
       <div class="collapse navbar-collapse">
+          
         <!-- Show the menus listed in menu.py -->
         <ul class="navbar-nav">
           {{for _item in response.menu or []:}}
-          {{if len(_item)<4 or not _item[3]:}}
-          <li class="nav-item {{if _item[1]:}}active{{pass}}">
-            <a class="nav-link" href="{{=_item[2]}}">{{=_item[0]}}</a>
-          </li>
+          {{if len(_item) < 4 or not _item[3]:}}
+              <li class="nav-item {{if _item[1]:}}active{{pass}}">
+                <a class="nav-link" href="{{=_item[2]}}">{{=_item[0]}}</a>
+              </li>
           {{else:}}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="{{=_item[2]}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{=_item[0]}}</a>
@@ -58,30 +58,23 @@
           {{pass}}
           {{pass}}
         </ul>
-        <!-- The search bar. We probably don't need this. -->
-<!--         <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search">
-        </form> -->
-        {{if 'auth' in globals():}}
+
+<!--         {{if 'auth' in globals():}} -->
         <ul class="navbar-nav navbar-right">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{if auth.user:}}{{=auth.user.first_name}}{{else:}}LOGIN{{pass}}
             </a>
-            <div class="dropdown-menu">
-              {{if auth.user:}}
+<!--             <div class="dropdown-menu">
               <a class="dropdown-item" href="{{=URL('default','user/profile')}}">{{=T('Profile')}}</a>
               <a class="dropdown-item" href="{{=URL('default','user/change_password')}}">{{=T('Change Password')}}</a>
               <a class="dropdown-item" href="{{=URL('default','user/logout')}}">{{=T('Logout')}}</a>
-              {{else:}}
               <a class="dropdown-item" href="{{=URL('default','user/login')}}">{{=T('Login')}}</a>
               <a class="dropdown-item" href="{{=URL('default','user/register')}}">{{=T('Sign up')}}</a>
               <a class="dropdown-item" href="{{=URL('default','user/request_password')}}">{{=T('Lost Password')}}</a>
-              {{pass}}
-            </div>
+            </div> -->
           </li>
         </ul>
-        {{pass}}
+<!--         {{pass}} -->
       </div>
     </nav>
 
@@ -115,6 +108,6 @@
     <script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
     <script src="{{=URL('static','js/web2py-bootstrap4.js')}}"></script>
     {{block page_js}}{{end page_js}}
-<!--     {{pass}} -->
+    {{pass}}
   </body>
 </html>

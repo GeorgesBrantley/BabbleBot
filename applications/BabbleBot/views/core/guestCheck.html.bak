@@ -1,29 +1,18 @@
-<h1>
-    Checking Inputted Information
-</h1>
+{{extend 'layout.html'}}
 
-{{if auth == True:}}
-    <p>Personal Authentication Token Works!  </p>
-{{else:}}
-    <p>Personal Authentication Token Fails </p>
-{{pass}}
-
-{{if group == True:}}
-    <p>Group ID Valid!<br/>
-    Group '{{=name}}' Identified!</p>
-{{else:}}
-    <p>Group ID Invalid!</p>
-{{pass}}
-
-{{if group == True and auth == True:}}
-<form method="get" action="/BabbleBot/core/getComments">
-    <input type="submit" value="Success! Select Group!">
-    <p>
-        <br/>It may take a few minutes for BabbleBot to update your records
-    </p>
-</form>
-{{else:}}
-<form method="get" action="/BabbleBot/core/guestSignIn">
-        <input type="submit" value="Try Again !">
-</form>
-{{pass}}
+<div class="container text-center">
+    <h1>Select Group</h1>
+    <br>
+    <form method="get" action="/BabbleBot/core/getComments.html">
+        <!-- The user will select their group     -->
+        <select>
+            <option value="">Choose a Group</option>
+            {{for group in groups:}}
+                <option value="{{=group['group_id']}}">{{=group['name']}}</option>
+            {{pass}}
+        </select>
+            <!-- I really should have proper CSS to space everything properly, but this will do for now -->
+        <br> <br>
+        <button type="submit" class="btn btn-lg btn-primary">Select</button>
+    </form>
+</div>

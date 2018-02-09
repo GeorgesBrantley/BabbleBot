@@ -117,7 +117,7 @@ if not configuration.get('app.production'):
              'http://www.web2py.com/book/default/chapter/15'),
             (T("Buy web2py's book"), False,
              'http://stores.lulu.com/web2py'),
-        ]),
+        ])
 #         (T('Community'), False, None, [
 #             (T('Groups'), False,
 #              'http://www.web2py.com/examples/default/usergroups'),
