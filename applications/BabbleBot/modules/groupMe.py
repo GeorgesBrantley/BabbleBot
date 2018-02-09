@@ -176,3 +176,4 @@ def getComments(groupID):
     return ret
 
 def getIndividualLikes(groupID):
+    # gets how many “likes”an Individual has given
