@@ -174,3 +174,7 @@ def getComments(groupID):
     except:
         pass
     return ret
+
+def otherUserTotalLikes(groupID, myUserID, otherUserID):
+    #return integer of total likes other user has given in an int
+    return

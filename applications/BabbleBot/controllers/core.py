@@ -79,3 +79,14 @@ def featureList():
     #    except:
     #        pass
     return dict(name = session.groupName,)
+    com = session.dictComments
+    # example for json
+    comments = []
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            comments.append(v['text'].encode("utf-8") +'\n')
+        except:
+            pass
+    return dict(com = comments)
+
