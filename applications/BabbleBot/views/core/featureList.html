@@ -4,6 +4,35 @@
 <h1>GROUP: {{=name}}</h1>
 </head>
 <body>
+    <h1>
+        Global Features:
+    </h1>
+    <form  action="BabbleBot/features/groupMarkov">
+          <input type="submit" value="Group Markov">
+    </form>
+    <form  action="BabbleBot/features/groupMarkov">
+          <input type="submit" value="Group Markov">
+    </form>
+    <form  action="BabbleBot/features/groupMarkov">
+          <input type="submit" value="Group Markov">
+    </form>
+    <form  action="BabbleBot/features/groupMarkov">
+          <input type="submit" value="Group Markov">
+    </form>
+    <form  action="BabbleBot/features/groupMarkov">
+          <input type="submit" value="Group Markov">
+    </form>
+    <form  action="BabbleBot/features/groupMarkov">
+          <input type="submit" value="Group Markov">
+    </form>
+    <h1>
+        Users
+    </h1>
+    {{for x in users:}}
+     <form  action="BabbleBot/users?id={{=x[0]}}">
+          <input type="submit" value="{{=x[1]}}">
+    </form>
+    {{pass}}
 </body>
 
 </html>

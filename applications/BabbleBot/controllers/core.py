@@ -65,17 +65,8 @@ def downloadComments():
     return dict(finished=finished, prog= prog, max=session.maxComments)
 
 def featureList():
-    #GroupMe api function, returns dictionary of information
-    #HTML is a list of features to links, new controller?
-    # dictionary saved to session?
-
-    # example for json
-    # com = session.dictComments
-    #comments = []
-    #for k,val in com.iteritems():
-    #    try:
-    #        v = json.loads(val)
-    #        comments.append(v['text'].encode("utf-8") +'\n')
-    #    except:
-    #        pass
-    return dict(name = session.groupName,)
+    # Lists GLobal Features and Users!
+    # Get Users
+    users = [] # These are objects of [id,name]
+    users = groupMe.getListOfUsers(session.myAuth, session.myGroupID)
+    return dict(name = session.groupName,users=users)
