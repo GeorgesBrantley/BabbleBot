@@ -174,3 +174,5 @@ def getComments(groupID):
     except:
         pass
     return ret
+
+def getIndividualLikes(groupID):
