@@ -3,7 +3,9 @@
 <meta http-equiv="refresh" content="5">
 {{pass}}
 
-<h1> Updating Information</h1>
+<h1>
+    Updating Information
+</h1>
 <p> This page will auto-refresh </p>
 
 {{if finished == False:}}
@@ -13,5 +15,6 @@
         <button type="submit" class="btn btn-lg btn-success">
             Update Done! Continue
         </button>
+<!--         <input type=submit value="Update Done! Continue"> -->
     </form>
 {{pass}}

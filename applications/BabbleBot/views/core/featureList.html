@@ -1,7 +1,22 @@
 {{extend 'layout.html'}}
-<h1>All comments downloaded. Example</h1>
-<p>
+
+
+<div class="container">
+    <h1 class="text-center">{{=name}}</h1>
+    <h3>Total Likes: </h3> <br>
+    <h3>Total Comments: </h3>
+    <button class="btn btn-outline-primary">View all comments</button>
+
+    <h2 class="text-center">Global Statistics and Rankings</h2>
+    <button class="btn btn-outline-primary btn-block">One feature</button>
+
+    <br>
+    <h2 class="text-center">Users</h2>
+    <!-- The list of users goes here. -->
+</div>
+
+<!-- <p>
 {{for x in com:}}
     {{=x}} <br/>
 {{pass}}
-</p>
+</p> -->

@@ -29,7 +29,7 @@ def getComments():
     # Call GroupMeAPI functions
     # Function1: check if file exists / find last comment
     groupID = request.vars.groupID
-#     group = groupMe.checkValidGroupID(personAuth,groupID)
+    # group = groupMe.checkValidGroupID(personAuth,groupID)
 
     # if group == true:
     fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, groupID)
@@ -59,6 +59,9 @@ def featureList():
     #GroupMe api function, returns dictionary of information
     #HTML is a list of features to links, new controller?
     # dictionary saved to session?
+    name = groupMe.getGroupName(session.myAuth, session.myGroupID)
+    
+    # get number of total likes and comments to display on this page.
    
     com = session.dictComments
     # example for json
@@ -69,4 +72,4 @@ def featureList():
             comments.append(v['text'].encode("utf-8") +'\n')
         except:
             pass
-    return dict(com = comments)
+    return dict(com = comments, name = name)
