@@ -3,7 +3,7 @@
 from gluon import *
 import json
 
-def getLikesPerUser(com):
+def getLikesPerUser(com, translator):
     userDict = {}
     for k,val in com.iteritems():
         try:
@@ -14,5 +14,10 @@ def getLikesPerUser(com):
                 userDict[v['sender_id']] = len(v['favorited_by'])
         except:
             pass
+    namedDict = {}
+    print translator
+    for k, val in userDict.iteritems():
+        if k in translator:
+            namedDict[translator[k]] = val
 
-    return userDict
+    return namedDict
