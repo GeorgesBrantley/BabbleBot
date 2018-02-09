@@ -45,7 +45,6 @@
 	<form class="login" method="get" action="/BabbleBot/core/guestCheck.html">
 		<h1>Guest Sign In</h1>
 		<input type="text" class="form-input" name="auth" placeholder="Personal Auth Token">
-<!-- 		<input type="text" class="form-input" name="groupID" placeholder="Group ID"> -->
 		<input type="text" class="form-input" name="botID" placeholder="Bot ID (optional)" style="margin-bottom: 10px;">
 
 		<button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>
