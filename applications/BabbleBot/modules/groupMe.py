@@ -27,6 +27,15 @@ def checkValidGroupID(auth,groupID):
         return True
     else:
         return False
+def getListOfUsers(auth,groupID):
+    # gets users of a group [id,nickname]
+    req = requests.get("https://api.groupme.com/v3/groups/"+groupID+"?token=" + auth)
+    output = req.json()
+    names = output['response']['members']
+    users = []
+    for x in names:
+        users.append([x['id'],x['nickname']])
+    return users
 
 def fileInfo(auth,groupid):
     #checks if we have file

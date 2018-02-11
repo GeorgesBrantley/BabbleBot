@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
-import groupMe
 import groupMeFeatures
+import groupMe
 
-# try something like
-def index(): return dict(message="hello from features.py")
+def groupMarkov():
+    # Display Markov Chains for entire Group
+    comments = session.dictComments # get comments
+    results = groupMeFeatures.createMarkChain('all',10,comments)
+    
+    return dict(marks = results)
 
-def likesPerUser():
+
+def likesRecievedPerUser():
     userDict = str(groupMeFeatures.getLikesPerUser(session.dictComments, session.translator))
     return dict(m=userDict)
