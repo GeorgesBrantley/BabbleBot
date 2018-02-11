@@ -38,3 +38,22 @@ def createMarkChain(user,amount,comments):
         outStr.append(text_model.make_sentence())
     # returns list of markov strings
     return outStr
+
+def getLikesPerUser(com, translator):
+    # Gets likes RECIEVED per user!
+    userDict = {}
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            if v['sender_id'] in userDict:
+                userDict[v['sender_id']] += int(len(v['favorited_by']))
+            else:
+                userDict[v['sender_id']] = len(v['favorited_by'])
+        except:
+            pass
+    namedDict = {}
+    for k, val in userDict.iteritems():
+        if k in translator:
+            namedDict[translator[k]] = val
+
+    return namedDict
