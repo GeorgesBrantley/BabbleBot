@@ -18,10 +18,9 @@
     <br>
     <h2 class="text-center">Users</h2>
     <!-- The list of users goes here. -->
-     {{for x in users:}}
-     <form  action="/BabbleBot/userFeatures/main">
-          <input type="hidden" name="id" value="{{=x[0]}}">
-          <input type="submit" value="{{=x[1]}}">
-    </form>
+    {{for x in users:}}
+        <a class="btn btn-outline-primary btn-block" href="/BabbleBot/userFeatures/main?id={{=x[0]}}">
+            {{=x[1]}}
+        </a>
     {{pass}}
 </div>
