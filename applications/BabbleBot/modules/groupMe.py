@@ -69,6 +69,14 @@ def getGroupName(auth,id):
     name = output['response']['name']
     return name
 
+# Gets all the groups a user is in
+def getAllGroups(auth):
+    # the omit=memberships will exclude the list of all the group members, which is good for people in large groups.
+    output = requests.get("https://api.groupme.com/v3/groups?token=" + auth + "&omit=memberships")
+    output = output.json()
+    groups = output['response']
+    return groups
+
 def isThread(auth,id):
     # checks if instance of downloadFromAPI is occuring.
     if id in finished:

@@ -14,34 +14,35 @@ def guestSignIn():
 def guestCheck():
     # Get information
     personAuth = request.vars.auth
-    groupID = request.vars.groupID
     botID = request.vars.botID
     auth = groupMe.checkValidAuth(personAuth)
     group = False
     name = ''
     if auth == True:
-        group = groupMe.checkValidGroupID(personAuth,groupID)
-    # if both are true:
-    if auth == True and group == True:
         # save into sessions
         session.myAuth = personAuth
-        session.myGroupID = groupID
         session.myBotID = botID
-        name = groupMe.getGroupName(personAuth,groupID)
-        session.groupName = name
-    return dict(auth=auth,group=group, name=name)
+        groups = groupMe.getAllGroups(personAuth)
+    return dict(auth=auth,groups=groups)
 
 # Download Comments
 def getComments():
     # Call GroupMeAPI functions
     # Function1: check if file exists / find last comment
-    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, session.myGroupID)
+    groupID = request.vars.groupID
+    # group = groupMe.checkValidGroupID(personAuth,groupID)
+
+    # if group == true:
+    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, groupID)
+    session.myGroupID = groupID
     session.fileFound = fileFound
     session.maxComments = totalComments
+    name = groupMe.getGroupName(session.myAuth, groupID)
+
     # Function2: download comments THREAD?
-    # work out method for progress bar (start a clock in GroupMe, 
+    # work out method for progress bar (start a clock in GroupMe,
     # Returns groupname, filefound, and # of comments needed
-    return dict(name="test",fileFound=fileFound, comments=newComments)
+    return dict(name=name,fileFound=fileFound,comments=newComments)
 
 def downloadComments():
     # start wheel if first time
