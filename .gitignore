@@ -2,4 +2,7 @@
 server.*
 *.pyc
 *.bak
-gluons/*
+gluon/*
+scripts/*
+extras/*
+examples/*
