@@ -13,3 +13,19 @@ def groupMarkov():
 def likesRecievedPerUser():
     userDict = str(groupMeFeatures.getLikesPerUser(session.dictComments, session.translator))
     return dict(m=userDict)
+
+def numComments():
+    coms = session.dictComments
+    ans = groupMeFeatures.countCommentsPerUser(coms)
+    return dict(ans=ans)
+
+def pastName():
+    coms = session.dictComments
+    ans = groupMeFeatures.getPastName(coms)
+    return dict(PastName=ans)
+
+def numKicked():
+    coms = session.dictComments
+    ans = groupMeFeatures.getNumKicked(coms)
+    return dict(numKicked=ans)
+

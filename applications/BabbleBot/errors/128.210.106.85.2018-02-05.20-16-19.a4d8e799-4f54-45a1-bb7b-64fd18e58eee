@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.ValueError'> No JSON object could be decoded"
+p3
+sS'layer'
+p4
+S'/home/tan/babblebot/applications/BabbleBot/controllers/core.py'
+p5
+sS'code'
+p6
+S'<code object <module> at 0x7fea91fa3db0, file "/home/tan/babblebot/applications/BabbleBot/controllers/core.py", line 2>'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/home/tan/babblebot/gluon/restricted.py", line 219, in restricted\n    exec(ccode, environment)\n  File "/home/tan/babblebot/applications/BabbleBot/controllers/core.py", line 72, in <module>\n  File "/home/tan/babblebot/gluon/globals.py", line 419, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/tan/babblebot/applications/BabbleBot/controllers/core.py", line 36, in getComments\n    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, session.myGroupID)\n  File "applications/BabbleBot/modules/groupMe.py", line 43, in fileInfo\n    jj = json.load(f)\n  File "/usr/lib64/python2.7/json/__init__.py", line 291, in load\n    **kw)\n  File "/usr/lib64/python2.7/json/__init__.py", line 339, in loads\n    return _default_decoder.decode(s)\n  File "/usr/lib64/python2.7/json/decoder.py", line 364, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n  File "/usr/lib64/python2.7/json/decoder.py", line 382, in raw_decode\n    raise ValueError("No JSON object could be decoded")\nValueError: No JSON object could be decoded\n'
+p11
+s.
