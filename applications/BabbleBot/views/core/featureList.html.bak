@@ -1,42 +1,33 @@
 {{extend 'layout.html'}}
 <div class="container">
     <h1 class="text-center">{{=name}}</h1>
-    
-    <h3>Total Likes: </h3> <br>
-    <h3>Total Comments: </h3>
+
+    <h3>Total Comments:{{=nComs}} </h3>   <br>
+     <h3>Total Likes: {{=nLikes}} </h3> 
     <button class="btn btn-outline-primary">View all comments</button>
 
     <h2 class="text-center">Global Statistics and Rankings</h2>
     <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/groupMarkov">
-        Group Markov
+        Group Markov Generator
     </a>
-
     <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/likesRecievedPerUser">
-        Number of Likes a User has Recieved
+        Ranking of Users by Likes Recieved
     </a>
-
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/numComments">
+        Ranking of Users by Number of Comments
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/pastName">
+        Past Names of Users in {{=name}}
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/numKicked">
+        Amount of Times Users have been Kicked
+    </a>
     <br>
     <h2 class="text-center">Users</h2>
     <!-- The list of users goes here. -->
-     {{for x in users:}}
-     <form  action="/BabbleBot/userFeatures/main">
-          <input type="hidden" name="id" value="{{=x[0]}}">
-          <input type="submit" value="{{=x[1]}}">
-    </form>
+    {{for x in users:}}
+        <a class="btn btn-outline-primary btn-block" href="/BabbleBot/userFeatures/main?id={{=x[0]}}">
+            {{=x[1]}}
+        </a>
     {{pass}}
 </div>
-    <form  action="/BabbleBot/features/likesRecievedPerUser">
-          <input type="submit" value="Number of Likes a User has Recieved">
-    </form>
-    <form  action="/BabbleBot/features/groupMarkov">
-          <input type="submit" value="Group Markov">
-    </form>
-    <form  action="/BabbleBot/features/groupMarkov">
-          <input type="submit" value="Group Markov">
-    </form>
-    <form  action="/BabbleBot/features/groupMarkov">
-          <input type="submit" value="Group Markov">
-    </form>
-    <form  action="/BabbleBot/features/groupMarkov">
-          <input type="submit" value="Group Markov">
-    </form>

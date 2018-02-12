@@ -39,10 +39,8 @@ def getComments():
     session.fileFound = fileFound
     session.maxComments = totalComments
     name = groupMe.getGroupName(session.myAuth, groupID)
+    session.groupName =  name
 
-    # Function2: download comments THREAD?
-    # work out method for progress bar (start a clock in GroupMe,
-    # Returns groupname, filefound, and # of comments needed
     return dict(name=name,fileFound=fileFound,comments=newComments)
 
 def downloadComments():
@@ -71,4 +69,8 @@ def featureList():
     # Get Users
     users = [] # These are objects of [id,name]
     users = groupMe.getListOfUsers(session.myAuth, session.myGroupID)
-    return dict(name = session.groupName,users=users)
+    # basic data for display
+    numLikes,numComs = groupMeFeatures.getBasicGroupInfo(session.dictComments)
+    # number of comments total
+    
+    return dict(name = session.groupName,users=users,nLikes = numLikes, nComs = numComs)

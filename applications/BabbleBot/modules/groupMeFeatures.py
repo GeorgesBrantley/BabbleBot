@@ -5,19 +5,24 @@ import os
 import json
 import markovify
 
-def getSumofLikes(comments):
+def getBasicGroupInfo(comments):
+    # total likes in a group
+    # total comments in a group
     sumLikes = 0
+    sumComments = 0
     for k,val in comments.iteritems():
         try:
             v = json.loads(val)
             # operate on v
-            comments.append(v['text'].encode("urf-8")+'\n')
             # find out amount of likes on this comment
             # add to sumLikes
-            sumLikes = sumLikes + len(comment.get("favorited_by"))
+            sumLikes = sumLikes + len(v["favorited_by"])
+            # make sure only count human messages
+            if v['sender_type'] == 'user':
+                sumComments += 1
         except:
             pass
-    return sumLikes
+    return [sumLikes,sumComments]
 
 def createMarkChain(user,amount,comments):
     # Gets user id, amount of chains to generate, and comments dictionary
@@ -38,7 +43,7 @@ def createMarkChain(user,amount,comments):
             elif v['user_id'] == user:
                 # TODO, opnly get that specific users comments
                 string = v['text'].encode("utf-8")
-                if string[-1:] != '.':
+                if string[-1:] != '.' and string[-1:] != '?' and string[-1:] != '!':
                     string += '.'
                 inputStr += string +'\n'
         except:
@@ -49,7 +54,14 @@ def createMarkChain(user,amount,comments):
     #create list of output
     outStr = []
     for i in range(0,amount):
-        outStr.append(text_model.make_sentence())
+        marky = text_model.make_sentence()
+        pings = 0
+        while marky == None or marky == 'None':
+            if pings > 10:
+                break
+            marky = text_model.make_sentence()
+        outStr.append(marky)
+        
     # returns list of markov strings
     return outStr
 
@@ -108,4 +120,3 @@ def getNumKicked(comments):
         except:
             pass
     return numKicked
-
