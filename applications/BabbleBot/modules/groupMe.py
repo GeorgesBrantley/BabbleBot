@@ -34,7 +34,7 @@ def getListOfUsers(auth,groupID):
     names = output['response']['members']
     users = []
     for x in names:
-        users.append([x['id'],x['nickname']])
+        users.append([x['user_id'],x['nickname']])
     return users
 
 def fileInfo(auth,groupid):
@@ -183,7 +183,3 @@ def getComments(groupID):
     except:
         pass
     return ret
-
-def otherUserTotalLikes(groupID, myUserID, otherUserID):
-    #return integer of total likes other user has given in an int
-    return
