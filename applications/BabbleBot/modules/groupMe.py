@@ -191,8 +191,3 @@ def getComments(groupID):
     except:
         pass
     return ret
-
-def getIndividualLikes(groupID):
-    # gets how many “likes”an Individual has given
-    temp = getComments(groupID)
-    
