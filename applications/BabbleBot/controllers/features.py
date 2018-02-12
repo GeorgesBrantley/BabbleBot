@@ -2,6 +2,15 @@
 import groupMeFeatures
 import groupMe
 
+def sumOfLikesinGroup():
+    # Has a corresponding view
+    # gets values from Sessions
+    comments = session.dictComments
+    # sends values to bigger function in groupMeFeatures.py
+    sumLikes = groupMeFeatures.getSumofLikes(comments)
+    # shows output on view
+    return dict(sum = sumLikes)
+
 def groupMarkov():
     # Display Markov Chains for entire Group
     comments = session.dictComments # get comments
