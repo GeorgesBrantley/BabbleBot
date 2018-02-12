@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import groupMe
-import groupMeFeatures
 import thread
 import time
 import json
@@ -14,35 +13,33 @@ def guestSignIn():
 def guestCheck():
     # Get information
     personAuth = request.vars.auth
+    groupID = request.vars.groupID
     botID = request.vars.botID
     auth = groupMe.checkValidAuth(personAuth)
     group = False
-    name = ''
     if auth == True:
+        group = groupMe.checkValidGroupID(personAuth,groupID)
+    # if both are true:
+    if auth == True and group == True:
         # save into sessions
         session.myAuth = personAuth
+        session.myGroupID = groupID
         session.myBotID = botID
-        groups = groupMe.getAllGroups(personAuth)
-    return dict(auth=auth,groups=groups)
+        name = groupMe.getGroupName(personAuth,groupID)
+        session.groupName = name
+    return dict(auth=auth,group=group, name=name)
 
 # Download Comments
 def getComments():
     # Call GroupMeAPI functions
     # Function1: check if file exists / find last comment
-    groupID = request.vars.groupID
-    # group = groupMe.checkValidGroupID(personAuth,groupID)
-
-    # if group == true:
-    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, groupID)
-    session.myGroupID = groupID
+    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, session.myGroupID)
     session.fileFound = fileFound
     session.maxComments = totalComments
-    name = groupMe.getGroupName(session.myAuth, groupID)
-
     # Function2: download comments THREAD?
-    # work out method for progress bar (start a clock in GroupMe,
+    # work out method for progress bar (start a clock in GroupMe, 
     # Returns groupname, filefound, and # of comments needed
-    return dict(name=name,fileFound=fileFound,comments=newComments)
+    return dict(name="test",fileFound=fileFound, comments=newComments)
 
 def downloadComments():
     # start wheel if first time
@@ -54,20 +51,20 @@ def downloadComments():
 
     if finished:
         session.dictComments = groupMe.getComments(session.myGroupID)
-        com = session.dictComments
-        translate = {}
-        for k,val in com.iteritems():
-            try:
-                v = json.loads(val)
-                translate[v['user_id']] = str(v['name'].encode('utf-8'))
-            except:
-                pass
-        session.translator = translate
     return dict(finished=finished, prog= prog, max=session.maxComments)
 
 def featureList():
-    # Lists GLobal Features and Users!
-    # Get Users
-    users = [] # These are objects of [id,name]
-    users = groupMe.getListOfUsers(session.myAuth, session.myGroupID)
-    return dict(name = session.groupName,users=users)
+    #GroupMe api function, returns dictionary of information
+    #HTML is a list of features to links, new controller?
+    # dictionary saved to session?
+    groupName = session.name
+
+    # example for json
+    #feature = []
+    #for k,val in com.iteritems():
+    #    try:
+    #        v = json.loads(val)
+    #        comments.append(v['text'].encode("utf-8") +'\n')
+    #    except:
+    #        pass
+    return dict(name = session.groupName)
