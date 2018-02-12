@@ -27,6 +27,15 @@ def checkValidGroupID(auth,groupID):
         return True
     else:
         return False
+def getListOfUsers(auth,groupID):
+    # gets users of a group [id,nickname]
+    req = requests.get("https://api.groupme.com/v3/groups/"+groupID+"?token=" + auth)
+    output = req.json()
+    names = output['response']['members']
+    users = []
+    for x in names:
+        users.append([x['user_id'],x['nickname']])
+    return users
 
 def fileInfo(auth,groupid):
     #checks if we have file
@@ -59,6 +68,14 @@ def getGroupName(auth,id):
     output = output.json()
     name = output['response']['name']
     return name
+
+# Gets all the groups a user is in
+def getAllGroups(auth):
+    # the omit=memberships will exclude the list of all the group members, which is good for people in large groups.
+    output = requests.get("https://api.groupme.com/v3/groups?token=" + auth + "&omit=memberships")
+    output = output.json()
+    groups = output['response']
+    return groups
 
 def isThread(auth,id):
     # checks if instance of downloadFromAPI is occuring.

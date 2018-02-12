@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import groupMeFeatures
-# try something like
-def index(): return dict(message="hello from features.py")
-
+import groupMe
 
 def sumOfLikesinGroup():
     # Has a corresponding view
@@ -12,3 +10,31 @@ def sumOfLikesinGroup():
     sumLikes = groupMeFeatures.getSumofLikes(comments)
     # shows output on view
     return dict(sum = sumLikes)
+
+def groupMarkov():
+    # Display Markov Chains for entire Group
+    comments = session.dictComments # get comments
+    results = groupMeFeatures.createMarkChain('all',10,comments)
+    
+    return dict(marks = results)
+
+
+def likesRecievedPerUser():
+    userDict = str(groupMeFeatures.getLikesPerUser(session.dictComments, session.translator))
+    return dict(m=userDict)
+
+def numComments():
+    coms = session.dictComments
+    ans = groupMeFeatures.countCommentsPerUser(coms)
+    return dict(ans=ans)
+
+def pastName():
+    coms = session.dictComments
+    ans = groupMeFeatures.getPastName(coms)
+    return dict(PastName=ans)
+
+def numKicked():
+    coms = session.dictComments
+    ans = groupMeFeatures.getNumKicked(coms)
+    return dict(numKicked=ans)
+

@@ -1,9 +1,26 @@
-<html>
+{{extend 'layout.html'}}
+<div class="container">
+    <h1 class="text-center">{{=name}}</h1>
     
-<head>
-<h1>GROUP: {{=name}}</h1>
-</head>
-<body>
-</body>
+    <h3>Total Likes: </h3> <br>
+    <h3>Total Comments: </h3>
+    <button class="btn btn-outline-primary">View all comments</button>
 
-</html>
+    <h2 class="text-center">Global Statistics and Rankings</h2>
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/groupMarkov">
+        Group Markov
+    </a>
+
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/likesRecievedPerUser">
+        Number of Likes a User has Recieved
+    </a>
+
+    <br>
+    <h2 class="text-center">Users</h2>
+    <!-- The list of users goes here. -->
+    {{for x in users:}}
+        <a class="btn btn-outline-primary btn-block" href="/BabbleBot/userFeatures/main?id={{=x[0]}}">
+            {{=x[1]}}
+        </a>
+    {{pass}}
+</div>
