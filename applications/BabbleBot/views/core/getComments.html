@@ -1,16 +1,16 @@
-<h1>
-    Group {{=name}} selected!
-</h1>
+{{extend 'layout.html'}}
+
+<h1>{{=name}}</h1>
+
 {{if fileFound == True:}}
-<p>File Found</p><br/>
-<p>{{=comments}} Comments need to be Updated <br/>
-This may take some time <br/></p>
-<form method="get" action="/BabbleBot/core/downloadComments">
-    <input type=submit value="Update Group Information"></form>
+    <p>File Found</p><br/>
 {{else:}}
-<p>File Not Found.<br/>
-{{=comments}} Comments need to be processed<br/>
-This will take some time<br/></p>
-<form method="get" action="/BabbleBot/core/downloadComments">
-    <input type=submit value="Process Group Information"></form>
+    <p>File Not Found.</p>
 {{pass}}
+
+<p>{{=comments}} Comments need to be processed</p> <br/>
+
+<p>This will take some time<br/></p>
+<form method="get" action="/BabbleBot/core/downloadComments">
+    <input type=submit value="Process Group Information">
+</form>

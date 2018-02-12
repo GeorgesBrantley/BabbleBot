@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.AttributeError'> 'NoneType' object has no attribute 'iteritems'"
+p3
+sS'layer'
+p4
+S'/home/joseph/BabbleBot/applications/BabbleBot/controllers/core.py'
+p5
+sS'code'
+p6
+S'<code object <module> at 0x7f897d9aa9b0, file "/home/joseph/BabbleBot/applications/BabbleBot/controllers/core.py", line 2>'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/home/joseph/BabbleBot/gluon/restricted.py", line 219, in restricted\n    exec(ccode, environment)\n  File "/home/joseph/BabbleBot/applications/BabbleBot/controllers/core.py", line 71, in <module>\n  File "/home/joseph/BabbleBot/gluon/globals.py", line 419, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/joseph/BabbleBot/applications/BabbleBot/controllers/core.py", line 63, in featureList\n    for k,val in com.iteritems():\nAttributeError: \'NoneType\' object has no attribute \'iteritems\'\n'
+p11
+s.

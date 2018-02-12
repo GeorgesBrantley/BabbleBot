@@ -1,0 +1,16 @@
+{{extend 'layout.html'}}
+
+<h1>Group {{=name}} selected!</h1>
+
+{{if fileFound == True:}}
+    <p>File Found</p><br/>
+{{else:}}
+    <p>File Not Found.</p>
+{{pass}}
+
+<p>{{=comments}} Comments need to be processed</p> <br/>
+
+<p>This will take some time<br/></p>
+<form method="get" action="/BabbleBot/core/downloadComments">
+    <input type=submit value="Process Group Information">
+</form>
