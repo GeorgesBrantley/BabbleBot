@@ -1,8 +1,18 @@
 # -*- coding: utf-8 -*-
-# try something like
 import groupMeFeatures
+import groupMe
 
-def index(): return dict(message="hello from features.py")
+def groupMarkov():
+    # Display Markov Chains for entire Group
+    comments = session.dictComments # get comments
+    results = groupMeFeatures.createMarkChain('all',10,comments)
+    
+    return dict(marks = results)
+
+
+def likesRecievedPerUser():
+    userDict = str(groupMeFeatures.getLikesPerUser(session.dictComments, session.translator))
+    return dict(m=userDict)
 
 def numComments():
     coms = session.dictComments
@@ -18,3 +28,4 @@ def numKicked():
     coms = session.dictComments
     ans = groupMeFeatures.getNumKicked(coms)
     return dict(numKicked=ans)
+
