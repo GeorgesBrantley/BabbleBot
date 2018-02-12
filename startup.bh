@@ -1,2 +1,2 @@
 #!/bin/bash
-python2.7 web2py.py -c server.crt -k server.key --ip 0.0.0.0 -p 8000 -s BabbleBot --password 'admin' 
+python2.7 web2py.py -c server.crt -k server.key --ip 0.0.0.0 -p 8004 -s BabbleBot --password 'admin' 
