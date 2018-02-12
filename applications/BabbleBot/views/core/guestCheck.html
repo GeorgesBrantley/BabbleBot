@@ -1,6 +1,7 @@
 {{extend 'layout.html'}}
 
 <div class="container text-center">
+    {{ if auth == True:}}
     <h1>Select Group</h1>
     <br>
     <form method="get" action="/BabbleBot/core/getComments.html">
@@ -15,4 +16,10 @@
         <br> <br>
         <button type="submit" class="btn btn-lg btn-primary">Select</button>
     </form>
+    {{ else:}}
+    <!-- INPUT BAD AUTH RESPONSE HERE -->
+    <h1>
+        Bad Authentication Token Inputed
+    </h1>
+    {{pass}}
 </div>

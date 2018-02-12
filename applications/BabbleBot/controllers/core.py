@@ -18,6 +18,7 @@ def guestCheck():
     auth = groupMe.checkValidAuth(personAuth)
     group = False
     name = ''
+    groups = []
     if auth == True:
         # save into sessions
         session.myAuth = personAuth
