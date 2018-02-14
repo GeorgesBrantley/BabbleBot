@@ -74,3 +74,10 @@ def featureList():
     # number of comments total
     
     return dict(name = session.groupName,users=users,nLikes = numLikes, nComs = numComs)
+
+def postToGroupMe():
+    message = request.vars.message
+    works = ''
+    if session.myBotID is not '':
+        works = groupMe.postToGroupMe(session.myBotID,message)
+    return dict(w=works)

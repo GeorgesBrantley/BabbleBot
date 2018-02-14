@@ -1,3 +1,6 @@
 {{extend 'layout.html'}}
-<h1>This is the userFeatures/userLikesGiven.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+<h1>Amount of Likes {{=name}} Has Given!</h1>
+{{=r}}
+ <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=r))}}">
+        Post To GroupMe
+    </a>
