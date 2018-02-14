@@ -109,3 +109,21 @@ def getNumKicked(comments):
             pass
     return numKicked
 
+def mostGivingUsers(com, translator):
+    # most like giving user!
+    userDict = {}
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            if v['sender_id'] in userDict:
+                userDict[v['sender_id']] += int(len(v['favorited_by']))
+            else:
+                userDict[v['sender_id']] = len(v['favorited_by'])
+        except:
+            pass
+    namedDict = {}
+    for k, val in userDict.iteritems():
+        if k in translator:
+            namedDict[translator[k]] = val
+
+    return namedDict
