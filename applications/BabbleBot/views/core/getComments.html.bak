@@ -1,6 +1,6 @@
 {{extend 'layout.html'}}
 
-<h1>Group {{=name}} selected!</h1>
+<h1>{{=name}}</h1>
 
 {{if fileFound == True:}}
     <p>File Found</p><br/>

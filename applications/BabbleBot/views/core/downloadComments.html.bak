@@ -10,8 +10,6 @@
     <progress value="{{=prog}}" max="{{=max}}"></progress>
 {{else:}}
     <form method="get" action="/BabbleBot/core/featureList">
-        <button type="submit" class="btn btn-lg btn-success">
-            Update Done! Continue
-        </button>
+        <button type="submit" class="btn btn-lg btn-success">Update Done! Continue</button>
     </form>
 {{pass}}
