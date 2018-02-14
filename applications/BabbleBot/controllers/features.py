@@ -39,5 +39,6 @@ def numKicked():
     return dict(numKicked=ans)
 
 def mostGivingUsers():
-    userDict = str(groupMeFeatures.mostGivingUsers(session.dictComments, session.translator))
-    return dict(m=userDict)
+    userDict = groupMeFeatures.mostGivingUsers(session.dictComments, session.translator)
+    sud = dict(sorted(userDict.items(), key=lambda x: x[1])) # put it all back into a dict
+    return dict(m=sud)

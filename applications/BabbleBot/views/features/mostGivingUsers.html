@@ -1,3 +1,23 @@
 {{extend 'layout.html'}}
-<h1>This is the features/mostGivingUsers.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+<div class="container">
+<!--    <h1>This is the features/mostGivingUsers.html template</h1> -->
+    {{=BEAUTIFY(response._vars)}}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Likes</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{for k,v in m.items(): }}
+            <tr>
+                <td>{{=k}}</td>
+                <td>{{=v}}</td>
+            </tr>
+            {{pass}}
+        </tbody>
+    </table>
+</div>
