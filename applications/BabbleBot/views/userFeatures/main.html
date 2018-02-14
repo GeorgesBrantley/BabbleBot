@@ -1,33 +1,25 @@
-<h1>User Page</h1>
-<h1>
-    User Selected: {{=n}}
-</h1>
+{{extend 'layout.html'}}
+<div class="container">
+    <h1 class="text-center">{{=n}}</h1><br>
 
-<h1>
-    User Features:
-</h1>
+    <h2 class="text-center">User Statistics</h2>
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/userFeatures/userMarkov?id={{=p}}">
+        {{=n}}'s Markov Chain Generator
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/userFeatures/userMarkov">
+        Amount of Comments {{=n}} Has Posted
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/userFeatures/userMarkov">
+        Amount of Likes {{=n}} Has Recieved
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/userFeatures/userMarkov">
+        Amount of Likes {{=n}} Has Given
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/userFeatures/userMarkov">
+        place holder
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/userFeatures/userMarkov">
+        place holder
+    </a>
 
-    <form  action="/BabbleBot/userFeatures/userMarkov">
-          <input type="hidden" name="id" value="{{=p}}">
-          <input type="submit" value="User Markov">
-    </form>
-    <form  action="/BabbleBot/features/likesRecievedPerUser">
-            <input type="hidden" name="id" value="{{=p}}">
-          <input type="submit" value="Number of Likes a User has Recieved">
-    </form>
-    <form  action="/BabbleBot/features/groupMarkov">
-        <input type="hidden" name="id" value="{{=p}}">
-          <input type="submit" value="Group Markov">
-    </form>
-    <form  action="/BabbleBot/features/groupMarkov">
-        <input type="hidden" name="id" value="{{=p}}">
-          <input type="submit" value="Group Markov">
-    </form>
-    <form  action="/BabbleBot/features/groupMarkov">
-        <input type="hidden" name="id" value="{{=p}}">
-          <input type="submit" value="Group Markov">
-    </form>
-    <form  action="/BabbleBot/features/groupMarkov">
-        <input type="hidden" name="id" value="{{=p}}">
-          <input type="submit" value="Group Markov">
-    </form>
+</div>
