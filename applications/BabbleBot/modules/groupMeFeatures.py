@@ -120,3 +120,24 @@ def getNumKicked(comments):
         except:
             pass
     return numKicked
+
+def mostGivingUsers(com, translator):
+    # most like giving user!
+    userDict = {}
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            for x in v['favorited_by']:
+                # x is an ID in the favby list
+                if x in userDict:
+                    userDict[x] += 1
+                else:
+                    userDict[x] = 1
+        except:
+            pass
+    namedDict = {}
+    for k, val in userDict.iteritems():
+        if k in translator:
+            namedDict[translator[k]] = val
+
+    return namedDict

@@ -38,3 +38,6 @@ def numKicked():
     ans = groupMeFeatures.getNumKicked(coms)
     return dict(numKicked=ans)
 
+def mostGivingUsers():
+    userDict = str(groupMeFeatures.mostGivingUsers(session.dictComments, session.translator))
+    return dict(m=userDict)
