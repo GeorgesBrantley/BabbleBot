@@ -1,3 +1,10 @@
 {{extend 'layout.html'}}
-<h1>This is the userFeatures/userMarkov.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+<h1>This is the userFeatures/userMarkov.html template</h1> <br>
+<h1>Click To Post to GroupMe</h1> <br>
+{{y = 0}}
+{{for x in r:}}
+     <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich[y]))}}">
+        {{=x}}
+    </a>
+{{y += 1}}
+{{pass}}

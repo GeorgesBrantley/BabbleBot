@@ -1,0 +1,5 @@
+{{extend 'layout.html'}}
+<h1>Amount of Likes {{=name}} Has Given!</h1>
+ <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        {{=name}} Likes {{=r}} Messages. Click to Post to GroupMe
+    </a>

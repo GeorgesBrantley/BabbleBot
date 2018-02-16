@@ -183,7 +183,9 @@ def checker(groupID):
 
 def getComments(groupID):
     # Returns dictionary of comments
+    # DO NOT USE IN FEATURES!!!
     global commentsDicts
+    ret = ''
     try:
         ret = copy.deepcopy(commentsDicts[groupID])
         del commentsDicts[groupID]
@@ -191,3 +193,16 @@ def getComments(groupID):
     except:
         pass
     return ret
+
+
+def postToGroupMe(botID, message):
+    #Posts to the GroupMe associated with this Bot
+    payload = {'bot_id':botID,'text':message}
+    r = requests.post("https://api.groupme.com/v3/bots/post", data=payload)
+    try:
+        jj = json.loads(r.text)
+        if jj['meta']['code'] == '404':
+            return False
+    except:
+        return True
+    return True
