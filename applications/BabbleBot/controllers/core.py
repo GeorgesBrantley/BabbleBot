@@ -14,34 +14,34 @@ def guestSignIn():
 def guestCheck():
     # Get information
     personAuth = request.vars.auth
-    groupID = request.vars.groupID
     botID = request.vars.botID
     auth = groupMe.checkValidAuth(personAuth)
     group = False
     name = ''
+    groups = []
     if auth == True:
-        group = groupMe.checkValidGroupID(personAuth,groupID)
-    # if both are true:
-    if auth == True and group == True:
         # save into sessions
         session.myAuth = personAuth
-        session.myGroupID = groupID
         session.myBotID = botID
-        name = groupMe.getGroupName(personAuth,groupID)
-        session.groupName = name
-    return dict(auth=auth,group=group, name=name)
+        groups = groupMe.getAllGroups(personAuth)
+    return dict(auth=auth,groups=groups)
 
 # Download Comments
 def getComments():
     # Call GroupMeAPI functions
     # Function1: check if file exists / find last comment
-    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, session.myGroupID)
+    groupID = request.vars.groupID
+    # group = groupMe.checkValidGroupID(personAuth,groupID)
+
+    # if group == true:
+    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, groupID)
+    session.myGroupID = groupID
     session.fileFound = fileFound
     session.maxComments = totalComments
-    # Function2: download comments THREAD?
-    # work out method for progress bar (start a clock in GroupMe, 
-    # Returns groupname, filefound, and # of comments needed
-    return dict(name="test",fileFound=fileFound, comments=newComments)
+    name = groupMe.getGroupName(session.myAuth, groupID)
+    session.groupName =  name
+
+    return dict(name=name,fileFound=fileFound,comments=newComments)
 
 def downloadComments():
     # start wheel if first time
@@ -65,17 +65,12 @@ def downloadComments():
     return dict(finished=finished, prog= prog, max=session.maxComments)
 
 def featureList():
-    #GroupMe api function, returns dictionary of information
-    #HTML is a list of features to links, new controller?
-    # dictionary saved to session?
-
-    # example for json
-    # com = session.dictComments
-    #comments = []
-    #for k,val in com.iteritems():
-    #    try:
-    #        v = json.loads(val)
-    #        comments.append(v['text'].encode("utf-8") +'\n')
-    #    except:
-    #        pass
-    return dict(name = session.groupName,)
+    # Lists GLobal Features and Users!
+    # Get Users
+    users = [] # These are objects of [id,name]
+    users = groupMe.getListOfUsers(session.myAuth, session.myGroupID)
+    # basic data for display
+    numLikes,numComs = groupMeFeatures.getBasicGroupInfo(session.dictComments)
+    # number of comments total
+    
+    return dict(name = session.groupName,users=users,nLikes = numLikes, nComs = numComs)

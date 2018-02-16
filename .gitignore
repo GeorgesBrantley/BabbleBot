@@ -1,2 +1,8 @@
 *.log
 server.*
+*.pyc
+*.bak
+gluon/*
+scripts/*
+extras/*
+examples/*
