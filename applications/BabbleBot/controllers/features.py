@@ -15,7 +15,6 @@ def groupMarkov():
     # Display Markov Chains for entire Group
     comments = session.dictComments # get comments
     results = groupMeFeatures.createMarkChain('all',10,comments)
-    
     return dict(marks = results)
 
 
@@ -43,6 +42,5 @@ def mostGivingUsers():
     return dict(m=userDict)
 
 def likesPerComment():
-    comments = session.dictComments
-    ratio = groupMeFeatures.getLikesPerComment(user, comments);
+    ratio = groupMeFeatures.getLikesPerComment(session.dictComments)
     return dict(r = ratio)
