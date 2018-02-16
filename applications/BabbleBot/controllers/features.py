@@ -44,3 +44,7 @@ def numKicked():
 def mostGivingUsers():
     userDict = groupMeFeatures.mostGivingUsers(session.dictComments, session.translator)
     return dict(m=userDict)
+
+def groupMedals():
+    userDict = str(groupMeFeatures.getMedalCount("", session.dictComments, session.translator))
+    return dict(m=userDict)

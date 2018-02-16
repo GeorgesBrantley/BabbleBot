@@ -155,3 +155,58 @@ def mostGivingUsers(com, translator, personID = 'ALL'):
         return namedDict
     else:
         return specificUser
+
+def getMedalCount(user, com, translator):
+    #Gets medal counts for each user
+    userDict = {}
+
+    #Set up return dictionary
+    for k, val in translator.iteritems():
+        medalDict = {'Platinum' : 0, 'Gold' : 0, 'Silver' : 0, 'Bronze' : 0}
+        userDict[k] = medalDict
+
+    #Determine medal percentages based on group size
+    numUsers = 0
+    for k, val in translator.iteritems():
+        if k.isnumeric():
+            numUsers += 1
+
+    platinum = numUsers
+    gold =  int(numUsers * .75)
+    silver = int(numUsers * .5)
+    bronze = int(numUsers * .25)
+
+    print(platinum, gold, silver, bronze)
+
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            if v['sender_id'] in userDict:
+                numFavorites = int(len(v['favorited_by']))
+                medalDict = userDict[v['sender_id']]
+                
+                if numFavorites >= 3:
+                    print("Sender: ", translator[v['sender_id']], " #Likes: ", numFavorites)
+                    print("Text: ", v['text'])
+                
+                if numFavorites >= platinum:
+                    userDict[v['sender_id']]['Platinum'] += 1
+                elif numFavorites >= gold:
+                    userDict[v['sender_id']]['Gold'] += 1
+                elif numFavorites >= silver:
+                    userDict[v['sender_id']]['Silver'] += 1
+                elif numFavorites >= bronze:
+                    userDict[v['sender_id']]['Bronze'] += 1
+
+        except:
+            pass
+
+    namedDict = {}
+    if user != "":
+        namedDict[translator[user]] = userDict[user]
+    else:
+        for k, val in userDict.iteritems():
+            if k in translator:
+                namedDict[translator[k]] = val
+
+    return namedDict

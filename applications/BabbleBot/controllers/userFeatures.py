@@ -27,3 +27,7 @@ def userLikesGiven():
     response = groupMeFeatures.countCommentsPerUser(session.dictComments,personID)
     return dict(r=response, name = session.translator[personID])
 
+def userMedals():
+    personID = request.vars.id
+    userDict = str(groupMeFeatures.getMedalCount(personID, session.dictComments, session.translator))
+    return dict(m=userDict)
