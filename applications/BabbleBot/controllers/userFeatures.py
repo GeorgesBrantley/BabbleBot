@@ -12,3 +12,8 @@ def userMarkov():
     personID = request.vars.id
     response = groupMeFeatures.createMarkChain(personID,10,session.dictComments)
     return dict(r=response, name = session.translator[personID])
+
+def userCountComments():
+    personID = request.vars.id
+    response = groupMeFeatures.countCommentsPerUser(session.dictComments,personID)
+    return dict(r=response, name = session.translator[personID])
