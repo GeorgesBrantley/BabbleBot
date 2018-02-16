@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import groupMeFeatures
 import groupMe
+import operator
 
 def sumOfLikesinGroup():
     # Has a corresponding view
@@ -20,7 +21,7 @@ def groupMarkov():
 
 
 def likesRecievedPerUser():
-    userDict = str(groupMeFeatures.getLikesPerUser(session.dictComments, session.translator))
+    userDict = groupMeFeatures.getLikesPerUser(session.dictComments, session.translator)
     return dict(m=userDict)
 
 def numComments():
@@ -40,5 +41,4 @@ def numKicked():
 
 def mostGivingUsers():
     userDict = groupMeFeatures.mostGivingUsers(session.dictComments, session.translator)
-    sud = dict(sorted(userDict.items(), key=lambda x: x[1])) # put it all back into a dict
-    return dict(m=sud)
+    return dict(m=userDict)
