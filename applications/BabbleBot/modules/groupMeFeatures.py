@@ -84,18 +84,26 @@ def getLikesPerUser(com, translator):
 
     return namedDict
 
-def countCommentsPerUser(comments):
+def countCommentsPerUser(comments, userID = 'ALL'):
     user = {}
+    specificCount = 0
     for k,val in comments.iteritems():
         try:
             v = json.loads(val)
-            if v['sender_id'] in user:
-                user[v['sender_id']] += 1
+            if userID == 'ALL':
+                if v['sender_id'] in user:
+                    user[v['sender_id']] += 1
+                else:
+                    user[v['sender_id']] = 1
             else:
-                user[v['sender_id']] = 1
+                if v['sender_id'] == userID:
+                    specificCount += 1
         except:
             pass
-    return user
+    if userID == 'ALL':
+        return user
+    else:
+        return specificCount
 
 def getPastName(comments):
     pastNames = []
@@ -121,17 +129,21 @@ def getNumKicked(comments):
             pass
     return numKicked
 
-def mostGivingUsers(com, translator):
+def mostGivingUsers(com, translator, personID = 'ALL'):
     # most like giving user!
     userDict = {}
+    specificUser = 0
     for k,val in com.iteritems():
         try:
             v = json.loads(val)
             for x in v['favorited_by']:
-                if x in userDict:
-                    userDict[x] += 1
-                else:
-                    userDict[x] = 1
+                if personID == 'ALL':
+                    if x in userDict:
+                        userDict[x] += 1
+                    else:
+                        userDict[x] = 1
+                elif x == personID:
+                    specificUser += 1
         except:
             pass
     namedDict = {}
@@ -139,4 +151,7 @@ def mostGivingUsers(com, translator):
         if k in translator:
             namedDict[translator[k]] = val
 
-    return namedDict
+    if personID == 'ALL':
+        return namedDict
+    else:
+        return specificUser
