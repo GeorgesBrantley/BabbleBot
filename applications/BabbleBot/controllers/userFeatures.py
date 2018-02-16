@@ -21,3 +21,9 @@ def userLikesGiven():
     response = groupMeFeatures.mostGivingUsers(session.dictComments,session.translator,personID)
     richResponse = session.translator[personID] + " Has Liked " + str(response) + " Other Messages!"
     return dict(r=response, name =session.translator[personID], rich = richResponse)
+
+  def userCountComments():
+    personID = request.vars.id
+    response = groupMeFeatures.countCommentsPerUser(session.dictComments,personID)
+    return dict(r=response, name = session.translator[personID])
+
