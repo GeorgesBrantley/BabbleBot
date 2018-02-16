@@ -199,4 +199,10 @@ def postToGroupMe(botID, message):
     #Posts to the GroupMe associated with this Bot
     payload = {'bot_id':botID,'text':message}
     r = requests.post("https://api.groupme.com/v3/bots/post", data=payload)
-    return r.text
+    try:
+        jj = json.loads(r.text)
+        if jj['meta']['code'] == '404':
+            return False
+    except:
+        return True
+    return True
