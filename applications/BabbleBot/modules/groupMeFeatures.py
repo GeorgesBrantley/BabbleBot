@@ -24,6 +24,25 @@ def getBasicGroupInfo(comments):
             pass
     return [sumLikes,sumComments]
 
+def getBasicUserInfo(comments,userID):
+    # Get # of comments, # of likes rec, likes given, likes/comment
+    numComments = 0
+    likesRec = 0
+    likesGive = 0
+    for k,val in comments.iteritems():
+        try:
+            v = json.loads(val)
+            # count comments by user
+            if v['user_id'] == userID:
+                numComments += 1
+                likesRec += int(len(v['favorited_by']))
+            else:
+                if userID in v['favorited_by']:
+                    likesGive += 1
+        except:
+            pass
+    return [numComments,likesRec,likesGive]
+
 def createMarkChain(user,amount,comments):
     # Gets user id, amount of chains to generate, and comments dictionary
     # if user = 'all', then we are getting the comments for everyone in the group!
@@ -50,7 +69,6 @@ def createMarkChain(user,amount,comments):
             pass
     # make text model
     text_model = markovify.Text(inputStr)
-    
     #create list of output
     outStr = []
     for i in range(0,amount):
@@ -61,7 +79,6 @@ def createMarkChain(user,amount,comments):
                 break
             marky = text_model.make_sentence()
         outStr.append(marky)
-        
     # returns list of markov strings
     return outStr
 
@@ -156,27 +173,19 @@ def mostGivingUsers(com, translator, personID = 'ALL'):
     else:
         return specificUser
 
-def getMedalCount(user, com, translator):
+def getMedalCount(user, com, translator, userCount):
     #Gets medal counts for each user
     userDict = {}
-
     #Set up return dictionary
     for k, val in translator.iteritems():
         medalDict = {'Platinum' : 0, 'Gold' : 0, 'Silver' : 0, 'Bronze' : 0}
+        # Get # of active users
         userDict[k] = medalDict
 
-    #Determine medal percentages based on group size
-    numUsers = 0
-    for k, val in translator.iteritems():
-        if k.isnumeric():
-            numUsers += 1
-
-    platinum = numUsers
-    gold =  int(numUsers * .75)
-    silver = int(numUsers * .5)
-    bronze = int(numUsers * .25)
-
-    print(platinum, gold, silver, bronze)
+    platinum = userCount
+    gold =  int(userCount * .75)
+    silver = int(userCount * .5)
+    bronze = int(userCount * .25)
 
     for k,val in com.iteritems():
         try:
@@ -184,11 +193,6 @@ def getMedalCount(user, com, translator):
             if v['sender_id'] in userDict:
                 numFavorites = int(len(v['favorited_by']))
                 medalDict = userDict[v['sender_id']]
-                
-                if numFavorites >= 3:
-                    print("Sender: ", translator[v['sender_id']], " #Likes: ", numFavorites)
-                    print("Text: ", v['text'])
-                
                 if numFavorites >= platinum:
                     userDict[v['sender_id']]['Platinum'] += 1
                 elif numFavorites >= gold:
@@ -209,4 +213,4 @@ def getMedalCount(user, com, translator):
             if k in translator:
                 namedDict[translator[k]] = val
 
-    return namedDict
+    return namedDict,[platinum,gold,silver,bronze]

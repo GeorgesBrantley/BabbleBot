@@ -16,7 +16,6 @@ def groupMarkov():
     # Display Markov Chains for entire Group
     comments = session.dictComments # get comments
     results = groupMeFeatures.createMarkChain('all',10,comments)
-    
     return dict(marks = results)
 
 
@@ -46,5 +45,6 @@ def mostGivingUsers():
     return dict(m=userDict)
 
 def groupMedals():
-    userDict = str(groupMeFeatures.getMedalCount("", session.dictComments, session.translator))
-    return dict(m=userDict)
+    numUsers = len(groupMe.getListOfUsers(session.myAuth,session.myGroupID))
+    userDict,medalRange = groupMeFeatures.getMedalCount("", session.dictComments, session.translator,numUsers)
+    return dict(r=medalRange,m=userDict)
