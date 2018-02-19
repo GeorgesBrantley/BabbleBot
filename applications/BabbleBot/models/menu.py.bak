@@ -6,11 +6,11 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 response.menu = [
-    (T('Home'), False, URL('default', 'index'), []),
+    ('Home', False, URL('core', 'featureList'), []),
     
-    (T('Profiles'), False, URL('default', 'index'), []),
+    ('Profiles', False, URL('core', 'featureList'), []),
     
-    (T('My Groups'), False, URL('default', 'index'), [
+    ('My Groups', False, URL('default', 'index'), [
         (T('1'), False, URL('admin', 'default', 'site')),
         (T('2'), False, URL('admin', 'default', 'site')),
         (T('3'), False, URL('admin', 'default', 'site'))
@@ -117,7 +117,7 @@ if not configuration.get('app.production'):
              'http://www.web2py.com/book/default/chapter/15'),
             (T("Buy web2py's book"), False,
              'http://stores.lulu.com/web2py'),
-        ]),
+        ])
 #         (T('Community'), False, None, [
 #             (T('Groups'), False,
 #              'http://www.web2py.com/examples/default/usergroups'),

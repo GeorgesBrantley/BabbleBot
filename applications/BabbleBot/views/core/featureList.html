@@ -4,32 +4,34 @@
 
     <h3>Total Comments:{{=nComs}} </h3>   <br>
      <h3>Total Likes: {{=nLikes}} </h3> 
-    <button class="btn btn-outline-primary">View all comments</button>
+    <a class="btn btn-outline-info" href="{{=URL('core','downloadComments')}}">
+        View all comments
+    </a>
 
     <h2 class="text-center">Global Statistics and Rankings</h2>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','groupMarkov')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMarkov')}}">
         Group Markov Generator
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','likesRecievedPerUser')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesRecievedPerUser')}}">
         Ranking of Users by Likes Recieved
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','mostGivingUsers')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostGivingUsers')}}">
         Ranking of Users by Likes Given
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numComments')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numComments')}}">
         Ranking of Users by Number of Comments
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','pastName')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
         Past Names of Users in {{=name}}
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numKicked')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
         Amount of Times Users have been Kicked
     </a>
     <br>
     <h2 class="text-center">Users</h2>
     <!-- The list of users goes here. -->
     {{for x in users:}}
-        <a class="btn btn-outline-primary btn-block" href="{{=URL('userFeatures','main',vars=dict(id=x[0]) )}}">
+        <a class="btn btn-outline-info btn-block" href="{{=URL('userFeatures','main',vars=dict(id=x[0]) )}}">
             {{=x[1]}}
         </a>
     {{pass}}
