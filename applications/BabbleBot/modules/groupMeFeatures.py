@@ -4,6 +4,7 @@ from gluon import *
 import os
 import json
 import markovify
+import types
 
 def getBasicGroupInfo(comments):
     # total likes in a group
@@ -141,3 +142,75 @@ def mostGivingUsers(com, translator):
             namedDict[translator[k]] = val
 
     return namedDict
+
+def specificLikesGiven(com, translator, user = 'ALL'):
+    # WHO DOES A USER LIKE SPECIFICALLY?
+    userDict = {}
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            #userDict[v['sender_id']] = {}
+            #print v['favorited_by']
+            for x in v['favorited_by']:
+                # x is an ID in the favby list
+                try:
+                    userDict[x]
+                except:
+                    userDict[x] = {}
+
+                if v['sender_id'] in userDict[x]:
+                    userDict[x][v['sender_id']] += 1
+                else:
+                    userDict[x][v['sender_id']] = 1
+        except:
+            pass
+
+    namedDict = {}
+    for k, val in userDict.iteritems():
+        # iterate through users
+        if k in translator:
+            newVal = {}
+            for kk,v in val.iteritems():
+                # iterate through admirers
+                newVal[translator[kk]]  = v
+            namedDict[translator[k]] = newVal
+
+    if user == 'ALL':
+        return namedDict
+    else:
+        return namedDict[user]
+
+def specificLikesRec(com, translator, user = 'ALL'):
+    # WHO HAS LIKED THIS USER?
+    userDict = {}
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            #userDict[v['sender_id']] = {}
+            for x in v['favorited_by']:
+                # x is an ID in the favby list
+                try:
+                    userDict[v['sender_id']]
+                except:
+                    userDict[v['sender_id']] = {}
+
+                if x in userDict[v['sender_id']]:
+                    userDict[v['sender_id']][x] += 1
+                else:
+                    userDict[v['sender_id']][x] = 1
+        except:
+            pass
+
+    namedDict = {}
+    for k, val in userDict.iteritems():
+        # iterate through users
+        if k in translator:
+            newVal = {}
+            for kk,v in val.iteritems():
+                # iterate through admirers
+                newVal[translator[kk]]  = v
+            namedDict[translator[k]] = newVal
+    if user == 'ALL':
+        return namedDict
+    else:
+        return namedDict[user]
