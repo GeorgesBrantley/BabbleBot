@@ -13,7 +13,7 @@ def userMarkov():
     response = groupMeFeatures.createMarkChain(personID,10,session.dictComments)
     return dict(r=response, name = session.translator[personID])
 
-def getLikesPerComment():
+def userGetLikesPerComment():
     personID = request.vars.id
     response = groupMeFeatures.createMarkChain(session.dictComments,personID)
     return dict(r=response)

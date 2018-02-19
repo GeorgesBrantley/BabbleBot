@@ -141,18 +141,31 @@ def mostGivingUsers(com, translator):
 
     return namedDict
 
-def getLikesPerComment(user, comments):
+def getLikesPerComment(comments, user = 'ALL'):
     # ratio of likes per comment
-    sumLikes = 0
+    usersDict = {}
     sumComments = 0
+    sumLikes = 0
     for k,val in comments.iteritems():
         try:
             v = json.loads(val)
             # find number of likes per user
-            if v['sender_id'] == user:
-                sumComment += 1
-                sumLikes += len(v["favorited_by"])
+            if user == 'ALL':
+                if v['sender_id'] in usersDict:
+                    numComs, sumLikes = usersDict[v['sender_id']]
+                    numComs += 1
+                    sumLikes += len(v["favorited_by"])
+                    usersDict[v['sender_id']] = [numComs, sumLikes]
+                else:
+                    usersDict[v['sender_id']] = [1,len(v["favorited_by"])]
+            else:
+                if v['sender_id'] == user:
+                    sumComments += 1
+                    sumLikes += len(v["favorited_by"])
         except:
             pass
-    ratio = sumLikes/sumComments
-    return ratio
+    if user == 'ALL':
+        return usersDict
+    else:
+        ratio = sumLikes/sumComments
+        return ratio
