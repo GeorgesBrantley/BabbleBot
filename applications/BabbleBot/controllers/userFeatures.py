@@ -37,6 +37,16 @@ def userCountComments():
     response = groupMeFeatures.countCommentsPerUser(session.dictComments,personID)
     return dict(r=response, name = session.translator[personID])
 
+def userSpecificLikes():
+    personID = request.vars.id
+    userDict = str(groupMeFeatures.specificLikesGiven(session.dictComments, session.translator, translator[personID]))
+    return dict(m=userDict)
+
+def userSpecificLikesRec():
+    personID = request.vars.id
+    userDict = str(groupMeFeatures.specificLikesRec(session.dictComments, session.translator, translator[personID]))
+    return dict(m=userDict)
+
 def userMedals():
     personID = request.vars.id
     numUsers = len(groupMe.getListOfUsers(session.myAuth,session.myGroupID))

@@ -41,6 +41,14 @@ def numKicked():
     return dict(numKicked=ans)
 
 def mostGivingUsers():
+    userDict = str(groupMeFeatures.mostGivingUsers(session.dictComments, session.translator))
+    return dict(m=userDict)
+
+def specificLikes():
+    userDict = str(groupMeFeatures.specificLikesGiven(session.dictComments, session.translator))
+    return dict(m=userDict)
+
+def specificLikesRec():
     userDict = groupMeFeatures.mostGivingUsers(session.dictComments, session.translator)
     return dict(m=userDict)
 

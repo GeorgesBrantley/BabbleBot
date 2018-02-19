@@ -4,6 +4,7 @@ from gluon import *
 import os
 import json
 import markovify
+import types
 
 def getBasicGroupInfo(comments):
     # total likes in a group
@@ -154,6 +155,7 @@ def mostGivingUsers(com, translator, personID = 'ALL'):
         try:
             v = json.loads(val)
             for x in v['favorited_by']:
+                # x is an ID in the favby list
                 if personID == 'ALL':
                     if x in userDict:
                         userDict[x] += 1
@@ -163,15 +165,88 @@ def mostGivingUsers(com, translator, personID = 'ALL'):
                     specificUser += 1
         except:
             pass
-    namedDict = {}
-    for k, val in userDict.iteritems():
-        if k in translator:
-            namedDict[translator[k]] = val
-
     if personID == 'ALL':
+        namedDict = {}
+        for k, val in userDict.iteritems():
+            if k in translator:
+                namedDict[translator[k]] = val
         return namedDict
     else:
         return specificUser
+
+def specificLikesGiven(com, translator, user = 'ALL'):
+    # WHO DOES A USER LIKE SPECIFICALLY?
+    userDict = {}
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            #userDict[v['sender_id']] = {}
+            #print v['favorited_by']
+            for x in v['favorited_by']:
+                # x is an ID in the favby list
+                try:
+                    userDict[x]
+                except:
+                    userDict[x] = {}
+
+                if v['sender_id'] in userDict[x]:
+                    userDict[x][v['sender_id']] += 1
+                else:
+                    userDict[x][v['sender_id']] = 1
+        except:
+            pass
+
+    namedDict = {}
+    for k, val in userDict.iteritems():
+        # iterate through users
+        if k in translator:
+            newVal = {}
+            for kk,v in val.iteritems():
+                # iterate through admirers
+                newVal[translator[kk]]  = v
+            namedDict[translator[k]] = newVal
+
+    if user == 'ALL':
+        return namedDict
+    else:
+        return namedDict[user]
+
+def specificLikesRec(com, translator, user = 'ALL'):
+    # WHO HAS LIKED THIS USER?
+    userDict = {}
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            #userDict[v['sender_id']] = {}
+            for x in v['favorited_by']:
+                # x is an ID in the favby list
+                try:
+                    userDict[v['sender_id']]
+                except:
+                    userDict[v['sender_id']] = {}
+                if x in userDict[v['sender_id']]:
+                    userDict[v['sender_id']][x] += 1
+                else:
+                    userDict[v['sender_id']][x] = 1
+        except:
+            pass
+    #if user == 'ALL':
+    #   return namedDict
+    #else:
+    #   return specificUser
+    print userDict
+    for k, val in userDict.iteritems():
+        # iterate through users
+        if k in translator:
+            newVal = {}
+            for kk,v in val.iteritems():
+                # iterate through admirers
+                newVal[translator[kk]]  = v
+                namedDict[translator[k]] = newVal
+    if user == 'ALL':
+        return namedDict
+    else:
+        return namedDict[user]
 
 def getMedalCount(user, com, translator, userCount):
     #Gets medal counts for each user
@@ -201,7 +276,6 @@ def getMedalCount(user, com, translator, userCount):
                     userDict[v['sender_id']]['Silver'] += 1
                 elif numFavorites >= bronze:
                     userDict[v['sender_id']]['Bronze'] += 1
-
         except:
             pass
 
