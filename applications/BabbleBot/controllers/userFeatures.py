@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import groupMeFeatures
+import groupMe
 # All user features!
 
 def main():
@@ -39,5 +40,6 @@ def userCountComments():
 
 def userMedals():
     personID = request.vars.id
-    userDict = str(groupMeFeatures.getMedalCount(personID, session.dictComments, session.translator))
+    numUsers = len(groupMe.getListOfUsers(session.myAuth,session.myGroupID))
+    userDict = str(groupMeFeatures.getMedalCount(personID, session.dictComments, session.translator, numUsers))
     return dict(m=userDict)
