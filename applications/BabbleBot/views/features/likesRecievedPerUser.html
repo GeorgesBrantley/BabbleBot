@@ -1,4 +1,21 @@
-<h1>This is the likesPerUser.html template</h1>
-<p>
-{{=m}}
-</p>
+{{extend 'layout.html'}}
+<div class="container">
+    <h1 class="text-center">Rank by Likes Received</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Likes</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{for k,v in sorted(m.items(), key=lambda x: x[1], reverse=True): }}
+            <tr>
+                <td>{{=k}}</td>
+                <td>{{=v}}</td>
+            </tr>
+            {{pass}}
+        </tbody>
+    </table>
+</div>

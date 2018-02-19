@@ -28,7 +28,7 @@
 {{end}}
 
 <div class="container text-center">
-	<form class="login" method="get" action="/BabbleBot/core/guestCheck.html">
+	<form class="login" method="get" action="{{=URL('guestCheck')}}">
 		<h1>Guest Sign In</h1>
 		<input type="text" class="form-input" name="auth" placeholder="Personal Auth Token">
 		<input type="text" class="form-input" name="botID" placeholder="Bot ID (optional)" style="margin-bottom: 10px;">
