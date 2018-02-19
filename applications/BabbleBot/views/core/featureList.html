@@ -11,12 +11,12 @@
         Group Markov Generator
     </a>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('features','likesRecievedPerUser')}}">
-        Ranking of Users by Likes Recieved
+        Rank Users by Likes Recieved
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','mostGivingUsers')}}">
+     <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/mostGivingUsers">
         Ranking of Users by Likes Given
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numComments')}}">
+    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/numComments">
         Ranking of Users by Number of Comments
     </a>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('features','pastName')}}">
@@ -24,6 +24,18 @@
     </a>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numKicked')}}">
         Amount of Times Users have been Kicked
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','groupMedals')}}">
+        Rank Users by Medals
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','pastName')}}">
+        Rank Users by Curse Words WIP
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numKicked')}}">
+        Rank Users by Sexism WIP
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numKicked')}}">
+        List Users Best Friends WIP
     </a>
     <br>
     <h2 class="text-center">Users</h2>
@@ -33,4 +45,15 @@
             {{=x[1]}}
         </a>
     {{pass}}
+    <br>
+    <h2 class="text-center">Group Tools</h2>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('','groupMarkov')}}">
+        Pull for New Comments WIP
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('','groupMarkov')}}">
+        Reset all Comments WIP
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('','groupMarkov')}}">
+        Smart Reset of Comments WIP
+    </a>
 </div>

@@ -28,6 +28,18 @@ def checkValidGroupID(auth,groupID):
     else:
         return False
 
+def getListOfUsers(auth,groupID):
+    # gets users of a group [id,nickname]
+    print "ups/"+groupID+"?token=" + auth
+    req = requests.get("https://api.groupme.com/v3/groups/"+groupID+"?token=" + auth)
+    output = req.json()
+    print str(output)
+    names = output['response']['members']
+    users = []
+    for x in names:
+        users.append([x['user_id'],x['nickname']])
+    return users
+
 def fileInfo(auth,groupid):
     #checks if we have file
     f = None
@@ -63,7 +75,7 @@ def getGroupName(auth,id):
 # Gets all the groups a user is in
 def getAllGroups(auth):
     # the omit=memberships will exclude the list of all the group members, which is good for people in large groups.
-    output = requests.get("https://api.groupme.com/v3/groups/?token=" + auth + "&omit=memberships")
+    output = requests.get("https://api.groupme.com/v3/groups?token=" + auth + "&omit=memberships")
     output = output.json()
     groups = output['response']
     return groups
@@ -174,7 +186,9 @@ def checker(groupID):
 
 def getComments(groupID):
     # Returns dictionary of comments
+    # DO NOT USE IN FEATURES!!!
     global commentsDicts
+    ret = ''
     try:
         ret = copy.deepcopy(commentsDicts[groupID])
         del commentsDicts[groupID]
@@ -182,3 +196,16 @@ def getComments(groupID):
     except:
         pass
     return ret
+
+
+def postToGroupMe(botID, message):
+    #Posts to the GroupMe associated with this Bot
+    payload = {'bot_id':botID,'text':message}
+    r = requests.post("https://api.groupme.com/v3/bots/post", data=payload)
+    try:
+        jj = json.loads(r.text)
+        if jj['meta']['code'] == '404':
+            return False
+    except:
+        return True
+    return True

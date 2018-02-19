@@ -1,0 +1,14 @@
+{{extend 'layout.html'}}
+{{if w == True:}}
+<h1>
+    <center>Information was Successfully Posted to the GroupMe</center>
+</h1>
+{{else:}}
+<h1>
+    <center>Information was <u>not</u> Successful in Posting to the GroupMe</center>
+</h1>
+{{pass}}
+
+<a class="btn btn-outline-primary btn-block" href="{{=URL('core','featureList')}}">
+        Return To GroupMe Page
+    </a>
