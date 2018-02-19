@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.TypeError'> cannot concatenate 'str' and 'NoneType' objects"
+p3
+sS'layer'
+p4
+S'/home/wendi/babblebot/applications/BabbleBot/controllers/core.py'
+p5
+sS'code'
+p6
+S'<code object <module> at 0x7f1ad1b80130, file "/home/wendi/babblebot/applications/BabbleBot/controllers/core.py", line 2>'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/home/wendi/babblebot/gluon/restricted.py", line 219, in restricted\n    exec(ccode, environment)\n  File "/home/wendi/babblebot/applications/BabbleBot/controllers/core.py", line 83, in <module>\n  File "/home/wendi/babblebot/gluon/globals.py", line 419, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/wendi/babblebot/applications/BabbleBot/controllers/core.py", line 38, in getComments\n    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, session.myGroupID)\n  File "applications/BabbleBot/modules/groupMe.py", line 40, in fileInfo\n    totalComments = totalCommentsInGroup(auth,groupid)\n  File "applications/BabbleBot/modules/groupMe.py", line 52, in totalCommentsInGroup\n    output = requests.get("https://api.groupme.com/v3/groups/"+id+"?token=" + auth)\nTypeError: cannot concatenate \'str\' and \'NoneType\' objects\n'
+p11
+s.

@@ -44,6 +44,10 @@ def mostGivingUsers():
     userDict = str(groupMeFeatures.mostGivingUsers(session.dictComments, session.translator))
     return dict(m=userDict)
 
+def likesPerComment():
+    ratio = groupMeFeatures.getLikesPerComment(session.dictComments)
+    return dict(r = ratio)
+
 def specificLikes():
     userDict = str(groupMeFeatures.specificLikesGiven(session.dictComments, session.translator))
     return dict(m=userDict)

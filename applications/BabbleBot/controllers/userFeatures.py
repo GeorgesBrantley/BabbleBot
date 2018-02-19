@@ -37,6 +37,11 @@ def userCountComments():
     response = groupMeFeatures.countCommentsPerUser(session.dictComments,personID)
     return dict(r=response, name = session.translator[personID])
 
+def userGetLikesPerComment():
+    personID = request.vars.id
+    response = groupMeFeatures.createMarkChain(session.dictComments,personID)
+    return dict(r=response)
+
 def userSpecificLikes():
     personID = request.vars.id
     userDict = str(groupMeFeatures.specificLikesGiven(session.dictComments, session.translator, translator[personID]))

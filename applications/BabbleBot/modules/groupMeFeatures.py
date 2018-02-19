@@ -205,11 +205,39 @@ def specificLikesGiven(com, translator, user = 'ALL'):
                 # iterate through admirers
                 newVal[translator[kk]]  = v
             namedDict[translator[k]] = newVal
-
     if user == 'ALL':
         return namedDict
     else:
         return namedDict[user]
+
+def getLikesPerComment(comments, user = 'ALL'):
+    # ratio of likes per comment
+    usersDict = {}
+    sumComments = 0
+    sumLikes = 0
+    for k,val in comments.iteritems():
+        try:
+            v = json.loads(val)
+            # find number of likes per user
+            if user == 'ALL':
+                if v['sender_id'] in usersDict:
+                    numComs, sumLikes = usersDict[v['sender_id']]
+                    numComs += 1
+                    sumLikes += len(v["favorited_by"])
+                    usersDict[v['sender_id']] = [numComs, sumLikes]
+                else:
+                    usersDict[v['sender_id']] = [1,len(v["favorited_by"])]
+            else:
+                if v['sender_id'] == user:
+                    sumComments += 1
+                    sumLikes += len(v["favorited_by"])
+        except:
+            pass
+    if user == 'ALL':
+        return usersDict
+    else:
+        ratio = sumLikes/sumComments
+        return ratio
 
 def specificLikesRec(com, translator, user = 'ALL'):
     # WHO HAS LIKED THIS USER?
@@ -288,3 +316,4 @@ def getMedalCount(user, com, translator, userCount):
                 namedDict[translator[k]] = val
 
     return namedDict,[platinum,gold,silver,bronze]
+>>>>>>> 26276391afae77180823916b0d413b583d1ff767
