@@ -6,7 +6,17 @@ def main():
     # Page that displayes user name, and link to all user features
     personID = request.vars.id
     name = session.translator[personID]
-    return dict(p=personID, n = name)
+    # Get number of comments, likes given, likes recieved, likes/comment
+    numComs,likesGiven,likesRec = groupMeFeatures.getBasicUserInfo(session.dictComments,personID)
+    ratio = float(likesRec) / numComs
+    ratio = round(ratio,2)
+    richResponse = []
+    richResponse.append(name + ' Has Posted ' + str(numComs) + ' Coments!')
+    richResponse.append(name + ' Has Recieved ' +str(likesRec)+ ' Likes!')
+    richResponse.append(name + ' Has Given ' + str(likesGiven) + ' Likes!')
+    richResponse.append(name + ' Has a Likes/Comment Ratio of ' +str(ratio) + ' Likes!')
+    print str(richResponse)
+    return dict(p=personID, group = session.groupName, n = name, numComs=numComs, likesGiven=likesGiven, likesRec=likesRec, ratio=ratio, rResponse = richResponse)
 
 def userMarkov():
     personID = request.vars.id
@@ -22,8 +32,12 @@ def userLikesGiven():
     richResponse = session.translator[personID] + " Has Liked " + str(response) + " Other Messages!"
     return dict(r=response, name =session.translator[personID], rich = richResponse)
 
-  def userCountComments():
+def userCountComments():
     personID = request.vars.id
     response = groupMeFeatures.countCommentsPerUser(session.dictComments,personID)
     return dict(r=response, name = session.translator[personID])
 
+def userMedals():
+    personID = request.vars.id
+    userDict = str(groupMeFeatures.getMedalCount(personID, session.dictComments, session.translator))
+    return dict(m=userDict)

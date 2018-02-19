@@ -1,25 +1,52 @@
 {{extend 'layout.html'}}
+<head>
+ <meta charset='utf-8'>
+</head>
 <div class="container">
-    <h1 class="text-center">{{=n}}</h1><br>
+    <h1 class="text-center">Group Member: {{=n}}</h1><br>
 
     <h2 class="text-center">User Statistics</h2>
+    <p><center>Click on a Statistic to post it To {{=group}}</center>
+    </p>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[0]))}}">
+        {{=n}} Has Posted <u>{{=numComs}}</u> Comments in {{=group}}
+    </a>
+    
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[1]))}}">
+        {{=n}} Has Recieved <u>{{=likesRec}}</u> Likes in {{=group}}
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[2]))}}">
+        {{=n}} Has Liked <u>{{=likesGiven}}</u> Comments in {{=group}}
+    </a>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[3]))}}">
+        {{=n}} Has a Like/Comment Ratio of <u>{{=ratio}}</u> in {{=group}}
+    </a>
+    
+    <br><h2 class="text-center">User Tools</h2>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('userMarkov', vars=dict(id=p))}}">
         {{=n}}'s Markov Chain Generator
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('userCountComments', vars=dict(id=p))}}">
-        Amount of Comments {{=n}} Has Posted
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('', vars=dict(id=p))}}">
+        Whose Messages Has {{=n}} Liked Specifically? 
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('userMarkov', vars=dict(id=p))}}">
-        Amount of Likes {{=n}} Has Recieved
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('', vars=dict(id=p))}}">
+        Who Likes {{=n}}'s Messages Specifically?
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('userLikesGiven', vars=dict(id=p))}}">
-        Amount of Likes {{=n}} Has Given
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('userMedals', vars=dict(id=p))}}">
+        {{=n}}'s Medal Count
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('userMarkov', vars=dict(id=p))}}">
-        place holder
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('', vars=dict(id=p))}}">
+        {{=n}}'s Most Common Curse Words WIP
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('userMarkov', vars=dict(id=p))}}">
-        place holder
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('', vars=dict(id=p))}}">
+        {{=n}}'s Best Friends WIP
     </a>
-
+        <a class="btn btn-outline-primary btn-block" href="{{=URL('', vars=dict(id=p))}}">
+        {{=n}}'s Sexism Tracker WIP
+    </a>
+    <br><br>
+    </a>
+        <a class="btn btn-outline-primary btn-block" href="{{=URL('core','featureList')}}">
+        Return to Group Page
+    </a>
 </div>
