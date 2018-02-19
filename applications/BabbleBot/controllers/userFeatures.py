@@ -41,5 +41,5 @@ def userCountComments():
 def userMedals():
     personID = request.vars.id
     numUsers = len(groupMe.getListOfUsers(session.myAuth,session.myGroupID))
-    userDict = str(groupMeFeatures.getMedalCount(personID, session.dictComments, session.translator, numUsers))
+    userDict = groupMeFeatures.getMedalCount(personID, session.dictComments, session.translator, numUsers)
     return dict(m=userDict)

@@ -108,10 +108,10 @@ def countCommentsPerUser(comments, userID = 'ALL'):
         try:
             v = json.loads(val)
             if userID == 'ALL':
-                if v['sender_id'] in user:
-                    user[v['sender_id']] += 1
+                if v['name'] in user:
+                    user[v['name']] += 1
                 else:
-                    user[v['sender_id']] = 1
+                    user[v['name']] = 1
             else:
                 if v['sender_id'] == userID:
                     specificCount += 1
