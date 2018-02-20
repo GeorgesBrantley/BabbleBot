@@ -34,7 +34,7 @@ def getBasicUserInfo(comments,userID):
         try:
             v = json.loads(val)
             # count comments by user
-            if v['user_id'] == userID:
+            if v['sender_id'] == userID:
                 numComments += 1
                 likesRec += int(len(v['favorited_by']))
             else:
@@ -180,8 +180,6 @@ def specificLikesGiven(com, translator, user = 'ALL'):
     for k,val in com.iteritems():
         try:
             v = json.loads(val)
-            #userDict[v['sender_id']] = {}
-            #print v['favorited_by']
             for x in v['favorited_by']:
                 # x is an ID in the favby list
                 try:
@@ -208,36 +206,7 @@ def specificLikesGiven(com, translator, user = 'ALL'):
     if user == 'ALL':
         return namedDict
     else:
-        return namedDict[user]
-
-def getLikesPerComment(comments, user = 'ALL'):
-    # ratio of likes per comment
-    usersDict = {}
-    sumComments = 0
-    sumLikes = 0
-    for k,val in comments.iteritems():
-        try:
-            v = json.loads(val)
-            # find number of likes per user
-            if user == 'ALL':
-                if v['sender_id'] in usersDict:
-                    numComs, sumLikes = usersDict[v['sender_id']]
-                    numComs += 1
-                    sumLikes += len(v["favorited_by"])
-                    usersDict[v['sender_id']] = [numComs, sumLikes]
-                else:
-                    usersDict[v['sender_id']] = [1,len(v["favorited_by"])]
-            else:
-                if v['sender_id'] == user:
-                    sumComments += 1
-                    sumLikes += len(v["favorited_by"])
-        except:
-            pass
-    if user == 'ALL':
-        return usersDict
-    else:
-        ratio = sumLikes/sumComments
-        return ratio
+        return namedDict[translator[user]]
 
 def specificLikesRec(com, translator, user = 'ALL'):
     # WHO HAS LIKED THIS USER?
@@ -258,23 +227,55 @@ def specificLikesRec(com, translator, user = 'ALL'):
                     userDict[v['sender_id']][x] = 1
         except:
             pass
-    #if user == 'ALL':
-    #   return namedDict
-    #else:
-    #   return specificUser
-    print userDict
+
+
+    namedDict = {}
     for k, val in userDict.iteritems():
         # iterate through users
         if k in translator:
             newVal = {}
             for kk,v in val.iteritems():
                 # iterate through admirers
-                newVal[translator[kk]]  = v
-                namedDict[translator[k]] = newVal
+                if kk in translator:
+                    newVal[translator[kk]]  = v
+            namedDict[translator[k]] = newVal
     if user == 'ALL':
         return namedDict
     else:
-        return namedDict[user]
+        return namedDict[translator[user]]
+
+def getLikesPerComment(comments,translator, user = 'ALL'):
+    # ratio of likes per comment
+    usersDict = {}
+    sumComments = 0
+    sumLikes = 0
+    for k,val in comments.iteritems():
+        try:
+            v = json.loads(val)
+            # find number of likes per user
+            if user == 'ALL':
+                if v['sender_id'] in usersDict:
+                    numComs, sumLikes,ratio = usersDict[v['sender_id']]
+                    numComs += 1
+                    sumLikes += len(v["favorited_by"])
+                    ratio = sumLikes*1.0/numComs
+                    usersDict[v['sender_id']] = [numComs, sumLikes, round(ratio,2)]
+                else:
+                    usersDict[v['sender_id']] = [1,len(v["favorited_by"]),len(v["favorited_by"])]
+            else:
+                if v['sender_id'] == user:
+                    sumComments += 1
+                    sumLikes += len(v["favorited_by"])
+        except:
+            pass
+    if user != 'ALL':
+        ratio = sumLikes/sumComments
+        return ratio
+    else:
+        namedDict = {}
+        for k,val in usersDict.iteritems():
+            namedDict[translator[k]] = val[2]
+        return namedDict
 
 def getMedalCount(user, com, translator, userCount):
     #Gets medal counts for each user
@@ -316,4 +317,3 @@ def getMedalCount(user, com, translator, userCount):
                 namedDict[translator[k]] = val
 
     return namedDict,[platinum,gold,silver,bronze]
->>>>>>> 26276391afae77180823916b0d413b583d1ff767

@@ -1,3 +1,33 @@
 {{extend 'layout.html'}}
-<h1>This is the features/specificLikesRec.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+<div class="container">
+    <h1 class="text-center">Group Member's Secret Admirers</h1>
+    <h3 class="text-center">Who likes a specific Member</h3>
+    
+    {{for name, smallDict in m.iteritems():}}<br>
+    <h4 ><center>{{=name}}</center>
+        
+    </h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>        
+                <th>Secret Admirer</th>
+                <th>Number Of Comments They Liked</th>
+            </tr>
+        </thead>
+        {{x = 0}}
+        {{for crush,likes in sorted(smallDict.items(), key=lambda x: x[1], reverse=True):}}
+            {{x+=1}}
+            {{if x > 3:}}
+            {{x += 1}}
+            {{else:}}
+        <tbody>
+            <tr>
+                <td>{{=crush}}</td>
+                <td>{{=likes}}</td>
+            </tr>
+        </tbody>
+        {{pass}}
+        {{pass}}
+    </table>
+    {{pass}}
+</div>

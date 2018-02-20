@@ -41,19 +41,20 @@ def numKicked():
     return dict(numKicked=ans)
 
 def mostGivingUsers():
-    userDict = str(groupMeFeatures.mostGivingUsers(session.dictComments, session.translator))
+    userDict = groupMeFeatures.mostGivingUsers(session.dictComments, session.translator)
     return dict(m=userDict)
 
 def likesPerComment():
-    ratio = groupMeFeatures.getLikesPerComment(session.dictComments)
-    return dict(r = ratio)
+    ratio = groupMeFeatures.getLikesPerComment(session.dictComments,session.translator)
+    return dict(m = ratio)
 
 def specificLikes():
-    userDict = str(groupMeFeatures.specificLikesGiven(session.dictComments, session.translator))
+    # a user's secret crush
+    userDict = groupMeFeatures.specificLikesGiven(session.dictComments, session.translator)
     return dict(m=userDict)
 
 def specificLikesRec():
-    userDict = groupMeFeatures.mostGivingUsers(session.dictComments, session.translator)
+    userDict = groupMeFeatures.specificLikesRec(session.dictComments, session.translator)
     return dict(m=userDict)
 
 def groupMedals():
