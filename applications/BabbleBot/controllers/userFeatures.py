@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import groupMeFeatures
+import groupMe
 # All user features!
 
 def main():
@@ -7,7 +8,7 @@ def main():
     personID = request.vars.id
     name = session.translator[personID]
     # Get number of comments, likes given, likes recieved, likes/comment
-    numComs,likesGiven,likesRec = groupMeFeatures.getBasicUserInfo(session.dictComments,personID)
+    numComs,likesRec, likesGiven = groupMeFeatures.getBasicUserInfo(session.dictComments,personID)
     ratio = float(likesRec) / numComs
     ratio = round(ratio,2)
     richResponse = []
@@ -15,7 +16,6 @@ def main():
     richResponse.append(name + ' Has Recieved ' +str(likesRec)+ ' Likes!')
     richResponse.append(name + ' Has Given ' + str(likesGiven) + ' Likes!')
     richResponse.append(name + ' Has a Likes/Comment Ratio of ' +str(ratio) + ' Likes!')
-    print str(richResponse)
     return dict(p=personID, group = session.groupName, n = name, numComs=numComs, likesGiven=likesGiven, likesRec=likesRec, ratio=ratio, rResponse = richResponse)
 
 def userMarkov():
@@ -39,21 +39,22 @@ def userCountComments():
 
 def userGetLikesPerComment():
     personID = request.vars.id
-    response = groupMeFeatures.createMarkChain(session.dictComments,personID)
+    response = groupMeFeatures.createMarkChain(session.dictComments,session.translator,personID)
     return dict(r=response)
 
 def userSpecificLikes():
+    # Likes Specifically Given
     personID = request.vars.id
-    userDict = str(groupMeFeatures.specificLikesGiven(session.dictComments, session.translator, translator[personID]))
-    return dict(m=userDict)
+    userDict = groupMeFeatures.specificLikesGiven(session.dictComments, session.translator, personID)
+    return dict(m=userDict, n = session.translator[personID])
 
 def userSpecificLikesRec():
     personID = request.vars.id
-    userDict = str(groupMeFeatures.specificLikesRec(session.dictComments, session.translator, translator[personID]))
-    return dict(m=userDict)
+    userDict = groupMeFeatures.specificLikesRec(session.dictComments, session.translator, personID )
+    return dict(m=userDict, n = session.translator[personID])
 
 def userMedals():
     personID = request.vars.id
     numUsers = len(groupMe.getListOfUsers(session.myAuth,session.myGroupID))
-    userDict = str(groupMeFeatures.getMedalCount(personID, session.dictComments, session.translator),numUsers)
+    userDict = groupMeFeatures.getMedalCount(personID, session.dictComments, session.translator,numUsers)
     return dict(m=userDict)
