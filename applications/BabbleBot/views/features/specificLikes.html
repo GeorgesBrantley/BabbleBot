@@ -10,8 +10,8 @@
     <table class="table table-striped">
         <thead>
             <tr>        
-                <th>Secret Crush</th>
-                <th>Number Of Comments Liked by Member</th>
+                <th>Secret Crushes of {{=name}}</th>
+                <th>Number Of Comments Liked by {{=name}}</th>
             </tr>
         </thead>
         {{x = 0}}
@@ -30,4 +30,7 @@
         {{pass}}
     </table>
     {{pass}}
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        Post Rankings To GroupMe
+    </a>
 </div>

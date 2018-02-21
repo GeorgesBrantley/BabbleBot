@@ -1,6 +1,6 @@
 {{extend 'layout.html'}}
 <div class="container">
-   <h1 class="text-center">Rank by Likes Given</h1>
+   <h1 class="text-center">Rankings by Likes Given</h1>
 
     <table class="table table-striped">
         <thead>
@@ -19,4 +19,7 @@
             {{pass}}
         </tbody>
     </table>
+        <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        Post Rankings To GroupMe
+    </a>
 </div>

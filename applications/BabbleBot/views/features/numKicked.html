@@ -1,3 +1,51 @@
 {{extend 'layout.html'}}
-<h1>This is the features/numKicked.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+<div class="container">
+<h1><center>Bullies and their Victims!</center></h1><br>
+<h3>
+    <center>Amount of Times A User Has Kicked Another User</center>   
+</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount of Times They Have Kicked Someone</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{for k,v in sorted(kickers.items(), key=lambda x: x[1], reverse=True): }}
+            <tr>
+                <td>{{=k}}</td>
+                <td>{{=v}}</td>
+            </tr>
+            {{pass}}
+        </tbody>
+    </table>
+ <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=richKicker))}}">
+        Post Results To GroupMe
+    </a>
+<br>
+<h3>
+    <center>Amount of Times A User Has Been Kicked</center>
+</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount of Times They Have Been Kicked</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{for k,v in sorted(kicked.items(), key=lambda x: x[1], reverse=True): }}
+            <tr>
+                <td>{{=k}}</td>
+                <td>{{=v}}</td>
+            </tr>
+            {{pass}}
+        </tbody>
+    </table>
+ <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=richVictim))}}">
+        Post Results To GroupMe
+    </a>
+</div>

@@ -89,10 +89,11 @@ def getLikesPerUser(com, translator):
     for k,val in com.iteritems():
         try:
             v = json.loads(val)
-            if v['sender_id'] in userDict:
-                userDict[v['sender_id']] += int(len(v['favorited_by']))
-            else:
-                userDict[v['sender_id']] = len(v['favorited_by'])
+            if v['sender_type'] == 'user':
+                if v['sender_id'] in userDict:
+                    userDict[v['sender_id']] += int(len(v['favorited_by']))
+                else:
+                    userDict[v['sender_id']] = len(v['favorited_by'])
         except:
             pass
     namedDict = {}
@@ -136,16 +137,31 @@ def getPastName(comments):
     return pastNames
 
 def getNumKicked(comments):
-    numKicked = []
+    kickers = {}
+    kicked = {}
     for k,val in comments.iteritems():
         try:
             v = json.loads(val)
             if v['sender_id'] == 'system':
-                if 'removed' in v['text'].encode("utf-8"):
-                     numKicked.append(v['text'].encode("utf-8"))
+                kickStr = v['text'].encode("utf-8")
+                if 'removed' in kickStr and 'changed the topic to:' not in kickStr:
+                    kick = kickStr[:kickStr.find('removed') - 1]
+                    if kick in kickers:
+                        kickers[kick] += 1
+                    else:
+                        kickers[kick] = 1
+
+                    victim = kickStr[kickStr.find('removed')+8:kickStr.find('from the group')-1]
+                    if victim in kicked:
+                        kicked[victim] += 1
+                    else:
+                        kicked[victim] = 1
+
         except:
             pass
-    return numKicked
+    # kickers has a dicitonary of people who kick others
+    # kicked has dicitonary of people who have been kicked
+    return kickers,kicked
 
 def mostGivingUsers(com, translator, personID = 'ALL'):
     # most like giving user!
@@ -154,15 +170,16 @@ def mostGivingUsers(com, translator, personID = 'ALL'):
     for k,val in com.iteritems():
         try:
             v = json.loads(val)
-            for x in v['favorited_by']:
-                # x is an ID in the favby list
-                if personID == 'ALL':
-                    if x in userDict:
-                        userDict[x] += 1
-                    else:
-                        userDict[x] = 1
-                elif x == personID:
-                    specificUser += 1
+            if v['sender_type'] == 'user':
+                for x in v['favorited_by']:
+                    # x is an ID in the favby list
+                    if personID == 'ALL':
+                        if x in userDict:
+                            userDict[x] += 1
+                        else:
+                            userDict[x] = 1
+                    elif x == personID:
+                        specificUser += 1
         except:
             pass
     if personID == 'ALL':
@@ -180,17 +197,18 @@ def specificLikesGiven(com, translator, user = 'ALL'):
     for k,val in com.iteritems():
         try:
             v = json.loads(val)
-            for x in v['favorited_by']:
-                # x is an ID in the favby list
-                try:
-                    userDict[x]
-                except:
-                    userDict[x] = {}
+            if v['sender_type'] == 'user':
+                for x in v['favorited_by']:
+                    # x is an ID in the favby list
+                    try:
+                        userDict[x]
+                    except:
+                        userDict[x] = {}
 
-                if v['sender_id'] in userDict[x]:
-                    userDict[x][v['sender_id']] += 1
-                else:
-                    userDict[x][v['sender_id']] = 1
+                    if v['sender_id'] in userDict[x]:
+                        userDict[x][v['sender_id']] += 1
+                    else:
+                        userDict[x][v['sender_id']] = 1
         except:
             pass
 
@@ -214,17 +232,18 @@ def specificLikesRec(com, translator, user = 'ALL'):
     for k,val in com.iteritems():
         try:
             v = json.loads(val)
-            #userDict[v['sender_id']] = {}
-            for x in v['favorited_by']:
-                # x is an ID in the favby list
-                try:
-                    userDict[v['sender_id']]
-                except:
-                    userDict[v['sender_id']] = {}
-                if x in userDict[v['sender_id']]:
-                    userDict[v['sender_id']][x] += 1
-                else:
-                    userDict[v['sender_id']][x] = 1
+            if v['sender_type'] == 'user':
+                #userDict[v['sender_id']] = {}
+                for x in v['favorited_by']:
+                    # x is an ID in the favby list
+                    try:
+                        userDict[v['sender_id']]
+                    except:
+                        userDict[v['sender_id']] = {}
+                    if x in userDict[v['sender_id']]:
+                        userDict[v['sender_id']][x] += 1
+                    else:
+                        userDict[v['sender_id']][x] = 1
         except:
             pass
 
@@ -294,17 +313,18 @@ def getMedalCount(user, com, translator, userCount):
     for k,val in com.iteritems():
         try:
             v = json.loads(val)
-            if v['sender_id'] in userDict:
-                numFavorites = int(len(v['favorited_by']))
-                medalDict = userDict[v['sender_id']]
-                if numFavorites >= platinum:
-                    userDict[v['sender_id']]['Platinum'] += 1
-                elif numFavorites >= gold:
-                    userDict[v['sender_id']]['Gold'] += 1
-                elif numFavorites >= silver:
-                    userDict[v['sender_id']]['Silver'] += 1
-                elif numFavorites >= bronze:
-                    userDict[v['sender_id']]['Bronze'] += 1
+            if v['sender_type'] == 'user':
+                if v['sender_id'] in userDict:
+                    numFavorites = int(len(v['favorited_by']))
+                    medalDict = userDict[v['sender_id']]
+                    if numFavorites >= platinum:
+                        userDict[v['sender_id']]['Platinum'] += 1
+                    elif numFavorites >= gold:
+                        userDict[v['sender_id']]['Gold'] += 1
+                    elif numFavorites >= silver:
+                        userDict[v['sender_id']]['Silver'] += 1
+                    elif numFavorites >= bronze:
+                        userDict[v['sender_id']]['Bronze'] += 1
         except:
             pass
 
