@@ -103,24 +103,30 @@ def getLikesPerUser(com, translator):
 
     return namedDict
 
-def countCommentsPerUser(comments, userID = 'ALL'):
+def countCommentsPerUser(comments, translator, userID = 'ALL'):
     user = {}
     specificCount = 0
     for k,val in comments.iteritems():
         try:
             v = json.loads(val)
             if userID == 'ALL':
-                if v['name'] in user:
-                    user[v['name']] += 1
+                if v['sender_id'] in user:
+                    user[v['sender_id']] += 1
                 else:
-                    user[v['name']] = 1
+                    user[v['sender_id']] = 1
             else:
                 if v['sender_id'] == userID:
                     specificCount += 1
         except:
             pass
+
+    nameDict = {}
+    for k, val in user.iteritems():
+        if k in translator:
+            nameDict[translator[k]] = val
+
     if userID == 'ALL':
-        return user
+        return nameDict
     else:
         return specificCount
 

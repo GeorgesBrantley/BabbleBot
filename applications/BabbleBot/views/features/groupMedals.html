@@ -1,3 +1,32 @@
 {{extend 'layout.html'}}
-<h1>This is the features/groupMedals.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+<div class="container">
+     <h1 class="text-center">{{=gn}} Medal Rankings!</h1>
+    {{z = 0}}
+    {{for y in medals:}}
+    <br><br>
+    <h3 class="text-center">{{=y}} Medals In {{=gn}}</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{=y}} Medals</th>
+                <th>Number Earned</th>
+            </tr>
+        </thead>
+        {{for k,vv in sorted(m.items(), key=lambda x: x[1][y], reverse=True):}}
+        <tbody>
+            <!-- Table will be sorted by medal-->
+            {{if vv[y] != 0:}}
+            <tr style="background-color: {{=colors[z]}};">
+                <td>{{=k}}</td>
+                <td>{{=vv[y]}}</td>
+            </tr>
+            {{pass}}
+        </tbody>
+        {{pass}}
+    </table>
+     <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=riches[z]))}}">
+        Post {{=y}} Medals To GroupMe
+    </a>
+    {{z += 1}}
+    {{pass}}
+</div>
