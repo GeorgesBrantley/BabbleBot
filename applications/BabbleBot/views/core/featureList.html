@@ -1,46 +1,63 @@
 {{extend 'layout.html'}}
 <div class="container">
-    <h1 class="text-center">{{=name}}</h1>
+    <h1 class="text-center"><b>{{=name}}</b></h1>
 
-    <h3>Total Comments:{{=nComs}} </h3>   <br>
-     <h3>Total Likes: {{=nLikes}} </h3> 
-    <a class="btn btn-info" href="{{=URL('core','downloadComments')}}">
-        View all comments
+    <h3 style="text-align:left;">
+    Total Comments: {{=nComs}}
+    <span style="float:right;">
+    Total Likes: {{=nLikes}} </span>
+    </h3>
+    <a href="{{=URL('features','getAllComments')}}">
+    <button class="btn btn-info";style="text-align:left;" >View All Comments</button>
     </a>
-
+    <span style="float:right;"> 
+    <a href="{{=URL('core','postToGroupMe',vars=dict(message=infoStr))}}">
+    <button class="btn btn-info";style="text-align:left;" >Send Comments and Likes Amounts to GroupMe</button>
+    </a></span>
+    <br><br>
     <h2 class="text-center">Global Statistics and Rankings</h2>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMarkov')}}">
         Group Markov Generator
     </a>
+
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesRecievedPerUser')}}">
-        Rank Users by Likes Recieved
+        Ranking of Members by Likes Recieved
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostGivingUsers')}}">
-        Rank Users by Likes Given
+     <a class="btn btn-outline-info btn-block" href="/BabbleBot/features/mostGivingUsers">
+        Ranking of Members by Likes Given
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numComments')}}">
-        Rank Users by Number of Comments
+    <a class="btn btn-outline-info btn-block" href="/BabbleBot/features/numComments">
+        Ranking of Members by Number of Comments
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
-        Past Names of Users in {{=name}}
-    </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
-        Amount of Times Users have been Kicked
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesPerComment')}}">
+        Ranking of Members by Likes Per Comment
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMedals')}}">
-        Rank Users by Medals
+        Ranking of Members by Medals
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
+        Rankings Of Bullies and Victims
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','specificLikesRec')}}">
+        Members' Secret Admirers
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','specificLikes')}}">
+        Members' Secret Crushes
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
-        Rank Users by Curse Words WIP
+        Past Names of Members in {{=name}}
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
+        Curse Words WIP
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
-        Rank Users by Sexism WIP
+        Rank Members by Sexism WIP
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
-        List Users Best Friends WIP
+        List Members Best Friends WIP
     </a>
     <br>
-    <h2 class="text-center">Users</h2>
+    <h2 class="text-center">{{=name}} Members</h2>
     <!-- The list of users goes here. -->
     {{for x in users:}}
         <a class="btn btn-outline-info btn-block" href="{{=URL('userFeatures','main',vars=dict(id=x[0]) )}}">

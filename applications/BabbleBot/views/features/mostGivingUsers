@@ -1,0 +1,3 @@
+{extend 'layout.html'}}
+<h1>This is the features/mostGivingUsers.html template</h1>
+{{=BEAUTIFY(response._vars)}}

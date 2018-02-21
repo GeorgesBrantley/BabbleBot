@@ -72,7 +72,8 @@ def featureList():
     # basic data for display
     numLikes,numComs = groupMeFeatures.getBasicGroupInfo(session.dictComments)
     # number of comments total
-    return dict(name = session.groupName,users=users,nLikes = numLikes, nComs = numComs)
+    info = 'Total Number of Comments: ' + str(numComs) + '\nTotal Number of Likes: ' + str(numLikes) 
+    return dict(name = session.groupName,users=users,nLikes = numLikes, nComs = numComs, infoStr=info)
 
 def postToGroupMe():
     message = request.vars.message

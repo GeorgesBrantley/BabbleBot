@@ -26,11 +26,11 @@
     <a class="btn btn-outline-primary btn-block" href="{{=URL('userMarkov', vars=dict(id=p))}}">
         {{=n}}'s Markov Chain Generator
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('', vars=dict(id=p))}}">
-        Whose Messages Has {{=n}} Liked Specifically? 
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('userSpecificLikes', vars=dict(id=p))}}">
+        Who are {{=n}}'s Secret Crushes?
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('', vars=dict(id=p))}}">
-        Who Likes {{=n}}'s Messages Specifically?
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('userSpecificLikesRec', vars=dict(id=p))}}">
+        Who are {{=n}}'s Secret Admirers?
     </a>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('userMedals', vars=dict(id=p))}}">
         {{=n}}'s Medal Count

@@ -1,0 +1,36 @@
+{{extend 'layout.html'}}
+<div class="container">
+    <h1 class="text-center">Group Member's Secret Crushes</h1>
+    <h3 class="text-center">Who does a Member Specifically Like?</h3>
+    
+    {{for name, smallDict in m.iteritems():}}<br>
+    <h4 ><center>{{=name}}</center>
+        
+    </h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Secret Crushes of {{=name}}</th>
+                <th>Number Of Comments Liked by {{=name}}</th>
+            </tr>
+        </thead>
+        {{x = 0}}
+        {{for crush,likes in sorted(smallDict[0].items(), key=lambda x: x[1], reverse=True):}}
+            {{x+=1}}
+            {{if x > 3:}}
+            {{x += 1}}
+            {{else:}}
+        <tbody>
+            <tr>
+                <td>{{=crush}}</td>
+                <td>{{=likes}}</td>
+            </tr>
+        </tbody>
+        {{pass}}
+        {{pass}}
+    </table>
+    {{pass}}
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        Post Rankings To GroupMe
+    </a>
+</div>

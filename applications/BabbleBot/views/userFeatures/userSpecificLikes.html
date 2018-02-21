@@ -1,0 +1,26 @@
+{{extend 'layout.html'}}
+<div class="container">
+    <h1 class="text-center">{{=n}}'s Secret Crushes</h1>
+    <h3 class="text-center">Whose Comments does {{=n}} Like?</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>        
+                <th>{{=n}}'s Secret Crushes</th>
+                <th>Number of Comments {{=n}} has Liked</th>
+            </tr>
+        </thead>
+
+    {{for name, value in sorted(m.items(), key=lambda x: x[1], reverse=True):}}
+        <tbody>
+            <tr>
+                <td>{{=name}}</td>
+                <td>{{=value}}</td>
+            </tr>
+        </tbody>
+         {{pass}}
+    </table>
+   <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        Post Rankings To GroupMe
+    </a>
+</div>

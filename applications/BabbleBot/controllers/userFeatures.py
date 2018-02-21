@@ -8,7 +8,7 @@ def main():
     personID = request.vars.id
     name = session.translator[personID]
     # Get number of comments, likes given, likes recieved, likes/comment
-    numComs,likesGiven,likesRec = groupMeFeatures.getBasicUserInfo(session.dictComments,personID)
+    numComs,likesRec, likesGiven = groupMeFeatures.getBasicUserInfo(session.dictComments,personID)
     ratio = float(likesRec) / numComs
     ratio = round(ratio,2)
     richResponse = []
@@ -16,7 +16,6 @@ def main():
     richResponse.append(name + ' Has Recieved ' +str(likesRec)+ ' Likes!')
     richResponse.append(name + ' Has Given ' + str(likesGiven) + ' Likes!')
     richResponse.append(name + ' Has a Likes/Comment Ratio of ' +str(ratio) + ' Likes!')
-    print str(richResponse)
     return dict(p=personID, group = session.groupName, n = name, numComs=numComs, likesGiven=likesGiven, likesRec=likesRec, ratio=ratio, rResponse = richResponse)
 
 def userMarkov():
@@ -37,6 +36,33 @@ def userCountComments():
     personID = request.vars.id
     response = groupMeFeatures.countCommentsPerUser(session.dictComments,personID)
     return dict(r=response, name = session.translator[personID])
+
+def userGetLikesPerComment():
+    personID = request.vars.id
+    response = groupMeFeatures.createMarkChain(session.dictComments,session.translator,personID)
+    return dict(r=response)
+
+def userSpecificLikes():
+    # Likes Specifically Given, CRUSHES
+    personID = request.vars.id
+    name = session.translator[personID]
+    userDict = groupMeFeatures.specificLikesGiven(session.dictComments, session.translator, personID)
+
+    richResponse = name + "'s Secret Crushes (Who does " + name + " like?): \n\n"
+    for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
+        richResponse += "\t"+k + ': ' + str(v) + ' Comments Liked\n'
+    return dict(m=userDict, n = name,rich = richResponse)
+
+def userSpecificLikesRec():
+    # Likes Recieved, ADMIRERS
+    personID = request.vars.id
+    name = session.translator[personID]
+    userDict = groupMeFeatures.specificLikesRec(session.dictComments, session.translator, personID )
+
+    richResponse = name + "'s Secret Admirers (Who likes " + name + "?): \n\n"
+    for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
+        richResponse += "\t"+k + ': ' + str(v) + ' Comments Liked\n'
+    return dict(m=userDict, n = name,rich = richResponse)
 
 def userMedals():
     personID = request.vars.id
