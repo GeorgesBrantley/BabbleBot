@@ -34,7 +34,11 @@ def numComments():
     #id = inout
     #inputId = 19191585
     ans = groupMeFeatures.countCommentsPerUser(coms, session.translator)
-    return dict(ans=ans)
+    richResponse = 'Number Of Comments Per Member:\n'
+    for k,v in sorted(ans.items(), key=lambda x: x[1], reverse=True):
+        richResponse += k + ' has ' + str(v) + ' Comments!\n'
+
+    return dict(ans=ans, gn = session.groupName, rich = richResponse)
 
 def pastName():
     coms = session.dictComments
@@ -102,4 +106,24 @@ def specificLikesRec():
 def groupMedals():
     numUsers = len(groupMe.getListOfUsers(session.myAuth,session.myGroupID))
     userDict,medalRange = groupMeFeatures.getMedalCount("", session.dictComments, session.translator,numUsers)
-    return dict(r=medalRange,m=userDict)
+    # Create Responses
+    richPlatResponse = 'Platinum Medals (100% Likes):\n'
+    richGoldResponse = 'Gold Medals (75% Likes):\n'
+    richSilvResponse = 'Silver Medals (50% Likes):\n'
+    richBronResponse = 'Bronze Medals (25% Likes):\n'
+    
+    medals = ['Platinum','Gold','Silver','Bronze']
+    richResponses = [richPlatResponse,richGoldResponse,richSilvResponse,richBronResponse]
+    right = 0
+    for mm in medals:
+        for k,vv in sorted(userDict.items(), key=lambda x: x[1][mm], reverse=True):
+            if vv[mm] != 0:
+                richResponses[right] += k + ' Has Earned ' + str(vv[mm]) + ' ' + mm
+                if vv[mm] > 1:
+                    richResponses[right] += ' Medals!\n'
+                else:
+                    richResponses[right] += 'Medal!\n'
+        right += 1
+    
+    colors = ['#e5e4e2','#DAA520','#C0C0C0','#cd7f32']
+    return dict(r=medalRange,m=userDict,medals=medals, gn = session.groupName, riches = richResponses, colors=colors)

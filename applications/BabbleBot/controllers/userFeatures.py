@@ -66,6 +66,13 @@ def userSpecificLikesRec():
 
 def userMedals():
     personID = request.vars.id
+    name = session.translator[personID]
     numUsers = len(groupMe.getListOfUsers(session.myAuth,session.myGroupID))
-    userDict = groupMeFeatures.getMedalCount(personID, session.dictComments, session.translator, numUsers)
-    return dict(m=userDict)
+    userDict,medals = groupMeFeatures.getMedalCount(personID, session.dictComments, session.translator, numUsers)
+    userDict = userDict[name]
+    richResponse = name + "'s Earned Medals:\n"
+    richResponse+= 'Platnium (' + str(numUsers) + ' likes): ' + str(userDict['Platinum'])
+    richResponse+= '\nGold ('   + str(int(numUsers*.75)) + ' likes): ' + str(userDict['Gold'])
+    richResponse+= '\nSilver (' + str(int(numUsers*.50)) + ' likes): ' + str(userDict['Silver'])
+    richResponse+= '\nBronze (' + str(int(numUsers*.25)) + ' likes): ' + str(userDict['Bronze'])
+    return dict(m=userDict, r=medals, n=name, rich = richResponse)

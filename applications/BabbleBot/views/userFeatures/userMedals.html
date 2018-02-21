@@ -1,33 +1,36 @@
 {{extend 'layout.html'}}
 <div class="container">
+     <h1 class="text-center">{{=n}}'s Medal Count</h1>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Medal</th>
-                <th>#</th>
+                <th>Medals</th>
+                <th>Number Earned</th>
             </tr>
         </thead>
 
         <tbody>
             <!-- Table will be sorted by medal-->
-            {{for k,v in m[0].items(): }}
             <tr style="background-color: #e5e4e2;">
-                <td>Platinum</td>
-                <td>{{=v['Platinum']}}</td>
+                <td>Platinum (100% Likes)</td>
+                <td>{{=m['Platinum']}}</td>
             </tr>
             <tr  style="background-color: #DAA520;">
-                <td>Gold</td>
-                <td>{{=v['Gold']}}</td>
+                <td>Gold (75% Likes)</td>
+                <td>{{=m['Gold']}}</td>
             </tr>
             <tr style="background-color: #C0C0C0;">
-                <td>Silver</td>
-                <td>{{=v['Silver']}}</td>
+                <td>Silver (50% Likes)</td>
+                <td>{{=m['Silver']}}</td>
             </tr>
             <tr  style="background-color: #cd7f32;">
-                <td>Bronze</td>
-                <td>{{=v['Bronze']}}</td>
+                <td>Bronze (25% Likes)</td>
+                <td>{{=m['Bronze']}}</td>
             </tr>
             {{pass}}
         </tbody>
     </table>
+     <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        Post Medals To GroupMe
+    </a>
 </div>
