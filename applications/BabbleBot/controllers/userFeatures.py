@@ -34,7 +34,7 @@ def userLikesGiven():
 
 def userCountComments():
     personID = request.vars.id
-    response = groupMeFeatures.countCommentsPerUser(session.dictComments,personID)
+    response = groupMeFeatures.countCommentsPerUser(session.dictComments,session.translator, personID)
     return dict(r=response, name = session.translator[personID])
 
 def userGetLikesPerComment():

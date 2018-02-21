@@ -33,7 +33,7 @@ def numComments():
     coms = session.dictComments
     #id = inout
     #inputId = 19191585
-    ans = groupMeFeatures.countCommentsPerUser(coms)
+    ans = groupMeFeatures.countCommentsPerUser(coms, session.translator)
     return dict(ans=ans)
 
 def pastName():
