@@ -43,15 +43,26 @@ def userGetLikesPerComment():
     return dict(r=response)
 
 def userSpecificLikes():
-    # Likes Specifically Given
+    # Likes Specifically Given, CRUSHES
     personID = request.vars.id
+    name = session.translator[personID]
     userDict = groupMeFeatures.specificLikesGiven(session.dictComments, session.translator, personID)
-    return dict(m=userDict, n = session.translator[personID])
+
+    richResponse = name + "'s Secret Crushes (Who does " + name + " like?): \n\n"
+    for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
+        richResponse += "\t"+k + ': ' + str(v) + ' Comments Liked\n'
+    return dict(m=userDict, n = name,rich = richResponse)
 
 def userSpecificLikesRec():
+    # Likes Recieved, ADMIRERS
     personID = request.vars.id
+    name = session.translator[personID]
     userDict = groupMeFeatures.specificLikesRec(session.dictComments, session.translator, personID )
-    return dict(m=userDict, n = session.translator[personID])
+
+    richResponse = name + "'s Secret Admirers (Who likes " + name + "?): \n\n"
+    for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
+        richResponse += "\t"+k + ': ' + str(v) + ' Comments Liked\n'
+    return dict(m=userDict, n = name,rich = richResponse)
 
 def userMedals():
     personID = request.vars.id

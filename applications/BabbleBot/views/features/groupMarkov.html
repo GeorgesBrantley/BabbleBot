@@ -1,3 +1,10 @@
 {{extend 'layout.html'}}
-<h1>This is the features/groupMarkov.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+<h1><center>Click To Post Markov Chain to the GroupMe</center></h1> <br>
+<p><center>These Sentences are Generated based on Previous Comments</center></p> <br>
+{{y = 0}}
+{{for x in marks:}}
+     <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich[y]))}}">
+        {{=x}}
+    </a>
+{{y += 1}}
+{{pass}}

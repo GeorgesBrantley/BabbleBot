@@ -10,12 +10,13 @@
     <table class="table table-striped">
         <thead>
             <tr>        
-                <th>Secret Admirer</th>
-                <th>Number Of Comments They Liked</th>
+                <th>Secret Admirers of {{=name}}</th>
+                <th>Number Of {{=name}}'s Comments They Liked</th>
+                 <th>Percent Of Comments liked</th>
             </tr>
         </thead>
         {{x = 0}}
-        {{for crush,likes in sorted(smallDict.items(), key=lambda x: x[1], reverse=True):}}
+        {{for crush,likes in sorted(smallDict[0].items(), key=lambda x: x[1], reverse=True):}}
             {{x+=1}}
             {{if x > 3:}}
             {{x += 1}}
@@ -24,10 +25,17 @@
             <tr>
                 <td>{{=crush}}</td>
                 <td>{{=likes}}</td>
+                {{number = float(likes)/smallDict[1]}}
+                {{number = str(round(number,2))}}
+                {{number += '0'}}
+                <td>{{=number[number.find('.')+1:number.find('.')+3]}}%</td>
             </tr>
         </tbody>
         {{pass}}
         {{pass}}
     </table>
     {{pass}}
+     <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        Post Rankings To GroupMe
+    </a>
 </div>

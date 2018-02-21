@@ -198,8 +198,17 @@ def getComments(groupID):
 
 def postToGroupMe(botID, message):
     #Posts to the GroupMe associated with this Bot
-    payload = {'bot_id':botID,'text':message}
-    r = requests.post("https://api.groupme.com/v3/bots/post", data=payload)
+    # Need to check if Message is too long... 9999 char limit!
+    packages = []
+    cut = 995
+    while len(message) > cut:
+        packages.append(message[:cut])
+        message = message[cut:]
+    packages.append(message)
+
+    for x in packages:
+        payload = {'bot_id':botID,'text':x}
+        r = requests.post("https://api.groupme.com/v3/bots/post", data=payload)
     try:
         jj = json.loads(r.text)
         if jj['meta']['code'] == '404':

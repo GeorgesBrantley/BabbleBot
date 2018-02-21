@@ -1,11 +1,20 @@
 {{extend 'layout.html'}}
 <div class="container">
-    <h1 class="text-center">{{=name}}</h1>
+    <h1 class="text-center"><b>{{=name}}</b></h1>
 
-    <h3>Total Comments:{{=nComs}} </h3>   <br>
-     <h3>Total Likes: {{=nLikes}} </h3> 
-    <button class="btn btn-outline-primary">View all comments</button>
-
+    <h3 style="text-align:left;">
+    Total Comments: {{=nComs}}
+    <span style="float:right;">
+    Total Likes: {{=nLikes}} </span>
+    </h3>
+    <a href="{{=URL('features','getAllComments')}}">
+    <button class="btn btn-outline-primary";style="text-align:left;" >View All Comments</button>
+    </a>
+    <span style="float:right;"> 
+    <a href="{{=URL('core','postToGroupMe',vars=dict(message=infoStr))}}">
+    <button class="btn btn-outline-primary";style="text-align:left;" >Send Comments and Likes Amounts to GroupMe</button>
+    </a></span>
+    <br><br>
     <h2 class="text-center">Global Statistics and Rankings</h2>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('features','groupMarkov')}}">
         Group Markov Generator
@@ -25,6 +34,9 @@
     <a class="btn btn-outline-primary btn-block" href="{{=URL('features','groupMedals')}}">
         Ranking of Members by Medals
     </a>
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numKicked')}}">
+        Rankings Of Bullies and Victims
+    </a>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('features','specificLikesRec')}}">
         Members' Secret Admirers
     </a>
@@ -33,9 +45,6 @@
     </a>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('features','pastName')}}">
         Past Names of Members in {{=name}}
-    </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numKicked')}}">
-        Amount of Times Members have been Kicked
     </a>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('features','pastName')}}">
         Curse Words WIP
