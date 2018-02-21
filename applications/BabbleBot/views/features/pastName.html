@@ -1,3 +1,26 @@
 {{extend 'layout.html'}}
-<h1>This is the features/pastName.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+<div class="container">
+    <h1 class="text-center">Past Names Of Users</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Past Name</th>
+                <th>New Name</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{y = 0}}
+            {{for x in past: }}
+            <tr>
+                <td>{{=x}}</td>
+                <td>{{=future[y]}}</td>
+            </tr>
+            {{y += 1}}
+            {{pass}}
+        </tbody>
+    </table>
+            <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        Post Name Information To GroupMe
+    </a>
+</div>

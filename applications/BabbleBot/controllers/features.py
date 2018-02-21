@@ -38,8 +38,13 @@ def numComments():
 
 def pastName():
     coms = session.dictComments
-    ans = groupMeFeatures.getPastName(coms)
-    return dict(PastName=ans)
+    oldNames,newNames = groupMeFeatures.getPastName(coms)
+    richRes = "Past Names of Members\n\n"
+    y = 0
+    for x in oldNames:
+        richRes += x + " --> " + newNames[y] + "\n"
+        y += 1
+    return dict(past = oldNames, future = newNames, rich = richRes)
 
 def numKicked():
     coms = session.dictComments
@@ -71,13 +76,13 @@ def specificLikes():
     userDict = groupMeFeatures.specificLikesGiven(session.dictComments, session.translator)
     richResponse = 'Secret Crushes (Who Users Like The Most):\n\n'
     for k,v in userDict.iteritems():
-        richResponse += k + "'s Secret Crushes:\n"
+        richResponse += '\n' + k + "'s Secret Crushes:\n"
         limit = 0
-        for kk,vv in  sorted(v.items(), key=lambda x: x[1], reverse=True):
+        for kk,vv in  sorted(v[0].items(), key=lambda x: x[1], reverse=True):
             limit += 1
             if limit > 3:
                 break
-            richResponse += ' '+ kk + ': ' + str(vv) + ' Comments Liked\n'
+            richResponse += kk + ': ' + str(vv) + ' Comments Liked\n'
     return dict(m=userDict, rich = richResponse)
 
 
@@ -85,13 +90,13 @@ def specificLikesRec():
     userDict = groupMeFeatures.specificLikesRec(session.dictComments, session.translator)
     richResponse = 'Secret Crushes (Who Likes Certain Member The Most):\n\n'
     for k,v in userDict.iteritems():
-        richResponse += k + "'s Secret Admirers:\n"
+        richResponse += '\n' + k + "'s Secret Admirers:\n"
         limit = 0
-        for kk,vv in  sorted(v.items(), key=lambda x: x[1], reverse=True):
+        for kk,vv in  sorted(v[0].items(), key=lambda x: x[1], reverse=True):
             limit += 1
             if limit > 3:
                 break
-            richResponse += ' '+ kk + ': ' + str(vv) + ' Comments Liked\n'
+            richResponse +=  kk + ': ' + str(vv) + ' Comments Liked\n'
     return dict(m=userDict, rich = richResponse)
 
 def groupMedals():

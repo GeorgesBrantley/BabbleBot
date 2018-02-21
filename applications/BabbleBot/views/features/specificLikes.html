@@ -9,13 +9,13 @@
     </h4>
     <table class="table table-striped">
         <thead>
-            <tr>        
+            <tr>
                 <th>Secret Crushes of {{=name}}</th>
                 <th>Number Of Comments Liked by {{=name}}</th>
             </tr>
         </thead>
         {{x = 0}}
-        {{for crush,likes in sorted(smallDict.items(), key=lambda x: x[1], reverse=True):}}
+        {{for crush,likes in sorted(smallDict[0].items(), key=lambda x: x[1], reverse=True):}}
             {{x+=1}}
             {{if x > 3:}}
             {{x += 1}}

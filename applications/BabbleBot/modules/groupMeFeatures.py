@@ -125,16 +125,20 @@ def countCommentsPerUser(comments, userID = 'ALL'):
         return specificCount
 
 def getPastName(comments):
-    pastNames = []
+    oldNames = []
+    newNames = []
     for k,val in comments.iteritems():
         try:
             v = json.loads(val)
-            if v['sender_id'] == 'system':
-                if 'changed name to' in v['text'].encode("utf-8"):
-                     pastNames.append(v['text'].encode("utf-8"))
+            if v['sender_id'] == 'system' and  'changed name to' in v['text'].encode("utf-8"):
+                nameStr = v['text'].encode("utf-8")
+                oldName = nameStr[:nameStr.find("changed name to ")-1]
+                newName = nameStr[nameStr.find("changed name to ") + 16:]
+                oldNames.append(oldName)
+                newNames.append(newName)
         except:
             pass
-    return pastNames
+    return oldNames,newNames
 
 def getNumKicked(comments):
     kickers = {}
@@ -194,10 +198,17 @@ def mostGivingUsers(com, translator, personID = 'ALL'):
 def specificLikesGiven(com, translator, user = 'ALL'):
     # WHO DOES A USER LIKE SPECIFICALLY?
     userDict = {}
+    numComments = {}
     for k,val in com.iteritems():
         try:
             v = json.loads(val)
             if v['sender_type'] == 'user':
+                # GET COMMENTS NUMBER
+                if v['sender_id'] in numComments:
+                    numComments[v['sender_id']] += 1
+                else:
+                    numComments[v['sender_id']] = 1
+                # GET LIKERS COOL
                 for x in v['favorited_by']:
                     # x is an ID in the favby list
                     try:
@@ -220,7 +231,8 @@ def specificLikesGiven(com, translator, user = 'ALL'):
             for kk,v in val.iteritems():
                 # iterate through admirers
                 newVal[translator[kk]]  = v
-            namedDict[translator[k]] = newVal
+            namedDict[translator[k]] = [newVal,numComments[k]]
+
     if user == 'ALL':
         return namedDict
     else:
@@ -229,10 +241,16 @@ def specificLikesGiven(com, translator, user = 'ALL'):
 def specificLikesRec(com, translator, user = 'ALL'):
     # WHO HAS LIKED THIS USER?
     userDict = {}
+    numComments = {}
     for k,val in com.iteritems():
         try:
             v = json.loads(val)
             if v['sender_type'] == 'user':
+                # GET COMMENTS NUMBER
+                if v['sender_id'] in numComments:
+                    numComments[v['sender_id']] += 1
+                else:
+                    numComments[v['sender_id']] = 1
                 #userDict[v['sender_id']] = {}
                 for x in v['favorited_by']:
                     # x is an ID in the favby list
@@ -257,7 +275,7 @@ def specificLikesRec(com, translator, user = 'ALL'):
                 # iterate through admirers
                 if kk in translator:
                     newVal[translator[kk]]  = v
-            namedDict[translator[k]] = newVal
+            namedDict[translator[k]] = [newVal,numComments[k]]
     if user == 'ALL':
         return namedDict
     else:
