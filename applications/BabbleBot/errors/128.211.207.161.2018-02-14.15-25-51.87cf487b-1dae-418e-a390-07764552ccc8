@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.AttributeError'> 'NoneType' object has no attribute 'iteritems'"
+p3
+sS'layer'
+p4
+S'/home/joseph/BabbleBot/applications/BabbleBot/controllers/features.py'
+p5
+sS'code'
+p6
+S'<code object <module> at 0x7f7810cb8530, file "/home/joseph/BabbleBot/applications/BabbleBot/controllers/features.py", line 2>'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/home/joseph/BabbleBot/gluon/restricted.py", line 219, in restricted\n    exec(ccode, environment)\n  File "/home/joseph/BabbleBot/applications/BabbleBot/controllers/features.py", line 33, in <module>\n  File "/home/joseph/BabbleBot/gluon/globals.py", line 419, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/joseph/BabbleBot/applications/BabbleBot/controllers/features.py", line 8, in groupMarkov\n    results = groupMeFeatures.createMarkChain(\'all\',10,comments)\n  File "applications/BabbleBot/modules/groupMeFeatures.py", line 13, in createMarkChain\n    for k,val in comments.iteritems():\nAttributeError: \'NoneType\' object has no attribute \'iteritems\'\n'
+p11
+s.

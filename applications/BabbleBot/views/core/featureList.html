@@ -8,70 +8,71 @@
     Total Likes: {{=nLikes}} </span>
     </h3>
     <a href="{{=URL('features','getAllComments')}}">
-    <button class="btn btn-outline-primary";style="text-align:left;" >View All Comments</button>
+    <button class="btn btn-info";style="text-align:left;" >View All Comments</button>
     </a>
     <span style="float:right;"> 
     <a href="{{=URL('core','postToGroupMe',vars=dict(message=infoStr))}}">
-    <button class="btn btn-outline-primary";style="text-align:left;" >Send Comments and Likes Amounts to GroupMe</button>
+    <button class="btn btn-info";style="text-align:left;" >Send Comments and Likes Amounts to GroupMe</button>
     </a></span>
     <br><br>
     <h2 class="text-center">Global Statistics and Rankings</h2>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','groupMarkov')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMarkov')}}">
         Group Markov Generator
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','likesRecievedPerUser')}}">
+
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesRecievedPerUser')}}">
         Ranking of Members by Likes Recieved
     </a>
-     <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/mostGivingUsers">
+     <a class="btn btn-outline-info btn-block" href="/BabbleBot/features/mostGivingUsers">
         Ranking of Members by Likes Given
     </a>
-    <a class="btn btn-outline-primary btn-block" href="/BabbleBot/features/numComments">
+    <a class="btn btn-outline-info btn-block" href="/BabbleBot/features/numComments">
         Ranking of Members by Number of Comments
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','likesPerComment')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesPerComment')}}">
         Ranking of Members by Likes Per Comment
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','groupMedals')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMedals')}}">
         Ranking of Members by Medals
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numKicked')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
         Rankings Of Bullies and Victims
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','specificLikesRec')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','specificLikesRec')}}">
         Members' Secret Admirers
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','specificLikes')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','specificLikes')}}">
         Members' Secret Crushes
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','pastName')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
         Past Names of Members in {{=name}}
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','pastName')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
         Curse Words WIP
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numKicked')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
         Rank Members by Sexism WIP
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numKicked')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
         List Members Best Friends WIP
     </a>
     <br>
     <h2 class="text-center">{{=name}} Members</h2>
     <!-- The list of users goes here. -->
     {{for x in users:}}
-        <a class="btn btn-outline-primary btn-block" href="{{=URL('userFeatures','main',vars=dict(id=x[0]) )}}">
+        <a class="btn btn-outline-info btn-block" href="{{=URL('userFeatures','main',vars=dict(id=x[0]) )}}">
             {{=x[1]}}
         </a>
     {{pass}}
     <br>
     <h2 class="text-center">Group Tools</h2>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('','groupMarkov')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">
         Pull for New Comments WIP
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('','groupMarkov')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">
         Reset all Comments WIP
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('','groupMarkov')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">
         Smart Reset of Comments WIP
     </a>
 </div>

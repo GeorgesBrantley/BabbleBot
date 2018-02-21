@@ -4,7 +4,7 @@
     {{ if auth == True:}}
     <h1>Select Group</h1>
     <br>
-    <form method="get" action="/BabbleBot/core/getComments.html">
+    <form method="get" action="{{=URL('featureList')}}">
         <!-- The user will select their group     -->
         <select name="groupID">
             <option name="groupID" value="">Choose a Group</option>

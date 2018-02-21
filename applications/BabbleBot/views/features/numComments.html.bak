@@ -1,3 +1,21 @@
 {{extend 'layout.html'}}
-<h1>This is the features/numComments.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+<!-- {{=BEAUTIFY(response._vars)}} -->
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th># Comments</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{for k,v in sorted(ans.items(), key=lambda x: x[1], reverse=True): }}
+            <tr>
+                <td>{{=k}}</td>
+                <td>{{=v}}</td>
+            </tr>
+            {{pass}}
+        </tbody>
+    </table>
+</div>

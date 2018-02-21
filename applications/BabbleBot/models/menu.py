@@ -6,11 +6,11 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 response.menu = [
-    (T('Home'), False, URL('default', 'index'), []),
-    
-    (T('Profiles'), False, URL('default', 'index'), []),
-    
-    (T('My Groups'), False, URL('default', 'index'), [
+    ('Home', False, URL('core', 'featureList'), []),
+
+    ('Profiles', False, URL('core', 'featureList'), []),
+
+    ('My Groups', False, URL('default', 'index'), [
         (T('1'), False, URL('admin', 'default', 'site')),
         (T('2'), False, URL('admin', 'default', 'site')),
         (T('3'), False, URL('admin', 'default', 'site'))

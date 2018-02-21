@@ -4,33 +4,58 @@
 
     <h3>Total Comments:{{=nComs}} </h3>   <br>
      <h3>Total Likes: {{=nLikes}} </h3> 
-    <button class="btn btn-outline-primary">View all comments</button>
+    <a class="btn btn-info" href="{{=URL('core','downloadComments')}}">
+        View all comments
+    </a>
 
     <h2 class="text-center">Global Statistics and Rankings</h2>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','groupMarkov')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMarkov')}}">
         Group Markov Generator
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','likesRecievedPerUser')}}">
-        Ranking of Users by Likes Recieved
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesRecievedPerUser')}}">
+        Rank Users by Likes Recieved
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','mostGivingUsers')}}">
-        Ranking of Users by Likes Given
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostGivingUsers')}}">
+        Rank Users by Likes Given
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numComments')}}">
-        Ranking of Users by Number of Comments
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numComments')}}">
+        Rank Users by Number of Comments
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','pastName')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
         Past Names of Users in {{=name}}
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('features','numKicked')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
         Amount of Times Users have been Kicked
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMedals')}}">
+        Rank Users by Medals
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
+        Rank Users by Curse Words WIP
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
+        Rank Users by Sexism WIP
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
+        List Users Best Friends WIP
     </a>
     <br>
     <h2 class="text-center">Users</h2>
     <!-- The list of users goes here. -->
     {{for x in users:}}
-        <a class="btn btn-outline-primary btn-block" href="{{=URL('userFeatures','main',vars=dict(id=x[0]) )}}">
+        <a class="btn btn-outline-info btn-block" href="{{=URL('userFeatures','main',vars=dict(id=x[0]) )}}">
             {{=x[1]}}
         </a>
     {{pass}}
+    <br>
+    <h2 class="text-center">Group Tools</h2>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">
+        Pull for New Comments WIP
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">
+        Reset all Comments WIP
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">
+        Smart Reset of Comments WIP
+    </a>
 </div>

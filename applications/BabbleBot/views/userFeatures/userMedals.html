@@ -1,4 +1,33 @@
 {{extend 'layout.html'}}
-<p>
-{{=m}}
-</p>
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Medal</th>
+                <th>#</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <!-- Table will be sorted by medal-->
+            {{for k,v in m[0].items(): }}
+            <tr style="background-color: #e5e4e2;">
+                <td>Platinum</td>
+                <td>{{=v['Platinum']}}</td>
+            </tr>
+            <tr  style="background-color: #DAA520;">
+                <td>Gold</td>
+                <td>{{=v['Gold']}}</td>
+            </tr>
+            <tr style="background-color: #C0C0C0;">
+                <td>Silver</td>
+                <td>{{=v['Silver']}}</td>
+            </tr>
+            <tr  style="background-color: #cd7f32;">
+                <td>Bronze</td>
+                <td>{{=v['Bronze']}}</td>
+            </tr>
+            {{pass}}
+        </tbody>
+    </table>
+</div>

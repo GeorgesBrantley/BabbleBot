@@ -32,7 +32,7 @@
   </head>
   <body>
     <!-- Navbar ======================================= -->
-    <nav class="navbar navbar-toggleable-md navbar-light" style="background-color: #3696F7;">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-info">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -64,14 +64,11 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </a>
-<!--             <div class="dropdown-menu">
-              <a class="dropdown-item" href="{{=URL('default','user/profile')}}">{{=T('Profile')}}</a>
-              <a class="dropdown-item" href="{{=URL('default','user/change_password')}}">{{=T('Change Password')}}</a>
-              <a class="dropdown-item" href="{{=URL('default','user/logout')}}">{{=T('Logout')}}</a>
+            <div class="dropdown-menu">
               <a class="dropdown-item" href="{{=URL('default','user/login')}}">{{=T('Login')}}</a>
               <a class="dropdown-item" href="{{=URL('default','user/register')}}">{{=T('Sign up')}}</a>
               <a class="dropdown-item" href="{{=URL('default','user/request_password')}}">{{=T('Lost Password')}}</a>
-            </div> -->
+            </div>
           </li>
         </ul>
 <!--         {{pass}} -->
