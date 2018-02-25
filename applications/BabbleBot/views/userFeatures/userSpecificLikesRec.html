@@ -11,7 +11,7 @@
             </tr>
         </thead>
 
-    {{for name, value in sorted(m.items(), key=lambda x: x[1], reverse=True):}}
+    {{for name, value in sorted(m[0].items(), key=lambda x: x[1], reverse=True):}}
         <tbody>
             <tr>
                 <td>{{=name}}</td>

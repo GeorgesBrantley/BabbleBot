@@ -47,10 +47,10 @@ def userSpecificLikes():
     personID = request.vars.id
     name = session.translator[personID]
     userDict = groupMeFeatures.specificLikesGiven(session.dictComments, session.translator, personID)
-
+    
     richResponse = name + "'s Secret Crushes (Who does " + name + " like?): \n\n"
-    for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
-        richResponse += "\t"+k + ': ' + str(v) + ' Comments Liked\n'
+    for k,v in sorted(userDict[0].items(), key=lambda x: x[1], reverse=True):
+        richResponse += " "+k + ': ' + str(v) + ' Comments Liked\n'
     return dict(m=userDict, n = name,rich = richResponse)
 
 def userSpecificLikesRec():
@@ -60,8 +60,8 @@ def userSpecificLikesRec():
     userDict = groupMeFeatures.specificLikesRec(session.dictComments, session.translator, personID )
 
     richResponse = name + "'s Secret Admirers (Who likes " + name + "?): \n\n"
-    for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
-        richResponse += "\t"+k + ': ' + str(v) + ' Comments Liked\n'
+    for k,v in sorted(userDict[0].items(), key=lambda x: x[1], reverse=True):
+        richResponse += " "+k + ': ' + str(v) + ' Comments Liked\n'
     return dict(m=userDict, n = name,rich = richResponse)
 
 def userMedals():
