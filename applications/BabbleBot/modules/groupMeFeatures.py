@@ -96,12 +96,11 @@ def getLikesPerUser(com, translator):
                     userDict[v['sender_id']] = len(v['favorited_by'])
         except:
             pass
-    namedDict = {}
+    nameDict = {}
     for k, val in userDict.iteritems():
         if k in translator:
-            namedDict[translator[k]] = val
-
-    return namedDict
+            nameDict[translator[k]] = val
+    return nameDict
 
 def countCommentsPerUser(comments, translator, userID = 'ALL'):
     user = {}
@@ -361,3 +360,58 @@ def getMedalCount(user, com, translator, userCount):
                 namedDict[translator[k]] = val
 
     return namedDict,[platinum,gold,silver,bronze]
+
+def getCommonCurseWords(com, translator, user = 'ALL'):
+    curseWords = {' fuck': [0,{}], ' piss': [0,{}], ' shit' : [0,{}], ' damn' : [0,{}], ' ass' : [0,{}], ' dick' : [0,{}], ' bastard' : [0,{}], ' prick' : [0,{}], ' motherfucker' : [0,{}], ' gosh-golly' : [0,{}]}
+
+    userDict = {}
+
+    for k,val in com.iteritems():
+        try:
+            v = json.loads(val)
+            for key in curseWords.keys():
+                if key in v['text']:
+                    curseWords[key][0] += 1
+                    if not v['sender_id'] in curseWords[key][1]:
+                        curseWords[key][1][v['sender_id']] = 0
+                    curseWords[key][1][v['sender_id']] += 1
+
+
+        except:
+            pass
+
+    print curseWords
+    return curseWords
+
+def getMostLikedComments(comments, translator, user = 'ALL'):
+    likedCommentsDict = {}
+    sumLikes = 0
+    for k,val in comments.iteritems():
+        try:
+            v = json.loads(val)
+            # global most liked comments
+            if user == 'ALL' and v['sender_type'] == 'user':
+                output = v['text']
+                if output == None or output == 'None' or output == '':
+                    try:
+                        output = v['attachments'][0]['url']
+                    except:
+                        output = 'media Link'
+#                 output += ''
+                likedCommentsDict[v['id']] = [output, len(v['favorited_by']),v['sender_id']]
+            # individual most liked comments
+            elif v['user_id'] == user:
+                output = v['text']
+                if output == None or output == 'None' or output == '':
+                    try:
+                        output = v['attachments'][0]['url']
+                    except:
+                        output = 'media'
+#                 output += ''
+                likedCommentsDict[v['id']] = [output, len(v['favorited_by'])]
+        except:
+            pass
+    if user == 'ALL':
+        for k,val in likedCommentsDict.iteritems():
+            val[2] = translator[val[2]]
+    return likedCommentsDict

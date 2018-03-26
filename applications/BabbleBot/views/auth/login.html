@@ -1,0 +1,40 @@
+{{extend 'layout.html'}}
+{{block head}}
+<style>
+	.container {
+	  background-color: #f5f5f5;
+	}
+
+	.login {
+	  width: 100%;
+	  max-width: 420px;
+	  padding: 15px;
+	  margin: 0 auto;
+	  font-weight: 400;
+	}
+
+	.login .form-input {
+	  position: relative;
+	  height: auto;
+	  padding: 10px;
+	  font-size: 16px;
+	}
+
+	.login .form-input:focus {
+	  z-index: 2;
+	}
+</style>
+{{end}}
+
+<div class="container text-center">
+	<form class="login" method="post" action="{{=URL('checkLogin')}}">
+		<h1>Login</h1>
+        <!-- Above the input boxes will be an alert that displays "the email or password is incorrect"-->
+		<input type="text" class="form-input" name="email" placeholder="Email">
+        <input id="logInType" name="logInType" type="hidden" value="login">
+		<input type="password" class="form-input" name="passwd" placeholder="" style="margin-bottom: 10px;"> <br>
+        <!-- This should only display if login was unsuccessful -->
+        <!-- <div class="alert alert-danger">The information you entered is incorrect</div> -->
+		<button type="submit" class="btn btn-lg btn-info">Login</button>
+	</form>
+</div>

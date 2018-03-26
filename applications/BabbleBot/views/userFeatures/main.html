@@ -6,47 +6,90 @@
     <h1 class="text-center">Group Member: {{=n}}</h1><br>
 
     <h2 class="text-center">User Statistics</h2>
-    <p><center>Click on a Statistic to post it To {{=group}}</center>
-    </p>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[0]))}}">
-        {{=n}} Has Posted <u>{{=numComs}}</u> Comments in {{=group}}
-    </a>
-    
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[1]))}}">
-        {{=n}} Has Recieved <u>{{=likesRec}}</u> Likes in {{=group}}
-    </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[2]))}}">
-        {{=n}} Has Liked <u>{{=likesGiven}}</u> Comments in {{=group}}
-    </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[3]))}}">
-        {{=n}} Has a Like/Comment Ratio of <u>{{=ratio}}</u> in {{=group}}
-    </a>
+<!--     <p><center>Click on a Statistic to post it To {{=group}}</center></p> -->
+
+    <!-- Experimenting with a card design for the user statistics. -->
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Comments posted</h5>
+                    <h4 class="card-text"><strong>{{=numComs}}</strong></h4>
+                    <a class="btn btn-outline-info" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[0]))}}">
+                        Share to Group
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Likes Received</h5>
+                    <h4 class="card-text"><strong>{{=likesRec}}</strong></h4>
+                    <a class="btn btn-outline-info" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[1]))}}">
+                        Share to Group
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Likes Given</h5>
+                    <h4 class="card-text"><strong>{{=likesGiven}}</strong></h4>
+                    <a class="btn btn-outline-info" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[2]))}}">
+                        Share to Group
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Like/Comment Ratio</h5>
+                    <h4 class="card-text"><strong>{{=ratio}}</strong></h4>
+                    <a class="btn btn-outline-info" href="{{=URL('core','postToGroupMe',vars=dict(message=rResponse[3]))}}">
+                        Share to Group
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <br><h2 class="text-center">User Tools</h2>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('userMarkov', vars=dict(id=p))}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('userMarkov', vars=dict(id=p))}}">
         {{=n}}'s Markov Chain Generator
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('userSpecificLikes', vars=dict(id=p))}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('userMostLikedComments', vars=dict(id=p))}}">
+        {{=n}}'s Most Liked Comments
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('userSpecificLikes', vars=dict(id=p))}}">
         Who are {{=n}}'s Secret Crushes?
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('userSpecificLikesRec', vars=dict(id=p))}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('userSpecificLikesRec', vars=dict(id=p))}}">
         Who are {{=n}}'s Secret Admirers?
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('userMedals', vars=dict(id=p))}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('userCurseWords', vars=dict(id=p))}}">
+        What are {{=n}}'s Most Common Curse Words?
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('userMedals', vars=dict(id=p))}}">
         {{=n}}'s Medal Count
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('', vars=dict(id=p))}}">
-        {{=n}}'s Most Common Curse Words WIP
+    <a class="btn btn-outline-info btn-block" href="{{=URL('userCurseWords', vars=dict(id=p))}}">
+        {{=n}}'s Favorite Curse Words
     </a>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('', vars=dict(id=p))}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('', vars=dict(id=p))}}">
         {{=n}}'s Best Friends WIP
     </a>
-        <a class="btn btn-outline-primary btn-block" href="{{=URL('', vars=dict(id=p))}}">
+        <a class="btn btn-outline-info btn-block" href="{{=URL('', vars=dict(id=p))}}">
         {{=n}}'s Sexism Tracker WIP
     </a>
     <br><br>
-    </a>
-        <a class="btn btn-outline-primary btn-block" href="{{=URL('core','featureList')}}">
+    
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','featureList')}}">
         Return to Group Page
     </a>
 </div>

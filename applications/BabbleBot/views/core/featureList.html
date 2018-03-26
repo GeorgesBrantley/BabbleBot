@@ -2,31 +2,75 @@
 <div class="container">
     <h1 class="text-center"><b>{{=name}}</b></h1>
 
-    <h3 style="text-align:left;">
-    Total Comments: {{=nComs}}
-    <span style="float:right;">
-    Total Likes: {{=nLikes}} </span>
-    </h3>
-    <a href="{{=URL('features','getAllComments')}}">
-    <button class="btn btn-info";style="text-align:left;" >View All Comments</button>
-    </a>
-    <span style="float:right;"> 
-    <a href="{{=URL('core','postToGroupMe',vars=dict(message=infoStr))}}">
-    <button class="btn btn-info";style="text-align:left;" >Send Comments and Likes Amounts to GroupMe</button>
-    </a></span>
-    <br><br>
+    <!-- Information cards -->
+    <div class="row justify-content-md-center">
+        <div class="col-sm-3">
+            <div class="card box-shadow">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Comments</h5>
+                    <h4 class="card-text"><b>{{=nComs}}</b></h4>
+                    <a class="btn btn-outline-info" href="#">
+                        View All Comments
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Likes</h5>
+                    <h4 class="card-text"><b>{{=nLikes}}</b></h4>
+                    <a class="btn btn-outline-info" href="{{=URL('core','postToGroupMe',vars=dict(message=infoStr))}}">
+                        Share to Group
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <h2 class="text-center">Members</h2>
+    <!-- The list of users goes here. -->
+    <div class="row">
+        {{for x in users:}}
+        <div class="col-sm-3">
+            <div class="card">
+                <img class="card-img" style="height: 225px; width: 100%; display: block;" src="{{=x[2]}}" data-holder-rendered="true" alt="No Image Found">
+
+                <div class="card-body">
+                    <a class="btn btn-outline-info btn-block" href="{{=URL('userFeatures','main',vars=dict(id=x[0]))}}">
+                        {{=x[1]}}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {{pass}}
+    </div>
+    <br>
+    
     <h2 class="text-center">Global Statistics and Rankings</h2>
+    
+<!--     <div class="input-group">
+        <input type="text" class="form-control" name="w" placeholder="word search" >
+        <div class="input-group-append">
+           <a class="btn btn-outline-info" href="{{=URL('features','mostUsedWord')}}">Search</a>
+        </div>
+    </div> -->
+    
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMarkov')}}">
         Group Markov Generator
     </a>
-
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostLikedComments')}}">
+        Ranking of Top 10 Comments by Likes
+    </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesRecievedPerUser')}}">
         Ranking of Members by Likes Recieved
     </a>
-     <a class="btn btn-outline-info btn-block" href="/BabbleBot/features/mostGivingUsers">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostGivingUsers')}}">
         Ranking of Members by Likes Given
     </a>
-    <a class="btn btn-outline-info btn-block" href="/BabbleBot/features/numComments">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numComments')}}">
         Ranking of Members by Number of Comments
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesPerComment')}}">
@@ -47,8 +91,11 @@
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
         Past Names of Members in {{=name}}
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
-        Curse Words WIP
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','curseWords')}}">
+        {{=name}}'s Favorite Curse Words
+    </a>
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostUsedWord')}}">
+        Word Counter
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
         Rank Members by Sexism WIP
@@ -57,19 +104,12 @@
         List Members Best Friends WIP
     </a>
     <br>
-    <h2 class="text-center">{{=name}} Members</h2>
-    <!-- The list of users goes here. -->
-    {{for x in users:}}
-        <a class="btn btn-outline-info btn-block" href="{{=URL('userFeatures','main',vars=dict(id=x[0]) )}}">
-            {{=x[1]}}
-        </a>
-    {{pass}}
-    <br>
+    
     <h2 class="text-center">Group Tools</h2>
     <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">
         Pull for New Comments WIP
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">
+    <a class="btn btn-outline-danger btn-block" href="{{=URL('','groupMarkov')}}">
         Reset all Comments WIP
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">

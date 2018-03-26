@@ -1,0 +1,14 @@
+{{extend 'layout.html'}}
+<h1>Register a Bot</h1>
+<p>
+Go to <a href="https://dev.groupme.com/bots">GroupMe Bots</a> and Login. Follow the steps to create a bot.
+</p>
+
+<p> Paste your botID here: </p>
+<div class="container text-center">
+    <form class="login" method="get" action="{{=URL('makeBot', vars=dict(message=msg))}}">
+        <input type="text" class="form-input" name="botID" placeholder="Bot ID" style="margin-bottom: 10px;"> <br>
+        <input type="hidden" name="message" value="{{=msg}}">
+        <button type="submit" class="btn btn-lg btn-info">Submit</button>
+    </form>
+</div>

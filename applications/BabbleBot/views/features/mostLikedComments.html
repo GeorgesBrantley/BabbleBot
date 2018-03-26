@@ -1,28 +1,30 @@
 {{extend 'layout.html'}}
-<!-- {{=BEAUTIFY(response._vars)}} -->
-<h1 class="text-center">{{=gn}} Commentators</h1>
 <div class="container">
+   <h1 class="text-center">Most Liked Comments!</h1>
+
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Comments</th>
+                <th>Message</th>
+                <th>Likes</th>
             </tr>
         </thead>
 
         <tbody>
-            {{for k,v in sorted(ans.items(), key=lambda x: x[1], reverse=True): }}
+            {{for x in m: }}
             <tr>
-                <td>{{=k}}</td>
-                <td>{{=v}}</td>
+                <td>{{=x[0]}}</td>
+                <td>{{=x[2]}}</td>
+                <td>{{=x[1]}}</td>
             </tr>
             {{pass}}
         </tbody>
     </table>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
-        Post Rankings To GroupMe
+        Post Comments To GroupMe
     </a>
-    
+
     <a class="btn btn-outline-secondary btn-block" href="{{=URL('core','featureList')}}">
         Return to Group Page
     </a>

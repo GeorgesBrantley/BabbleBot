@@ -6,11 +6,9 @@ import subprocess
 import os
 import json
 import copy
-
-# GLOBALS
-progression = {}
-finished = {}
-commentsDicts = {}
+import sys
+import pDB
+import time
 
 def checkValidAuth(auth):
     # checks if auth inputed is legit
@@ -35,27 +33,40 @@ def getListOfUsers(auth,groupID):
     names = output['response']['members']
     users = []
     for x in names:
-        users.append([x['user_id'],x['nickname']])
+        users.append([x['user_id'],x['nickname'], x['image_url']])
     return users
 
-def fileInfo(auth,groupid):
+def fileInfo(auth,groupid,email,uKey):
     #checks if we have file
     f = None
+    fileName = groupid + email
+    #if True:
     try:
-        f = open('GroupMeDir/'+str(groupid),'r')
+        #DECRYPT
+        f = open('GroupMeDir/'+fileName ,'r')
         fileExists = True
     except:
         fileExists = False
     # find total amount of comments of group
     totalComments = totalCommentsInGroup(auth,groupid)
+
     newcomments = 0
     if fileExists:
-        jj = json.load(f)
+        try:
+            jj = json.load(f)
+        except:
+            # Error with file, delete files, return false
+            pDB.refreash(fileName)
+            return [False,totalComments,totalComments]
         oldComments = jj['LASTCOUNT']
         newcomments = int(totalComments) - int(oldComments)
     else:
         newcomments = totalComments
     # returns T/F, and # of comments need to be updated
+    try:
+        f.close()
+    except:
+        pass
     return [fileExists,totalComments, newcomments]
 
 def totalCommentsInGroup(auth,id):
@@ -78,25 +89,14 @@ def getAllGroups(auth):
     groups = output['response']
     return groups
 
-def isThread(auth,id):
-    # checks if instance of downloadFromAPI is occuring.
-    if id in finished:
-        return True
+def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
 
-def downloadFromAPI(auth,groupID, isFile,maxCom):
-    global progression
-    global finished
-    global commentsDicts
-    finished[groupID] = False
-    progression[groupID] = 0
-    
     if isFile == False:
         # if No File, download EVERYTHING!
         # create file
-        writer = open("GroupMeDir/" + groupID,"w+")
-        writer = open("GroupMeDir/" + groupID,"wa")
-        # start progression from 0
-        progression[groupID] = 0
+        writer = open("GroupMeDir/" + groupID + email,"w+")
+        writer = open("GroupMeDir/" + groupID + email,"wa")
+
         allComments = {}
         beforeID = ''
         firstID = ''
@@ -110,8 +110,6 @@ def downloadFromAPI(auth,groupID, isFile,maxCom):
                 beforeID = y['id']
             #populate the dictionary
             allComments[x] = json.dumps(output['response']['messages'][0])
-            # increase progression
-            progression[groupID] += 1
             #update last count
         # all comments in the DICT
         # Stores the last comment (most recent posted) 's ID. for dif equations
@@ -119,10 +117,17 @@ def downloadFromAPI(auth,groupID, isFile,maxCom):
         allComments['LASTCOUNT'] = maxCom #stores the max comment values
         # write Dict to FILE! NO ORDER (by ID though)
         json.dump(allComments,writer)
-        commentsDicts[groupID] = allComments
+        #subprocess.check_output("cat GroupMeDir/39425744gbrantlepurdue.edu > GroupMeDir/test22", shell = True)
+        # ENCRYPT
+        #fileName = groupID + email
+        #pDB.encrypt(fileName,uKey)
+        return allComments
     else:
+        # DECRYPT
+        #fileName = groupID + email
+        #pDB.decrypt(fileName,uKey)
         # file exists, get last message timestamp. Go till then
-        writer = open("GroupMeDir/" + groupID,"r")
+        writer = open("GroupMeDir/" + groupID + email,"r")
         jj = json.load(writer)
         ## jj is the json object. need to figure out how to read through it
         lastID = jj['LASTID'] # finds the last comment id
@@ -143,7 +148,6 @@ def downloadFromAPI(auth,groupID, isFile,maxCom):
             else:
                 # Catching up... add to new Comments
                 newComments[x] = json.dumps(output['response']['messages'][0])
-            progression[groupID] += 1
         # NewComments now is a dict of new comments, need to join with comments in file.
 
         # Read comments in file, add to new Comments
@@ -155,45 +159,17 @@ def downloadFromAPI(auth,groupID, isFile,maxCom):
                 pass
             newComments[x] = json.dumps(oldComment)
         # Overright JSON file
-        subprocess.check_output("echo '' > GroupMeDir/" + str(groupID),shell=True)
-        writer = open("GroupMeDir/" + str(groupID), 'w')
+        subprocess.check_output("echo '' > GroupMeDir/" + str(groupID)+str(email),shell=True)
+        writer = open("GroupMeDir/" + str(groupID) + str(email), 'w')
         # all comments in the DICT
         # Stores the last comment (most recent posted) 's ID. for dif equations
         newComments['LASTID'] = firstID
         newComments['LASTCOUNT'] = maxCom #stores the previous last comment #
         # write Dict to FILE! NO ORDER (by ID though)
         json.dump(newComments,writer)
-        commentsDicts[groupID] = newComments
-        
-    # Say we are done!
-    finished[groupID] = True
-    
-def checker(groupID):
-    global progression
-    global finished
-    prog = progression[groupID]
-    fini = finished[groupID]
-    if fini == True:
-        # its finished!
-        # delete values!
-        del progression[groupID]
-        del finished[groupID]
-        return [True,100000]
-    # not finished
-    return [False,prog]
-
-def getComments(groupID):
-    # Returns dictionary of comments
-    # DO NOT USE IN FEATURES!!!
-    global commentsDicts
-    ret = ''
-    try:
-        ret = copy.deepcopy(commentsDicts[groupID])
-        del commentsDicts[groupID]
-        # TODO, add AUTH CHECK!
-    except:
-        pass
-    return ret
+        # ENCRYPT
+        #pDB.encrypt(fileName,uKey)
+        return newComments
 
 
 def postToGroupMe(botID, message):
@@ -216,3 +192,29 @@ def postToGroupMe(botID, message):
     except:
         return True
     return True
+
+def createBot(auth, groupID):
+    print auth
+    payload = {'bot' : {'name' : "BabbleBot", 'group_id' : groupID, 'callback_url': "https://google.com" }}
+    url = "https://api.groupme.com/v3/bots?token=" + auth
+
+    headers = {"Content-type": "application/json; charset=utf-8",  "Accept": "application/json"}
+    print url
+    response = requests.post(url, data=json.loads(str(payload)), headers=headers)
+    print response
+    print response.text
+    try:
+        jj = json.loads(response.text)
+        print jj
+        if jj['meta']['code'] == '404':
+            print '404' + jj['response']
+            return '404'
+        elif jj['meta']['code'] == '500':
+            print 500
+        else:
+            print "jj[resopnse]: " + jj['response']
+            return jj['response']['bot']['bot_id']
+    except:
+        e = sys.exc_info()[1]
+        print e
+        return ''

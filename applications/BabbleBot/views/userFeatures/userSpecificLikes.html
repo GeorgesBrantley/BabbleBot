@@ -3,9 +3,9 @@
     <h1 class="text-center">{{=n}}'s Secret Crushes</h1>
     <h3 class="text-center">Whose Comments does {{=n}} Like?</h3>
 
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered">
         <thead>
-            <tr>        
+            <tr>
                 <th>{{=n}}'s Secret Crushes</th>
                 <th>Number of Comments {{=n}} has Liked</th>
             </tr>
@@ -22,5 +22,9 @@
     </table>
    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
         Post Rankings To GroupMe
+    </a>
+    <br>
+    <a class="btn btn-outline-secondary btn-block" href="{{=URL('main', vars=dict(id=request.vars.id))}}">
+        Return to User Page
     </a>
 </div>

@@ -1,7 +1,7 @@
 {{extend 'layout.html'}}
 <div class="container">
     <h1 class="text-center">Past Names Of Users</h1>
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Past Name</th>
@@ -20,7 +20,11 @@
             {{pass}}
         </tbody>
     </table>
-            <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
         Post Name Information To GroupMe
+    </a>
+    
+    <a class="btn btn-outline-secondary btn-block" href="{{=URL('core','featureList')}}">
+        Return to Group Page
     </a>
 </div>

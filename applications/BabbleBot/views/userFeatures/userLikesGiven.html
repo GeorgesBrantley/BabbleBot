@@ -3,3 +3,5 @@
  <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
         {{=name}} Likes {{=r}} Messages. Click to Post to GroupMe
     </a>
+<br>
+<a class="btn btn-secondary" href="{{=URL('main', vars=dict(id=request.vars.id))}}">Return to user page</a>

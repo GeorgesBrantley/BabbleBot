@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import groupMeFeatures
+import groupMeFeaturesMatt
 import groupMe
 # All user features!
 
@@ -76,3 +77,32 @@ def userMedals():
     richResponse+= '\nSilver (' + str(int(numUsers*.50)) + ' likes): ' + str(userDict['Silver'])
     richResponse+= '\nBronze (' + str(int(numUsers*.25)) + ' likes): ' + str(userDict['Bronze'])
     return dict(m=userDict, r=medals, n=name, rich = richResponse)
+
+def userCurseWords():
+    curseWords = groupMeFeaturesMatt.getCommonCurseWords(session.dictComments, session.translator, request.vars.id)
+    richResponse = 'Most common curse words in group:\n\n'
+    count = 0
+    for word, list in sorted(curseWords.iteritems(), key=lambda x: x[0], reverse=True):
+        number = list[0]
+        if count <= 2:
+            richResponse += word + ': ' + str(number) + ' \n'
+        count += 1
+    richResponse += '\n'
+
+    return dict(u=session.translator[request.vars.id], m=curseWords, rich = richResponse)
+
+def userMostLikedComments():
+    # user's most liked comments
+    personID = request.vars.id
+    name = session.translator[personID]
+    userDict = groupMeFeatures.getMostLikedComments(session.dictComments, session.translator, personID)
+    richResponse = 'Top 10 Most Liked Comments:\n\n'
+    x = 0
+    summedComments = []
+    for k,v in sorted(userDict.items(), key=lambda x:x[1][1], reverse=True):
+        richResponse += v[0].encode('utf-8') +  str(v[1])
+        summedComments.append([v[0],v[1]])
+        x += 1
+        if x > 9:
+            break
+    return dict(n= name, m=summedComments, rich = richResponse)

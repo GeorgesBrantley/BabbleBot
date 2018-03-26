@@ -1,0 +1,42 @@
+{{extend 'layout.html'}}
+
+<div class="container text-center">
+    {{ if success == True:}}
+    <h1>Select Group</h1>
+    <br>
+    
+    <table class="table table-striped table-bordered">
+         <thead>
+            <tr>
+                <th>Group Name</th>
+                <th># of New Comments</th>
+                <th>Estimated Amount of Time to Update</th>
+                <th>Select Group</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{y = 0}}
+            {{for group in groups:}}
+            <tr>
+                <td>{{=group['name']}}</td>
+                <td>{{=newComs[y][2]}}</td>
+                <td>{{p=newComs[y][2]}}{{=round(p*1.0/100/6,1)}} Minutes</td>
+                {{y+=1}}
+                <td><a class="btn btn-outline-primary btn-block" href="{{=URL('core','downloadComments', vars=dict(groupID=group['group_id']))}}">Update</a></td>
+            </tr>
+            {{pass}}
+        </tbody>
+    </table>
+    <p>
+        <center>After Selecting a Group, It Will Take a Few Minutes to Update that Group's Information</center>
+        <center>For Every 100 New Comments, it will Take Around 10 Seconds to Update!</center>
+        <center>Please Be Patient!</center>
+    </p>
+    {{else:}}
+    <!-- INPUT BAD AUTH RESPONSE HERE -->
+    <h1>
+        Bad Authentication Token Inputed
+    </h1>
+    {{pass}}
+</div>

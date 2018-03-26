@@ -1,0 +1,69 @@
+{{extend 'layout.html'}}
+<div class="container">
+    <h1 class="text-center">Group Member's Most Used Curse Words</h1>
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Word</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{count = 0}}
+        {{for word, list in sorted(m.iteritems(), key=lambda x: x[1], reverse=True):}}
+            {{number = list[0]}}
+            {{if count <= 2:}}
+            <tr>
+                <td>{{=word}}</td>
+                <td>{{=number}}</td>
+            </tr>
+            {{count += 1}}
+        </tbody>
+      {{pass}}
+    {{pass}}
+    </table>
+    {{pass}}
+
+    <h3 class="text-center">
+          Word Breakdown by User
+    </h3>
+
+    {{for word, info in sorted(m.iteritems(), key=lambda x: x[1], reverse=True):}}
+       
+
+        <table class="table table-striped">
+            <thead>
+                 <h3>
+                <center>{{=word.upper()}}</center>
+                </h3>
+                <tr>
+                    <th>Name</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {{userList = info[1]}}
+                {{for user, count in sorted(userList.iteritems(), key=lambda x: x[1], reverse=True):}}
+                    <tr>
+                        <td>{{=user}}</td>
+                        <td>{{=count}}</td>
+                    </tr>
+            </tbody>
+            {{pass}}
+            {{pass}}
+            </table>
+            {{pass}}
+
+
+
+     <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        Post Rankings To GroupMe
+    </a>
+
+    <a class="btn btn-outline-secondary btn-block" href="{{=URL('core','featureList')}}">
+        Return to Group Page
+    </a>
+</div>

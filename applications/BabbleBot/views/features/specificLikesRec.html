@@ -7,12 +7,12 @@
     <h4 ><center>{{=name}}</center>
         
     </h4>
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered">
         <thead>
-            <tr>        
+            <tr>
                 <th>Secret Admirers of {{=name}}</th>
                 <th>Number Of {{=name}}'s Comments They Liked</th>
-                 <th>Percent Of Comments liked</th>
+                <th>Percent Of Comments liked</th>
             </tr>
         </thead>
         {{x = 0}}
@@ -37,5 +37,9 @@
     {{pass}}
      <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
         Post Rankings To GroupMe
+    </a>
+    
+    <a class="btn btn-outline-secondary btn-block" href="{{=URL('core','featureList')}}">
+        Return to Group Page
     </a>
 </div>

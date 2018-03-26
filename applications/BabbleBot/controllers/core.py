@@ -4,6 +4,7 @@ import groupMeFeatures
 import thread
 import time
 import json
+import pDB
 
 # Get information from Guest
 def guestSignIn():
@@ -44,25 +45,41 @@ def getComments():
     return dict(name=name,fileFound=fileFound,comments=newComments)
 
 def downloadComments():
-    # start wheel if first time
-    if not groupMe.isThread(session.myAuth, session.myGroupID):
-        thread.start_new_thread(groupMe.downloadFromAPI, (session.myAuth, session.myGroupID, session.fileFound, session.maxComments,))
-        time.sleep(1)
-    # is it done? Check the ticker
-    finished,prog = groupMe.checker(session.myGroupID)
+    # Get GroupID, fileFound, Max Comments, groupName
+    groupID = request.vars.groupID
+    #OPEN AND CLOSE
+    try:
+        pDB.decrypt(groupID+session.email,session.uKey)
+    except:
+        pass
+    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, groupID,session.email,session.uKey)
+    try:
+        pDB.encrpyt(groupID+session.email,session.uKey)
+    except:
+        pass
+    session.myGroupID = groupID
+    session.fileFound = fileFound
+    session.maxComments = totalComments
+    name = groupMe.getGroupName(session.myAuth, groupID)
+    session.groupName =  name
+    # get comments!
+    fileName = groupID + session.email
+    try:
+        pDB.decrypt(fileName,session.uKey)
+    except:
+        pass
+    session.dictComments = groupMe.downloadFromAPI(session.myAuth, session.myGroupID,session.fileFound, session.maxComments, session.email, session.uKey)
+    pDB.encrypt(fileName,session.uKey)
 
-    if finished:
-        session.dictComments = groupMe.getComments(session.myGroupID)
-        com = session.dictComments
-        translate = {}
-        for k,val in com.iteritems():
-            try:
-                v = json.loads(val)
-                translate[v['user_id']] = str(v['name'].encode('utf-8'))
-            except:
-                pass
-        session.translator = translate
-    return dict(finished=finished, prog= prog, max=session.maxComments)
+    translate = {}
+    for k,val in session.dictComments.iteritems():
+        try:
+            v = json.loads(val)
+            translate[v['user_id']] = str(v['name'].encode('utf-8'))
+        except:
+            pass
+    session.translator = translate
+    redirect(URL('featureList'))
 
 def featureList():
     # Lists GLobal Features and Users!
@@ -72,12 +89,43 @@ def featureList():
     # basic data for display
     numLikes,numComs = groupMeFeatures.getBasicGroupInfo(session.dictComments)
     # number of comments total
-    info = 'Total Number of Comments: ' + str(numComs) + '\nTotal Number of Likes: ' + str(numLikes) 
+    info = 'Total Number of Comments: ' + str(numComs) + '\nTotal Number of Likes: ' + str(numLikes)
     return dict(name = session.groupName,users=users,nLikes = numLikes, nComs = numComs, infoStr=info)
 
 def postToGroupMe():
     message = request.vars.message
-    works = ''
-    if session.myBotID is not '':
-        works = groupMe.postToGroupMe(session.myBotID,message)
+    botID = ''
+    # In Database?
+    botidDB = pDB.getGroupBot(session.myGroupID)
+
+    if botidDB:
+        # In database
+        session.myBotID = botidDB['botID']
+        # Post to GroupMe
+    else:
+        # Not in Database
+        # Make Bot, Add it
+        # GET BOTID
+         redirect(URL('botPrompt', vars=dict(msg=message)))
+    
+    works = groupMe.postToGroupMe(session.myBotID,message)
     return dict(w=works)
+
+    
+
+def makeBot():
+    # Get Message
+    # Get BotID
+    botID = request.vars.botID
+    message = request.vars.message
+    # TODO IF BOTID SUCKS ADD ERROR
+    # Make Bot if it works
+    session.myBotID = botID
+    pDB.makeGroupBot(session.myGroupID, session.myBotID)
+    redirect(URL('postToGroupMe', vars=dict(message=message)))
+    
+def botPrompt():
+    #Form in html
+    msg = ''
+    msg = request.vars.msg
+    return dict(msg = msg)

@@ -1,5 +1,4 @@
 {{extend 'layout.html'}}
-<!-- This is where we can append stuff inside the <head>, such as page-specific CSS. -->
 {{block head}}
 <style>
 	.container {
@@ -28,10 +27,10 @@
 {{end}}
 
 <div class="container text-center">
-	<form class="login" method="get" action="{{=URL('auth','chooseGroup')}}">
+	<form class="login" method="get" action="{{=URL('chooseGroup')}}">
 		<h1>Guest Sign In</h1>
 		<input type="text" class="form-input" name="auth" placeholder="Personal Auth Token">
-		<input type="text" class="form-input" name="botID" placeholder="Bot ID (optional)" style="margin-bottom: 10px;"> <br>
+		<br>
 
 		<button type="submit" class="btn btn-lg btn-info">Submit</button>
 	</form>

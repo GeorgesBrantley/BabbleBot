@@ -4,19 +4,18 @@
     {{ if auth == True:}}
     <h1>Select Group</h1>
     <br>
-    <form method="get" action="{{=URL('getComments')}}">
-        <!-- The user will select their group     -->
-        <select name="groupID">
-            <option name="groupID" value="">Choose a Group</option>
+    
+    <table class="table table-striped table-bordered">
+        <tbody>
             {{for group in groups:}}
-                <option name="groupID" value="{{=group['group_id']}}">{{=group['name']}}</option>
+            <tr>
+                <td>{{=group['name']}}</td>
+                <td><a class="btn btn-outline-primary btn-block" href="{{=URL('getComments', vars=dict(groupID=group['group_id']))}}">Select</a></td>
+            </tr>
             {{pass}}
-        </select>
-            <!-- I really should have proper CSS to space everything properly, but this will do for now -->
-        <br> <br>
-        <button type="submit" class="btn btn-lg btn-primary">Select</button>
-    </form>
-    {{ else:}}
+        </tbody>
+    </table>
+    {{else:}}
     <!-- INPUT BAD AUTH RESPONSE HERE -->
     <h1>
         Bad Authentication Token Inputed
