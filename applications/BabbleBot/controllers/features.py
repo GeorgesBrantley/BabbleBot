@@ -158,7 +158,7 @@ def mostLikedComments():
     x = 0
     summedComments = []
     for k,v in sorted(likedCommentsDict.items(), key=lambda x:x[1][1], reverse=True):
-        richResponse += v[0].encode('utf-8') +  str(v[1])
+        richResponse += v[2].encode('utf-8') + '('+str(v[1])+" Likes): " + v[0].encode('utf-8') +  '\n'
         summedComments.append([v[2],v[1],v[0]])
         x += 1
         if x > 9:
@@ -172,7 +172,7 @@ def mostUsedWord():
     if sWord == '' or sWord == None:
         return dict(w=0)
     userDict = groupMeFeaturesRonak.mostUsedWord(session.dictComments, session.translator,sWord)
-    richResponse = 'Amount of Times Users have Said "' +sWord+'":\n'
+    richResponse = 'Amount of Times Users have Said "' +sWord+'":\n\n'
     totalCount = 0 # The total amount of times a word has been said.
     for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
         richResponse += k + ' has said it ' + str(v) + ' times!\n'

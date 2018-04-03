@@ -96,11 +96,11 @@ def userMostLikedComments():
     personID = request.vars.id
     name = session.translator[personID]
     userDict = groupMeFeatures.getMostLikedComments(session.dictComments, session.translator, personID)
-    richResponse = 'Top 10 Most Liked Comments:\n\n'
+    richResponse = name + '\'s Top 10 Most Liked Comments:\n\n'
     x = 0
     summedComments = []
     for k,v in sorted(userDict.items(), key=lambda x:x[1][1], reverse=True):
-        richResponse += v[0].encode('utf-8') +  str(v[1])
+        richResponse +=  str(v[1]) + ' Likes: ' + v[0].encode('utf-8') +  '\n\n'
         summedComments.append([v[0],v[1]])
         x += 1
         if x > 9:
