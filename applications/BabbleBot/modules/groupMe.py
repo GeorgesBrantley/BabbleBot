@@ -18,6 +18,14 @@ def checkValidAuth(auth):
     else:
         return False
 
+def checkInput(input):
+    illegalChars = '-\'\"<>\{\}\[\];'
+    if len(input) <= 0 or len(input) > 60:
+        return False
+    if any((c in illegalChars) for c in input):
+        return False
+    return True
+
 def checkValidGroupID(auth,groupID):
     # checks if groupID is legit
     output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"?token=" + auth)
@@ -100,16 +108,19 @@ def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
         allComments = {}
         beforeID = ''
         firstID = ''
-        for x in range(maxCom,0,-1):
-            output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"/messages?token="+auth+";limit=1;before_id=" + beforeID)
+        x = maxCom
+        #for x in range(maxCom,0,-1):
+        while x > 0:
+            output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"/messages?token="+auth+";limit=100;before_id=" + beforeID)
             output = output.json()
             #update beforeID
             for y in output['response']['messages']:
                 if beforeID == '':
                     firstID = y['id']
                 beforeID = y['id']
-            #populate the dictionary
-            allComments[x] = json.dumps(output['response']['messages'][0])
+                #populate the dictionary
+                allComments[x] = json.dumps(y)
+                x -= 1
             #update last count
         # all comments in the DICT
         # Stores the last comment (most recent posted) 's ID. for dif equations
@@ -117,6 +128,7 @@ def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
         allComments['LASTCOUNT'] = maxCom #stores the max comment values
         # write Dict to FILE! NO ORDER (by ID though)
         json.dump(allComments,writer)
+        
         #subprocess.check_output("cat GroupMeDir/39425744gbrantlepurdue.edu > GroupMeDir/test22", shell = True)
         # ENCRYPT
         #fileName = groupID + email
@@ -135,19 +147,24 @@ def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
         beforeID = ''
         firstID = ''
         newComments = {}
-        for x in range(maxCom,oldMax,-1): # Goes from New MAX comments, to the old max
-            output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"/messages?token="+auth+";limit=1;before_id=" + beforeID)
+        #for x in range(maxCom,oldMax,-1): # Goes from New MAX comments, to the old max
+        x = maxCom
+        while x > oldMax:
+            output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"/messages?token="+auth+";limit=100;before_id=" + beforeID)
             output = output.json()
             for y in output['response']['messages']:
                 if beforeID == '':
                     firstID = y['id']
                 beforeID = y['id']
+                if beforeID == lastID:
+                    # We caught up! Do not add this to New Comments
+                    break
+                else:
+                    # Catching up... add to new Comments
+                    newComments[x] = json.dumps(y)
+                    x -= 1
             if beforeID == lastID:
-                # We caught up! Do not add this to New Comments
                 break
-            else:
-                # Catching up... add to new Comments
-                newComments[x] = json.dumps(output['response']['messages'][0])
         # NewComments now is a dict of new comments, need to join with comments in file.
 
         # Read comments in file, add to new Comments

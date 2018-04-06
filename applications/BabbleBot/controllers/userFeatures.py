@@ -20,6 +20,8 @@ def main():
     return dict(p=personID, group = session.groupName, n = name, numComs=numComs, likesGiven=likesGiven, likesRec=likesRec, ratio=ratio, rResponse = richResponse)
 
 def userMarkov():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     personID = request.vars.id
     response = groupMeFeatures.createMarkChain(personID,10,session.dictComments)
     richR = []
@@ -28,22 +30,30 @@ def userMarkov():
     return dict(r=response, name = session.translator[personID], rich = richR)
 
 def userLikesGiven():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     personID = request.vars.id
     response = groupMeFeatures.mostGivingUsers(session.dictComments,session.translator,personID)
     richResponse = session.translator[personID] + " Has Liked " + str(response) + " Other Messages!"
     return dict(r=response, name =session.translator[personID], rich = richResponse)
 
 def userCountComments():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     personID = request.vars.id
     response = groupMeFeatures.countCommentsPerUser(session.dictComments,session.translator, personID)
     return dict(r=response, name = session.translator[personID])
 
 def userGetLikesPerComment():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     personID = request.vars.id
     response = groupMeFeatures.createMarkChain(session.dictComments,session.translator,personID)
     return dict(r=response)
 
 def userSpecificLikes():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     # Likes Specifically Given, CRUSHES
     personID = request.vars.id
     name = session.translator[personID]
@@ -55,6 +65,8 @@ def userSpecificLikes():
     return dict(m=userDict, n = name,rich = richResponse)
 
 def userSpecificLikesRec():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     # Likes Recieved, ADMIRERS
     personID = request.vars.id
     name = session.translator[personID]
@@ -66,6 +78,8 @@ def userSpecificLikesRec():
     return dict(m=userDict, n = name,rich = richResponse)
 
 def userMedals():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     personID = request.vars.id
     name = session.translator[personID]
     numUsers = len(groupMe.getListOfUsers(session.myAuth,session.myGroupID))
@@ -79,6 +93,8 @@ def userMedals():
     return dict(m=userDict, r=medals, n=name, rich = richResponse)
 
 def userCurseWords():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     curseWords = groupMeFeaturesMatt.getCommonCurseWords(session.dictComments, session.translator, request.vars.id)
     richResponse = 'Most common curse words in group:\n\n'
     count = 0
@@ -92,6 +108,8 @@ def userCurseWords():
     return dict(u=session.translator[request.vars.id], m=curseWords, rich = richResponse)
 
 def userMostLikedComments():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     # user's most liked comments
     personID = request.vars.id
     name = session.translator[personID]

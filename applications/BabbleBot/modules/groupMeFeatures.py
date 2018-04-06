@@ -392,26 +392,73 @@ def getMostLikedComments(comments, translator, user = 'ALL'):
             # global most liked comments
             if user == 'ALL' and v['sender_type'] == 'user':
                 output = v['text']
-                if output == None or output == 'None' or output == '':
-                    try:
-                        output = v['attachments'][0]['url']
-                    except:
-                        output = 'media Link'
-#                 output += ''
-                likedCommentsDict[v['id']] = [output, len(v['favorited_by']),v['sender_id']]
+                try:
+                    output2 = v['attachments'][0]['url']
+                    if output == None or output == 'None' or output == '':
+                        likedCommentsDict[v['id']] = [output2, len(v['favorited_by']),v['sender_id']]
+                    elif output2 != None and output2 != '' and output != output2:
+                        likedCommentsDict[v['id']] = [output + ' -- ' + output2, len(v['favorited_by']),v['sender_id']]
+                    else:
+                        likedCommentsDict[v['id']] = [output, len(v['favorited_by']),v['sender_id']]
+                except:
+                    likedCommentsDict[v['id']] = [output, len(v['favorited_by']),v['sender_id']]
+
             # individual most liked comments
             elif v['user_id'] == user:
                 output = v['text']
-                if output == None or output == 'None' or output == '':
-                    try:
-                        output = v['attachments'][0]['url']
-                    except:
-                        output = 'media'
-#                 output += ''
-                likedCommentsDict[v['id']] = [output, len(v['favorited_by'])]
+                try:
+                    output2 = v['attachments'][0]['url']
+                    if output == None or output == 'None' or output == '':
+                        likedCommentsDict[v['id']] = [output2, len(v['favorited_by'])]
+                    elif output2 != None and output2 != '' and output != output2:
+                        likedCommentsDict[v['id']] = [output + ' -- ' + output2, len(v['favorited_by'])]
+                    else:
+                        likedCommentsDict[v['id']] = [output, len(v['favorited_by'])]
+                except:
+                    likedCommentsDict[v['id']] = [output, len(v['favorited_by'])]
         except:
             pass
     if user == 'ALL':
         for k,val in likedCommentsDict.iteritems():
             val[2] = translator[val[2]]
     return likedCommentsDict
+
+def getSexismTracker(comments, translator, genderDict):
+    userDict = {}
+    ratioDict = {}
+    sumMales = 0
+    sumFemales = 0
+    for k, val in somments.iteritems():
+        try:
+            v = json.loads(val)
+            if v['sender_type'] == 'user':
+                for x in v['favorited_by']:
+                    # gender check
+                    if x in userDict:
+                        if genderDict[x] == 'male':
+                            userDict[x][0] += 1
+                        else:
+                            userDict[x][1] += 1
+                    else:
+                        if genderDict[x] == 'male':
+                            userDict[x] = [1, 0]
+                        else:
+                            userDict[x] = [0, 1]
+        except:
+            pass
+    # calculate number of users per gender
+    for k, val in genderDict.iteritems():
+        if val == 'male':
+            sumMales += 1
+        else:
+            sumFemales += 1
+    # expected ratio
+    ratio = sumMales/sumFemales
+    # actual ratio
+    
+    # translate userID to names
+    namedDict = {}
+    for k, val in ratioDict.iteritems():
+        if k in translator:
+            namedDict[translator[k]] = val
+    return namedDict

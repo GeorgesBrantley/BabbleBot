@@ -4,15 +4,15 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # this is the main application menu add/remove items as required
 # ----------------------------------------------------------------------------------------------------------------------
-import groupMe
 
-response.menu = [
-    ('Home', False, URL('core', 'featureList'), []),
+# The menu items will only display if the user is logged in
+if session.myAuth:
+    response.menu = [
+        ('Home', False, URL('core', 'featureList'), []),
+#         ('Profiles', False, URL('core', 'featureList'), []),
+        ('My Groups', False, URL('auth','chooseGroup'), [])
+    ]
 
-    ('Profiles', False, URL('core', 'featureList'), [])
-]
-
-response.menu.append(('My Groups', False, URL('auth','chooseGroup'), []))
 
 # ----------------------------------------------------------------------------------------------------------------------
 # provide shortcuts for development. you can remove everything below in production

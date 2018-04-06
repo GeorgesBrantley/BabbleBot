@@ -21,7 +21,7 @@
             <tr>
                 <td>{{=group['name']}}</td>
                 <td>{{=newComs[y][2]}}</td>
-                <td>{{p=newComs[y][2]}}{{=round(p*1.0/100/6,1)}} Minutes</td>
+                <td>{{p=newComs[y][2]}}{{=round(p*1.0/500/60,1)}} Minutes</td>
                 {{y+=1}}
                 <td><a class="btn btn-outline-primary btn-block" href="{{=URL('core','downloadComments', vars=dict(groupID=group['group_id']))}}">Update</a></td>
             </tr>
@@ -29,8 +29,8 @@
         </tbody>
     </table>
     <p>
-        <center>After Selecting a Group, It Will Take a Few Minutes to Update that Group's Information</center>
-        <center>For Every 100 New Comments, it will Take Around 10 Seconds to Update!</center>
+        <center>After Selecting a Group, It Will Take a Moment to Update that Group's Information</center>
+        <center>BabbleBot updates at around 500 Comments Per Second</center>
         <center>Please Be Patient!</center>
     </p>
     {{else:}}

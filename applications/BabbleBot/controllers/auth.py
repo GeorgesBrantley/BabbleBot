@@ -26,6 +26,8 @@ def checkLogin():
     email = request.vars.email
     passwd = request.vars.passwd
     # TODO CHECK INPUT FOR MALICIOUS CODE
+    if not groupMe.checkInput(email) or not groupMe.checkInput(passwd):
+        redirect(URL('login'))
     # check if email in database
     user = pDB.getUser(email)
     if user == False:
@@ -67,6 +69,8 @@ def checkRegister():
     passwd = request.vars.passwd
     inputAuth = request.vars.inAuth
     # SANTIZED TODO
+    if not groupMe.checkInput(email) or not groupMe.checkInput(passwd) or not groupMe.checkInput(inputAuth):
+        redirect(URL('register'))
     # Check if email taken in database
     # Check if password is correct size
     # check if auth is working (groupMe.py)
@@ -112,19 +116,47 @@ def checkRegister():
 
 def guest(): return dict()
 
+def checkGuest():
+    inputAuth = request.vars.auth
+
+    if not groupMe.checkInput(inputAuth):
+        redirect(URL('guest'))
+    # check if auth is working (groupMe.py)
+    if groupMe.checkValidAuth(inputAuth):
+        session.myAuth = inputAuth[:inputAuth.find(' ')]
+        redirect(URL('chooseGroupGuest'))
+    else:
+        redirect(URL('guest'))
+    return dict(success='Bad Auth')
+
+
+def logOut():
+    session.clear()
+    redirect(URL('login'))
+
 def chooseGroup():
 
     # GET LIST OF GROUPS!
     groups = groupMe.getAllGroups(session.myAuth)
     newComs = []
     for g in groups:
+        flag = False # if encrypting is necessary
         try:
             pDB.decrypt(g['group_id']+session.email,session.uKey)
+            flag = True
         except:
             pass
         newComs.append(groupMe.fileInfo(session.myAuth,g['group_id'],session.email,session.uKey))
-        try:
-            pDB.encrypt(g['group_id']+session.email,session.uKey)
-        except:
-            pass
+        if flag == True:
+            try:
+                pDB.encrypt(g['group_id']+session.email,session.uKey)
+            except:
+                pass
+    return dict(groups=groups, auth=session.myAuth,newComs=newComs, success=True)
+
+def chooseGroupGuest():
+    groups = groupMe.getAllGroups(session.myAuth)
+    newComs = []
+    for g in groups:
+        newComs.append(groupMe.fileInfo(session.myAuth,g['group_id'],session.email,''))
     return dict(groups=groups, auth=session.myAuth,newComs=newComs, success=True)

@@ -50,69 +50,78 @@
     <br>
     
     <h2 class="text-center">Global Statistics and Rankings</h2>
-    
-<!--     <div class="input-group">
-        <input type="text" class="form-control" name="w" placeholder="word search" >
-        <div class="input-group-append">
-           <a class="btn btn-outline-info" href="{{=URL('features','mostUsedWord')}}">Search</a>
-        </div>
-    </div> -->
-    
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMarkov')}}">
+
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMarkov')}}" 
+       data-toggle="tooltip" data-placement="top" title="Randomly generated sentences that you can post to your group.">
         Group Markov Generator
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostLikedComments')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostLikedComments')}}"
+       data-toggle="tooltip" data-placement="top" title="The top 10 most liked comments.">
         Ranking of Top 10 Comments by Likes
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesRecievedPerUser')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesRecievedPerUser')}}"
+       data-toggle="tooltip" data-placement="top" title="See everyone ranked by how many likes they've received.">
         Ranking of Members by Likes Recieved
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostGivingUsers')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostGivingUsers')}}"
+       data-toggle="tooltip" data-placement="top" title="See everyone ranked by how many likes they gave out.">
         Ranking of Members by Likes Given
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numComments')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numComments')}}"
+       data-toggle="tooltip" data-placement="top" title="See everyone ranked by how many times they've posted.">
         Ranking of Members by Number of Comments
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesPerComment')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','likesPerComment')}}"
+       data-toggle="tooltip" data-placement="top" title="See everyone ranked by the average likes per post.">
         Ranking of Members by Likes Per Comment
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMedals')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','groupMedals')}}"
+       data-toggle="tooltip" data-placement="top" title="See what 'medals' were 'awarded' based on the number of likes for a specific post.">
         Ranking of Members by Medals
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}"
+       data-toggle="tooltip" data-placement="top" title="Find out how many times someone has kicked people (bullies) and who's been kicked (victims).">
         Rankings Of Bullies and Victims
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','specificLikesRec')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','specificLikesRec')}}"
+       data-toggle="tooltip" data-placement="top" title="Find out how many likes a group member has received from others.">
         Members' Secret Admirers
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','specificLikes')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','specificLikes')}}"
+       data-toggle="tooltip" data-placement="top" title="Find out how many likes a group member gave to another.">
         Members' Secret Crushes
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}"
+       data-toggle="tooltip" data-placement="top" title="Find out who's changed their name.">
         Past Names of Members in {{=name}}
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','curseWords')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','curseWords')}}"
+       data-toggle="tooltip" data-placement="top" title="Shows how many times people have cursed in your group.">
         {{=name}}'s Favorite Curse Words
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostUsedWord')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostUsedWord')}}"
+       data-toggle="tooltip" data-placement="top" title="Find out how many times a particular word has been said in the group.">
         Word Counter
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','sexismTracker')}}">
         Rank Members by Sexism WIP
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
         List Members Best Friends WIP
     </a>
     <br>
-    
+
     <h2 class="text-center">Group Tools</h2>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">
-        Pull for New Comments WIP
+    <a class="btn btn-outline-info btn-block" href="{{=URL('updateGroup')}}">
+        Update for New Comments
     </a>
-    <a class="btn btn-outline-danger btn-block" href="{{=URL('','groupMarkov')}}">
-        Reset all Comments WIP
+    <a class="btn btn-outline-info btn-block" href="{{=URL('')}}">
+        Smart Update of Past Comments
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('','groupMarkov')}}">
-        Smart Reset of Comments WIP
+        <a class="btn btn-outline-danger btn-block" href="{{=URL('bigUpdate')}}">
+        Update All Comments ({{=round(nComs*1.0/500/60,1)}} Minutes)
+    </a> <br>
+        <a class="btn btn-outline-danger btn-block" href="{{=URL('delGroup')}}">
+        Delete All Group Data
     </a>
 </div>

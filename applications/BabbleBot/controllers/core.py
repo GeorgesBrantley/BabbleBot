@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import groupMe
 import groupMeFeatures
-import thread
 import time
 import json
 import pDB
@@ -9,7 +8,7 @@ import pDB
 # Get information from Guest
 def guestSignIn():
     #Form in html
-    return dict()
+    redirect(URL('auth','index'))
 
 # Compute information from guestSignIn
 def guestCheck():
@@ -48,15 +47,18 @@ def downloadComments():
     # Get GroupID, fileFound, Max Comments, groupName
     groupID = request.vars.groupID
     #OPEN AND CLOSE
+    flag = False # IF FILE EXISTS
     try:
         pDB.decrypt(groupID+session.email,session.uKey)
+        flag = True
     except:
         pass
     fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, groupID,session.email,session.uKey)
-    try:
-        pDB.encrpyt(groupID+session.email,session.uKey)
-    except:
-        pass
+    if fileFound:
+        try:
+            pDB.encrypt(groupID+session.email,session.uKey)
+        except:
+            pass
     session.myGroupID = groupID
     session.fileFound = fileFound
     session.maxComments = totalComments
@@ -64,10 +66,11 @@ def downloadComments():
     session.groupName =  name
     # get comments!
     fileName = groupID + session.email
-    try:
-        pDB.decrypt(fileName,session.uKey)
-    except:
-        pass
+    if fileFound:
+        try:
+            pDB.decrypt(fileName,session.uKey)
+        except:
+            pass
     session.dictComments = groupMe.downloadFromAPI(session.myAuth, session.myGroupID,session.fileFound, session.maxComments, session.email, session.uKey)
     pDB.encrypt(fileName,session.uKey)
 
@@ -107,11 +110,10 @@ def postToGroupMe():
         # Make Bot, Add it
         # GET BOTID
          redirect(URL('botPrompt', vars=dict(msg=message)))
-    
+
     works = groupMe.postToGroupMe(session.myBotID,message)
     return dict(w=works)
 
-    
 
 def makeBot():
     # Get Message
@@ -123,9 +125,70 @@ def makeBot():
     session.myBotID = botID
     pDB.makeGroupBot(session.myGroupID, session.myBotID)
     redirect(URL('postToGroupMe', vars=dict(message=message)))
-    
+
 def botPrompt():
     #Form in html
     msg = ''
     msg = request.vars.msg
     return dict(msg = msg)
+
+def updateGroup():
+    # Get GroupID, fileFound, Max Comments, groupName
+    groupID = session.myGroupID
+    #OPEN AND CLOSE
+    pDB.decrypt(groupID+session.email,session.uKey)
+    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, groupID,session.email,session.uKey)
+    pDB.encrypt(groupID+session.email,session.uKey)
+
+    session.maxComments = totalComments
+    name = groupMe.getGroupName(session.myAuth, groupID)
+    session.groupName =  name
+    # get comments!
+    fileName = groupID + session.email
+    pDB.decrypt(fileName,session.uKey)
+    session.dictComments = groupMe.downloadFromAPI(session.myAuth, session.myGroupID,session.fileFound, session.maxComments, session.email, session.uKey)
+    pDB.encrypt(fileName,session.uKey)
+    translate = {}
+    for k,val in session.dictComments.iteritems():
+        try:
+            v = json.loads(val)
+            translate[v['user_id']] = str(v['name'].encode('utf-8'))
+        except:
+            pass
+    session.translator = translate
+    redirect(URL('featureList'))
+
+def bigUpdate():
+    # removes files, and then redownloads
+    pDB.refreash(session.myGroupID + session.email)
+    session.dictComments = {}
+    session.fileFound = False
+    session.maxComments = 0
+    session.translator = {}
+    # Get GroupID, fileFound, Max Comments, groupName
+    groupID = request.vars.groupID
+    #OPEN AND CLOSE
+    fileFound,totalComments,newComments = groupMe.fileInfo(session.myAuth, session.myGroupID,session.email,session.uKey)
+    session.fileFound = fileFound
+    session.maxComments = totalComments
+    session.dictComments = groupMe.downloadFromAPI(session.myAuth, session.myGroupID,session.fileFound, session.maxComments, session.email, session.uKey)
+    fileName = session.myGroupID + session.email
+    pDB.encrypt(fileName,session.uKey)
+    translate = {}
+    for k,val in session.dictComments.iteritems():
+        try:
+            v = json.loads(val)
+            translate[v['user_id']] = str(v['name'].encode('utf-8'))
+        except:
+            pass
+    session.translator = translate
+    redirect(URL('featureList'))
+    
+def delGroup():
+    pDB.refreash(session.myGroupID + session.email)
+    session.dictComments = {}
+    session.fileFound = False
+    session.myGroupID = ''
+    session.maxComments = 0
+    session.translator = {}
+    redirect(URL('auth','chooseGroup'))
