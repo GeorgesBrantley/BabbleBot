@@ -1,0 +1,37 @@
+{{extend 'layout.html'}}
+<div class="container text-center">
+    <h1>Sexism Tracker</h1>
+    <h2>Start by assigning everyone's gender</h2>
+
+    <form method="post" id="genders" action="{{=URL('sexismTracker')}}">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Gender</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {{for x in userNames: }}
+                <tr>
+                    <td>{{=x[0]}}</td>
+                    <td>
+                        <select class="form-control" name="{{=x[1]}}">
+                            <option>--Choose an option--</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </td>
+                </tr>
+                {{pass}}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-outline-primary btn-block">Submit Genders</button>
+    </form>
+    
+    <br>
+    <a class="btn btn-outline-secondary btn-block" href="{{=URL('core','featureList')}}">
+        Return to Group Page
+    </a>
+</div>

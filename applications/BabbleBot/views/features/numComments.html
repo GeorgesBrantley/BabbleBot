@@ -19,6 +19,11 @@
             {{pass}}
         </tbody>
     </table>
+    <p style="text-align:center;"><img src={{=graphLink}}></p>
+    
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=graphLink))}}">
+        Post Graph To GroupMe
+    </a>
     <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
         Post Rankings To GroupMe
     </a>

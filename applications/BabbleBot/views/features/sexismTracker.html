@@ -1,3 +1,36 @@
 {{extend 'layout.html'}}
-<h1>This is the features/sexismTracker.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+<div class="container text-center">
+    <h1>BabbleBot's Sexism Tracker</h1>
+    <h2>How Sexist are '{{=gn}}' Users?</h2>
+    <br>
+    <p>Users' Liking habits are compared to the Ratio of Comments by Males compared to Comments by Female</p>
+    <p>{{=gn}}'s Posting Habits are {{=r}} Male Comments to Female Comments</p>
+    <br>
+    <p>The More Positive, the more likely to like only Comments made by Males</p>
+    <p>The More Negative, the more likely to like only Comments made by Females</p>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Sexism Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+           {{for k,v in sorted(s.items(), key=lambda x: x[1][3], reverse=True): }}
+            <tr style="background-color: {{=v[4]}};">
+                <td>{{=k}}</td>
+                <td>{{=v[3]}}</td>
+            </tr>
+            {{pass}}
+        </tbody>
+    </table>
+    <p>If a Group Member is not showing up, They have not liked messages by both Sexes.</p>
+
+    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        Post Sexism Results To GroupMe
+    </a>
+
+    <a class="btn btn-outline-secondary btn-block" href="{{=URL('core','featureList')}}">
+        Return to Group Page
+    </a>
+</div>

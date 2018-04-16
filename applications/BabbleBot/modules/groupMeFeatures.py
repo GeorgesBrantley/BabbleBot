@@ -425,40 +425,117 @@ def getMostLikedComments(comments, translator, user = 'ALL'):
 
 def getSexismTracker(comments, translator, genderDict):
     userDict = {}
-    ratioDict = {}
     sumMales = 0
     sumFemales = 0
-    for k, val in somments.iteritems():
+    for k, val in comments.iteritems():
         try:
             v = json.loads(val)
             if v['sender_type'] == 'user':
-                for x in v['favorited_by']:
-                    # gender check
-                    if x in userDict:
-                        if genderDict[x] == 'male':
-                            userDict[x][0] += 1
+                # check gender of sender and calculate total comments per gender
+                if genderDict[v['sender_id']] == 'male':
+                    sumMales += 1
+                else:
+                    sumFemales += 1
+                # keep track of everyones # of comments
+                if v['sender_id'] in userDict:
+                    userDict[v['sender_id']][2] += 1
+                else:
+                    userDict[v['sender_id']] = [0,0,1]
+                # check gender of 'likers' put into userDict
+                for person in v['favorited_by']:
+                    if person in userDict:
+                        if genderDict[v['sender_id']] == 'male':
+                            userDict[person][0] += 1
                         else:
-                            userDict[x][1] += 1
+                            userDict[person][1] += 1
                     else:
-                        if genderDict[x] == 'male':
-                            userDict[x] = [1, 0]
+                        if genderDict[v['sender_id']] == 'male':
+                            userDict[person] = [1, 0, 0]
                         else:
-                            userDict[x] = [0, 1]
+                            userDict[person] = [0, 1, 0]
         except:
             pass
-    # calculate number of users per gender
-    for k, val in genderDict.iteritems():
-        if val == 'male':
-            sumMales += 1
+    # calculate ratio of comments by males/females
+    if sumFemales == 0 or sumMales == 0:
+        return False
+
+    ratio = sumMales * 1.0 / sumFemales
+    # calculate actual ratio (per person) and give result
+    resultDict = {}
+    # result Dict -> list of users by ID (key)
+    # [male likes, female likes, personal ratio, scaled ratio]
+    for person,likes in userDict.iteritems():
+        if likes[0] == 0 or likes[1] == 0:
+            pass
         else:
-            sumFemales += 1
-    # expected ratio
-    ratio = sumMales/sumFemales
-    # actual ratio
-    
+            personalRatio = likes[0]*1.0/likes[1]
+            # Make sure their comments are not used against them
+            specRatio = ratio
+            try:
+                if genderDict[person] == 'male':
+                    specRatio = (sumMales-likes[2]) *1.0/sumFemales
+                else:
+                    specRatio = sumMales*1.0/(sumFemales - likes[2])
+            except:
+                specRatio = ratio
+            scaledRatio = round(personalRatio - specRatio,2)
+            if scaledRatio > 8:
+                color = '#641E16'
+            elif scaledRatio > 4:
+                color = '#922B21'
+            elif scaledRatio > 2:
+                color = '#C0392B'
+            elif scaledRatio > 1:
+                color = '#D98880'
+            elif scaledRatio > .5:
+                color = '#E6B0AA'
+            elif scaledRatio > 0:
+                color = '#F2D7D5'
+            elif scaledRatio == 0:
+                color = '#FFFFFF'
+            elif scaledRatio > -.5:
+                color = '#F4ECF7'
+            elif scaledRatio > -1:
+                color = '#E8DAEF'
+            elif scaledRatio > -2:
+                color = '#8E44AD'
+            elif scaledRatio > -4:
+                color = '#8E44AD'
+            elif scaledRatio > -8:
+                color = '#6C3483'
+            else:
+                color = '#4A235A'
+            resultDict[person] = [likes[0], likes[1], personalRatio,scaledRatio,color]
     # translate userID to names
+
     namedDict = {}
-    for k, val in ratioDict.iteritems():
+    for k, val in resultDict.iteritems():
         if k in translator:
             namedDict[translator[k]] = val
-    return namedDict
+    ratio = round(ratio,2)
+    return [namedDict,ratio]
+
+def getAllComments(comments, translator, user = 'ALL'):
+    commentsDict= {}
+    for k, val in comments.iteritems():
+        try:
+            v = json.loads(val)
+            # global all comments
+            if user == 'ALL' and v['sender_type'] == 'user':
+                output = v['text']
+                try:
+                    output2 = v['attachments'][0]['url']
+                    if output == None or output == 'None' or output == '':
+                        commentsDict[v['id']] = [v['sender_id'], output2, len(v['favorited_by'])]
+                    elif output2 != None and output2 != '' and output != output2:
+                        commentsDict[v['id']] = [v['sender_id'], output + ' -- ' + output2, len(v['favorited_by'])]
+                    else:
+                        commentsDict[v['id']] = [v['sender_id'], output, len(v['favorited_by'])]
+                except:
+                    commentsDict[v['id']] = [v['sender_id'], output, len(v['favorited_by'])]
+        except:
+            pass
+    for k, val in commentsDict.iteritems():
+        if val[0] in translator:
+            val[0] = translator[val[0]]
+    return commentsDict

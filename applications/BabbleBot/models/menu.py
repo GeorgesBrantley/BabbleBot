@@ -8,9 +8,9 @@
 # The menu items will only display if the user is logged in
 if session.myAuth:
     response.menu = [
-        ('Home', False, URL('core', 'featureList'), []),
-#         ('Profiles', False, URL('core', 'featureList'), []),
-        ('My Groups', False, URL('auth','chooseGroup'), [])
+        ('All Groups', False, URL('auth','chooseGroup'), []),
+        ('Current Group', False, URL('core', 'featureList'), []),
+        ('About', False, URL('auth', 'about'), [])
     ]
 
 

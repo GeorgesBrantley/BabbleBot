@@ -1,0 +1,42 @@
+{{extend 'layout.html'}}
+<div class="container">
+    <h1 class="text-center">Group Member's Best Friends</h1>
+    <h2 class="text-center">Computed based on likes given, likes received, and @'s</h2>
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Best Friend</th>
+                <th>Friendship Score</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{count = 0}}
+        {{for key, value in sorted(f.iteritems(), key=lambda x: x[1][1], reverse=True):}}
+           
+            {{list = value}}
+            <tr>
+                <td>{{=key}}</td>
+                <td>{{=list[0]}}</td>
+                <td>{{=list[1]}}</td>
+            </tr>
+            {{count += 1}}
+        </tbody>
+      {{pass}}
+    {{pass}}
+    </table>
+    {{pass}}
+
+
+
+
+     <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
+        Post Rankings To GroupMe
+    </a>
+
+    <a class="btn btn-outline-secondary btn-block" href="{{=URL('core','featureList')}}">
+        Return to Group Page
+    </a>
+</div>

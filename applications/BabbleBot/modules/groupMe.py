@@ -92,14 +92,42 @@ def getGroupName(auth,id):
 # Gets all the groups a user is in
 def getAllGroups(auth):
     # the omit=memberships will exclude the list of all the group members, which is good for people in large groups.
-    output = requests.get("https://api.groupme.com/v3/groups?token=" + auth + "&omit=memberships")
+    output = requests.get("https://api.groupme.com/v3/groups?token=" + auth + "&omit=memberships&per_page=20")
     output = output.json()
     groups = output['response']
     return groups
 
 def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
-
-    if isFile == False:
+    if isFile == False and email is 'Guest':
+        #No File, do not create file
+        allComments = {}
+        beforeID = ''
+        firstID = ''
+        x = maxCom
+        # DICTIONARY SIZE LIMIT (20k Comments!)
+        EStop = True
+        if x - 20000 > 0:
+            Ebreak = x-20000
+        else:
+            Ebreak = 0
+        while x > 0 and EStop:
+            output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"/messages?token="+auth+";limit=100;before_id=" + beforeID)
+            output = output.json()
+            print output
+            #update beforeID
+            for y in output['response']['messages']:
+                if beforeID == '':
+                    firstID = y['id']
+                beforeID = y['id']
+                #populate the dictionary
+                allComments[x] = json.dumps(y)
+                x -= 1
+                # EMERGENCY BREAK?
+                if x == Ebreak:
+                    EStop = False
+                    break
+        return allComments
+    elif isFile == False:
         # if No File, download EVERYTHING!
         # create file
         writer = open("GroupMeDir/" + groupID + email,"w+")
@@ -109,8 +137,13 @@ def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
         beforeID = ''
         firstID = ''
         x = maxCom
-        #for x in range(maxCom,0,-1):
-        while x > 0:
+        # DICTIONARY SIZE LIMIT (20k Comments!)
+        EStop = True
+        if x - 20000 > 0:
+            Ebreak = x-20000
+        else:
+            Ebreak = 0
+        while x > 0 and EStop:
             output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"/messages?token="+auth+";limit=100;before_id=" + beforeID)
             output = output.json()
             #update beforeID
@@ -121,6 +154,10 @@ def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
                 #populate the dictionary
                 allComments[x] = json.dumps(y)
                 x -= 1
+                # EMERGENCY BREAK?
+                if x == Ebreak:
+                    EStop = False
+                    break
             #update last count
         # all comments in the DICT
         # Stores the last comment (most recent posted) 's ID. for dif equations
@@ -128,7 +165,7 @@ def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
         allComments['LASTCOUNT'] = maxCom #stores the max comment values
         # write Dict to FILE! NO ORDER (by ID though)
         json.dump(allComments,writer)
-        
+
         #subprocess.check_output("cat GroupMeDir/39425744gbrantlepurdue.edu > GroupMeDir/test22", shell = True)
         # ENCRYPT
         #fileName = groupID + email
@@ -147,9 +184,15 @@ def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
         beforeID = ''
         firstID = ''
         newComments = {}
-        #for x in range(maxCom,oldMax,-1): # Goes from New MAX comments, to the old max
+
         x = maxCom
-        while x > oldMax:
+        # DICTIONARY SIZE LIMIT (20k Comments!)
+        EStop = True
+        if x - 20000 > 0:
+            Ebreak = x-20000
+        else:
+            Ebreak = 0
+        while x > oldMax and EStop:
             output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"/messages?token="+auth+";limit=100;before_id=" + beforeID)
             output = output.json()
             for y in output['response']['messages']:
@@ -163,12 +206,17 @@ def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
                     # Catching up... add to new Comments
                     newComments[x] = json.dumps(y)
                     x -= 1
+                    if x == Ebreak:
+                        EStop = False
+                        break
             if beforeID == lastID:
                 break
         # NewComments now is a dict of new comments, need to join with comments in file.
 
         # Read comments in file, add to new Comments
         for x in range(oldMax, 0, -1):
+            if x == Ebreak:
+                break
             oldComment = json.loads(jj[str(x)])
             try:
                 oldComment = oldComment[0]
@@ -188,6 +236,69 @@ def downloadFromAPI(auth,groupID, isFile,maxCom,email,uKey):
         #pDB.encrypt(fileName,uKey)
         return newComments
 
+def smartUpdate(auth,groupID,email):
+    # file exists, get last message timestamp. Go till then
+    writer = open("GroupMeDir/" + groupID + email,"r")
+    jj = json.load(writer)
+
+    ## jj is the json object. need to figure out how to read through it
+    updateStartNum = int(jj['LASTCOUNT']) # the dictionary # of last comment
+    firstCommentID = json.loads(jj[str(updateStartNum)]) # finds the last comment id
+    firstCommentID = str(firstCommentID['id'])
+    updateAmount = 100
+    updateEndNum = None
+    # Make sure start of update isn't negative
+    # Get # to stop at. udpateSTartNum is == to last comment posted and saved
+    if updateStartNum - updateAmount < 1:
+        updateEndNum = 1
+    else:
+        updateEndNum = updateStartNum - updateAmount
+    # get ID to stop at
+
+    beforeID = '' # empty, start at beginning
+    updatedComments = {}
+    x = updateStartNum
+    # Go from NEW COMMENTS to UpdateEndNum
+    # stops when ID of new comment = updateEndNum ID
+    flag = False
+    superFlag = True
+    while superFlag:
+        output = requests.get("https://api.groupme.com/v3/groups/"+groupID+"/messages?token="+auth+";limit=100;before_id=" + beforeID)
+        output = output.json()
+        for y in output['response']['messages']:
+            beforeID = y['id']
+            print y['id'] + ' .' + firstCommentID + '. ' + str(x) + '. ' + str(updateStartNum)
+            # updating up... add to new Comments
+            if flag or str(y['id']) == firstCommentID:
+                flag = True
+                updatedComments[x] = json.dumps(y)
+                x -= 1
+                print str(x) + ' '
+                if x < updateEndNum:
+                    # if smart update is over
+                    superFlag = False
+                    break
+    # NewComments now is a dict of new comments, need to join with comments in file.
+    # Read comments in file, add to new Comments
+    for x in range(updateEndNum-1, 0, -1):
+        oldComment = json.loads(jj[str(x)])
+        try:
+            oldComment = oldComment[0]
+        except:
+            pass
+        updatedComments[x] = json.dumps(oldComment)
+    # Overright JSON file
+    subprocess.check_output("echo '' > GroupMeDir/" + str(groupID)+str(email),shell=True)
+    writer = open("GroupMeDir/" + str(groupID) + str(email), 'w')
+    # all comments in the DICT
+    # Stores the last comment (most recent posted) 's ID. for dif equations
+    updatedComments['LASTID'] = firstCommentID
+    updatedComments['LASTCOUNT'] = updateStartNum #stores the previous last comment #
+    # write Dict to FILE! NO ORDER (by ID though)
+    json.dump(updatedComments,writer)
+    # ENCRYPT
+    #pDB.encrypt(fileName,uKey)
+    return updatedComments
 
 def postToGroupMe(botID, message):
     #Posts to the GroupMe associated with this Bot

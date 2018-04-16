@@ -4,10 +4,14 @@ import groupMeFeaturesRonak
 import groupMeFeatures
 import groupMe
 import operator
+import plotly.plotly as py
+import plotly.graph_objs as go
 
 def sumOfLikesinGroup():
     # Has a corresponding view
     # gets values from Sessions
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     comments = session.dictComments
     # sends values to bigger function in groupMeFeatures.py
     sumLikes = groupMeFeatures.getSumofLikes(comments)
@@ -16,6 +20,8 @@ def sumOfLikesinGroup():
 
 def groupMarkov():
     # Display Markov Chains for entire Group
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     comments = session.dictComments # get comments
     results = groupMeFeatures.createMarkChain('all',10,comments)
     richResponse = []
@@ -25,24 +31,55 @@ def groupMarkov():
 
 
 def likesRecievedPerUser():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     userDict = groupMeFeatures.getLikesPerUser(session.dictComments, session.translator)
     richResponse = 'Member Rankings by Total Likes Recieved:\n\n'
+    names = []
+    values = []
     for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
         richResponse += k + ': ' + str(v) + ' Total Likes Recieved\n'
-    return dict(m=userDict, rich = richResponse)
+        names.append(k)
+        values.append(int(v))
+    fig = {
+    'data': [{'labels': names,
+              'values': values,
+              'text': names,
+              'type': 'pie'}],
+    'layout': {'title': 'Likes Received'}}
+
+    graphLink = py.plot(fig)
+    return dict(m=userDict, rich = richResponse, graphLink = graphLink + '.png')
 
 def numComments():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     coms = session.dictComments
     #id = inout
     #inputId = 19191585
     ans = groupMeFeatures.countCommentsPerUser(coms, session.translator)
     richResponse = 'Number Of Comments Per Member:\n'
+    names = []
+    values = []
     for k,v in sorted(ans.items(), key=lambda x: x[1], reverse=True):
         richResponse += k + ' has ' + str(v) + ' Comments!\n'
+        names.append(k)
+        values.append(int(v))
 
-    return dict(ans=ans, gn = session.groupName, rich = richResponse)
+    fig = {
+    'data': [{'labels': names,
+              'values': values,
+
+              'type': 'pie'}],
+    'layout': {'title': 'Number of comments'}}
+
+    graphLink = py.plot(fig)
+
+    return dict(ans=ans, gn = session.groupName, rich = richResponse, graphLink = graphLink + '.png')
 
 def pastName():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     coms = session.dictComments
     oldNames,newNames = groupMeFeatures.getPastName(coms)
     richRes = "Past Names of Members\n\n"
@@ -53,6 +90,8 @@ def pastName():
     return dict(past = oldNames, future = newNames, rich = richRes)
 
 def numKicked():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     coms = session.dictComments
     kickers,kicked = groupMeFeatures.getNumKicked(coms)
     richV = 'List of Victims (Number of Times They\'ve Been Kicked):\n\n'
@@ -64,20 +103,64 @@ def numKicked():
     return dict(kickers=kickers,kicked=kicked, richVictim=richV, richKicker = richK)
 
 def mostGivingUsers():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     userDict = groupMeFeatures.mostGivingUsers(session.dictComments, session.translator)
     richResponse = 'Member Rankings by Total Likes Given:\n\n'
+    names = []
+    values = []
     for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
         richResponse += k + ': ' + str(v) + ' Total Likes Given\n'
-    return dict(m=userDict, rich = richResponse)
+        names.append(k)
+        values.append(int(v))
+    fig = {
+    'data': [{'labels': names,
+              'values': values,
+              'text': names,
+              'type': 'pie'}],
+    'layout': {'title': 'Likes Given'}}
+
+    graphLink = py.plot(fig)
+    return dict(m=userDict, rich = richResponse, graphLink = graphLink + '.png')
 
 def likesPerComment():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     ratio = groupMeFeatures.getLikesPerComment(session.dictComments,session.translator)
     richResponse = 'Member Rankings by Average Likes Per Comment:\n\n'
+    names = []
+    values = []
     for k,v in sorted(ratio.items(), key=lambda x: x[1], reverse=True):
         richResponse += k + ': ' + str(v) + ' Likes/Comment\n'
-    return dict(m=ratio, rich = richResponse)
+        names.append(k)
+        values.append(float(v))
+
+    x = names
+    y = values
+
+    data = [go.Bar(
+            x=x,
+            y=y,
+            text=y,
+            textposition = 'auto',
+            marker=dict(
+                color='rgb(158,202,225)',
+                line=dict(
+                    color='rgb(8,48,107)',
+                    width=1.5),
+            ),
+            opacity=0.6
+        )]
+    layout = go.Layout(
+        title='Rankings by Likes Per Comment',
+        )
+    fig = go.Figure(data=data, layout=layout)
+    graphLink = py.plot(fig)
+    return dict(m=ratio, rich = richResponse, graphLink = graphLink + '.png')
 
 def specificLikes():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     # a user's secret crush
     userDict = groupMeFeatures.specificLikesGiven(session.dictComments, session.translator)
     richResponse = 'Secret Crushes (Who Users Like The Most):\n\n'
@@ -93,6 +176,8 @@ def specificLikes():
 
 
 def specificLikesRec():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     userDict = groupMeFeatures.specificLikesRec(session.dictComments, session.translator)
     richResponse = 'Secret Crushes (Who Likes Certain Member The Most):\n\n'
     for k,v in userDict.iteritems():
@@ -106,6 +191,8 @@ def specificLikesRec():
     return dict(m=userDict, rich = richResponse)
 
 def groupMedals():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     numUsers = len(groupMe.getListOfUsers(session.myAuth,session.myGroupID))
     userDict,medalRange = groupMeFeatures.getMedalCount("", session.dictComments, session.translator,numUsers)
     # Create Responses
@@ -131,6 +218,8 @@ def groupMedals():
     return dict(r=medalRange,m=userDict,medals=medals, gn = session.groupName, riches = richResponses, colors=colors)
 
 def curseWords():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     curseWords = groupMeFeaturesMatt.getCommonCurseWords(session.dictComments, session.translator)
     richResponse = 'Most common curse words in group:\n\n'
     count = 0
@@ -153,6 +242,8 @@ def curseWords():
     return dict(m=curseWords, rich = richResponse)
 
 def mostLikedComments():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     likedCommentsDict = groupMeFeatures.getMostLikedComments(session.dictComments, session.translator)
     richResponse = 'Top 10 Most Liked Comments:\n\n'
     x = 0
@@ -167,14 +258,64 @@ def mostLikedComments():
     return dict(m=summedComments, rich = richResponse)
 
 def mostUsedWord():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
     sWord = request.vars.sWord
     # Do not display the table if no word has been inputted.
     if sWord == '' or sWord == None:
         return dict(w=0)
+    #Check for malicious input
+    if not groupMe.checkInput(sWord):
+        redirect(URL('mostUsedWord'))
+
     userDict = groupMeFeaturesRonak.mostUsedWord(session.dictComments, session.translator,sWord)
     richResponse = 'Amount of Times Users have Said "' +sWord+'":\n\n'
     totalCount = 0 # The total amount of times a word has been said.
     for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
         richResponse += k + ' has said it ' + str(v) + ' times!\n'
         totalCount += v
-    return dict(w = 1,m=userDict, rich = richResponse, word = sWord, t=totalCount)
+    return dict(w=1, m=userDict, rich=richResponse, word = sWord, t=totalCount)
+
+def graph_mostGivingUsers():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
+    userDict = groupMeFeatures.mostGivingUsers(session.dictComments, session.translator)
+    richResponse = 'Member Rankings by Total Likes Given:\n\n'
+    for k,v in sorted(userDict.items(), key=lambda x: x[1], reverse=True):
+        richResponse += k + ': ' + str(v) + ' Total Likes Given\n'
+    return dict(m=userDict, rich = richResponse)
+
+def gender():
+    userNames = []
+    for i,n in session.translator.iteritems():
+        if len(str(i)) > 6 and i != 'system' and i != 'calendar':
+            userNames.append([n,i])
+    # usernames is a list of lists
+    # userNames[0] = [name, id]
+    return dict(userNames = userNames)
+
+def sexismTracker():
+    genderDict = dict(request.vars)
+    sexisms = groupMeFeatures.getSexismTracker(session.dictComments, session.translator, genderDict)
+
+    richResponse = 'BabbleBot Sexism Tracker (Male Comments/Female Comments: ' + str(sexisms[1]) + '):\n'
+    richResponse += 'Higher Ratios -> More likely to like Male Comments\n\n'
+    for k,v in sorted(sexisms[0].items(), key=lambda x: x[1][3], reverse=True):
+        richResponse += k + ': ' + str(v[3]) + ' Sexism Ratio\n'
+    return dict(s = sexisms[0], r = sexisms[1], gn = session.groupName, rich = richResponse)
+
+def bestFriends():
+    bestFriends = groupMeFeaturesMatt.getBestFriends(session.dictComments, session.translator)
+
+    richResponse = 'Best Friends Ranking:\n'
+    for user, list in sorted(bestFriends.items(), key=lambda x: x[1][1], reverse=True):
+        richResponse += user + ': ' + list[0] + '(' + str(list[1]) + ')\n'
+
+    return dict(f = bestFriends, rich = richResponse)
+
+def allComments():
+    if session.myAuth is None or groupMe.checkValidAuth(session.myAuth) is False:
+        redirect(URL('auth','index'))
+    commentsDict = groupMeFeatures.getAllComments(session.dictComments, session.translator, user = 'ALL')
+    richResponse = 'All Comments:\n\n'
+    return dict(m=commentsDict, rich = richResponse)

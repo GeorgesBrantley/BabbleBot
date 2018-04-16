@@ -84,6 +84,29 @@ def downloadComments():
     session.translator = translate
     redirect(URL('featureList'))
 
+def downloadCommentsGuest():
+    # Get GroupID, fileFound, Max Comments, groupName
+    groupID = request.vars.groupID
+    session.fileFound = False
+    session.myGroupID = groupID
+    session.maxComments = groupMe.totalCommentsInGroup(session.myAuth, groupID)
+
+    name = groupMe.getGroupName(session.myAuth, groupID)
+    session.groupName =  name
+    # get comments!
+
+    session.dictComments = groupMe.downloadFromAPI(session.myAuth, session.myGroupID, session.fileFound, session.maxComments, session.email, session.uKey)
+
+    translate = {}
+    for k,val in session.dictComments.iteritems():
+        try:
+            v = json.loads(val)
+            translate[v['user_id']] = str(v['name'].encode('utf-8'))
+        except:
+            pass
+    session.translator = translate
+    redirect(URL('featureList'))
+
 def featureList():
     # Lists GLobal Features and Users!
     # Get Users
@@ -93,7 +116,7 @@ def featureList():
     numLikes,numComs = groupMeFeatures.getBasicGroupInfo(session.dictComments)
     # number of comments total
     info = 'Total Number of Comments: ' + str(numComs) + '\nTotal Number of Likes: ' + str(numLikes)
-    return dict(name = session.groupName,users=users,nLikes = numLikes, nComs = numComs, infoStr=info)
+    return dict(name = session.groupName,users=users,nLikes = numLikes, nComs = numComs, infoStr=info, email=session.email)
 
 def postToGroupMe():
     message = request.vars.message
@@ -133,6 +156,7 @@ def botPrompt():
     return dict(msg = msg)
 
 def updateGroup():
+    # FINDS new Comments
     # Get GroupID, fileFound, Max Comments, groupName
     groupID = session.myGroupID
     #OPEN AND CLOSE
@@ -183,7 +207,18 @@ def bigUpdate():
             pass
     session.translator = translate
     redirect(URL('featureList'))
-    
+
+def smartUpdate():
+    # Update last 100 comments
+
+    # Update Comments
+    fileName = session.myGroupID + session.email
+    pDB.decrypt(fileName,session.uKey)
+    session.dictComments = groupMe.smartUpdate(session.myAuth, session.myGroupID, session.email)
+    pDB.encrypt(fileName,session.uKey)
+    # The Dict Comments has been updated with the past 100 comments being revisted
+    redirect(URL('featureList'))
+
 def delGroup():
     pDB.refreash(session.myGroupID + session.email)
     session.dictComments = {}
@@ -192,3 +227,15 @@ def delGroup():
     session.maxComments = 0
     session.translator = {}
     redirect(URL('auth','chooseGroup'))
+
+def updateBot():
+    oldBot= pDB.getGroupBot(session.myGroupID)
+    if oldBot == False:
+        redirect(URL('botPrompt'))
+    else:
+        return dict(botID = oldBot['botID'], groupN = session.groupName )
+
+def newBot():
+    newBotID = request.vars.newBotID
+    update = pDB.updateGroupBot(session.myGroupID, newBotID)
+    return dict(success = update, newBot = newBotID, groupN = session.groupName)

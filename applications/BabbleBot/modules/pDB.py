@@ -66,6 +66,22 @@ def makeGroupBot(groupID,botID):
         f.close()
         return True
 
+def updateGroupBot(groupID, newBotID):
+    # is group already registered?
+    # if not, write them in
+    f = open('BOTS','r')
+    try:
+        jj = json.load(f)
+    except:
+        jj = {}
+        return False
+    jj[groupID] = {'groupID':groupID,'botID':newBotID}
+    f = open('BOTS','w')
+    json.dump(jj,f)
+    f.close()
+    
+    return True
+
 def encrypt(fileName, key):
     com = 'openssl aes-256-cbc -pass pass:'+key+' -e -a -salt -in GroupMeDir/'+fileName+' -out GroupMeDir/'+fileName+'ENC '
     os.system(com)

@@ -21,7 +21,11 @@
             <tr>
                 <td>{{=group['name']}}</td>
                 <td>{{=newComs[y][2]}}</td>
-                <td>{{p=newComs[y][2]}}{{=round(p*1.0/500/60,1)}} Minutes</td>
+                {{a = round(newComs[y][2]*1.0/500/60,1)}}
+                {{if a == 0:}}
+                {{a = .2}}
+                {{pass}}
+                <td>{{=a}} Minutes</td>
                 {{y+=1}}
                 <td><a class="btn btn-outline-primary btn-block" href="{{=URL('core','downloadComments', vars=dict(groupID=group['group_id']))}}">Update</a></td>
             </tr>

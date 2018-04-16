@@ -3,17 +3,29 @@
 <div class="container text-center">
 	<form method="post" action="{{=URL('checkLogin')}}">
 		<h1>Login</h1>
-        <!-- Above the input boxes will be an alert that displays "the email or password is incorrect"-->
-        <div class="row">
-            <input type="text" class="form-control" name="email" placeholder="Email">
+        <div class="form-group row justify-content-md-center">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="email" placeholder="Email">
+            </div>
         </div>
-        <input id="logInType" name="logInType" type="hidden" value="login"> <br>
+        <input id="logInType" name="logInType" type="hidden" value="login">
 
-        <input type="password" class="form-control" name="passwd" placeholder="Password" style="margin-bottom: 10px;">
+        <div class=" form-group row justify-content-md-center">
+            <div class="col-md-4">
+                <input type="password" class="form-control" name="passwd" placeholder="Password">
+            </div>
+        </div>
+
         <!-- This should only display if login was unsuccessful -->
-        {{if request.vars.success == False:}}
-            <div class="alert alert-danger show">The email or password is incorrect</div>
+        {{if s:}}
+            <div class="form-group row justify-content-md-center">
+                <div class="col-md-4">
+                    <div class="alert alert-danger show">The email or password is incorrect.</div>
+                </div>
+            </div>
         {{pass}}
+
         <button type="submit" class="btn btn-info">Login</button>
+
 	</form>
 </div>

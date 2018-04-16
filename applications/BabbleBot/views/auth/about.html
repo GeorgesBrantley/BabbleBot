@@ -1,0 +1,44 @@
+{{extend 'layout.html'}}
+
+<div class="container">
+    <h1 class="text-center">BabbleBot's About Page</h1>
+
+    <p class="text-center">
+          GroupMe is a popular social messaging app used extensively for communication between friends, classmates, and colleagues. Groups can range from small gatherings to large crowds, with dozens of users and thousands of messages. Due to this, it is an untapped source for both insightful and entertaining analysis of social interactions on a massive scale.
+<br><br>
+BabbleBot is a web application that is publicly accessible, intuitive to use, and <a href="https://github.com/GeorgesBrantley/BabbleBot">Open Source</a>!. BabbleBot users can easily incorperate their personal GroupMe Groups into BabbleBot, and access features learn more about their GroupMe Group and fellow Members. BabbleBot Features include (but not limited to!) learning ‘Likes' Given and Recieved, Most Common Swear Words, Sexism Tracker, and a Medal System. Other features allow user to manipulate data in interesting ways, such as using Markov chains. BabbleBot convientently allows users to post information from BabbleBot directly to their corresponding Group, allowing Group Members to discuss their, usually entertaining, findings!
+<br><br>
+There was real demand of something of this sort and we built it for you. Enjoy!
+    <hr>
+    </p>
+    <h2 class="text-center">
+        The BabbleBot Team
+    </h2>
+    <p class="text-center">
+        Georges Brantley <br>
+        Ronak Bharad <br>
+        Wendi Zhang <br>
+        Tan Lin <br>
+        Matt Clase <br>
+    </p>
+<hr>
+<h2 class="text-center">
+    BabbleBot's Data Usage
+</h2>
+<p class ="text-center">
+    Team BabbleBot attempts to hold the highest standards for User Privacy.
+    <br>
+    BabbleBot Users' Passwords and Auth Tokens are encrypted before they are stored, preventing any BabbleBot Team Member from gaining access to your GroupMe Data. Furthermore, Passwords are salted before encrypted in our database. GroupMe Data that includes messages and names is encrypted before being stored on our servers, preventing those with access such as BabbleBot Team Members or possible entruders from gaining information about your private Group Data. The previous information is encrypted using your password, after its been hashed once, as a Key. The password is then Hashed once more before saving it to our Database.
+    Users have the ability to delete their GroupMe Comment Data and remove their Authentication Token from our Databases. We do not store copies of these values.
+    
+</p>
+{{if not t:}}
+    <a class="btn btn-outline-secondary btn-block" href="{{=URL('auth','index')}}">
+        Return to Landing Page
+    </a>
+{{else:}}
+ <a class="btn btn-outline-secondary btn-block" href="{{=URL('auth','chooseGroup')}}">
+        Return to Choose Group
+    </a>
+{{pass}}
+</div>

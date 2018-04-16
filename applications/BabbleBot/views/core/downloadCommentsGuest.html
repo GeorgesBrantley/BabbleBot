@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+{{if finished == False:}}
+<meta http-equiv="refresh" content="5">
+{{pass}}
+
+<h1> Updating Information</h1>
+<p> This page will auto-refresh </p>
+
+{{if finished == False:}}
+    <progress value="{{=prog}}" max="{{=max}}"></progress>
+{{else:}}
+    <form method="get" action="{{=URL('featureList')}}">
+        <button type="submit" class="btn btn-lg btn-success">Update Done! Continue</button>
+    </form>
+{{pass}}

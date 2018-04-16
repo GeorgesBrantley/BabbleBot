@@ -80,7 +80,7 @@
         Ranking of Members by Medals
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}"
-       data-toggle="tooltip" data-placement="top" title="Find out how many times someone has kicked people (bullies) and who's been kicked (victims).">
+       data-toggle="tooltip" data-placement="top" title="How many times someone has kicked people (bullies) and who's been kicked (victims).">
         Rankings Of Bullies and Victims
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','specificLikesRec')}}"
@@ -88,7 +88,7 @@
         Members' Secret Admirers
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','specificLikes')}}"
-       data-toggle="tooltip" data-placement="top" title="Find out how many likes a group member gave to another.">
+       data-toggle="tooltip" data-placement="top" title="Find out how many likes one group member gave to another.">
         Members' Secret Crushes
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','pastName')}}"
@@ -96,32 +96,39 @@
         Past Names of Members in {{=name}}
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','curseWords')}}"
-       data-toggle="tooltip" data-placement="top" title="Shows how many times people have cursed in your group.">
+       data-toggle="tooltip" data-placement="top" title="How many times people have cursed and broken down by words.">
         {{=name}}'s Favorite Curse Words
     </a>
     <a class="btn btn-outline-info btn-block" href="{{=URL('features','mostUsedWord')}}"
-       data-toggle="tooltip" data-placement="top" title="Find out how many times a particular word has been said in the group.">
+       data-toggle="tooltip" data-placement="top" title="How many times a particular word has been said in the group.">
         Word Counter
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','sexismTracker')}}">
-        Rank Members by Sexism WIP
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','gender')}}"
+       data-toggle="tooltip" data-placement="top" title="Find out if you favorite more posts from men or women.">
+        BabbleBot's Sexism Tracker
     </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('features','numKicked')}}">
-        List Members Best Friends WIP
+    <a class="btn btn-outline-info btn-block" href="{{=URL('features','bestFriends')}}"
+       data-toggle="tooltip" data-placement="top" title="List users based on how many times 2 people favorited and mentioned each other.">
+        List Members Best Friends
     </a>
     <br>
 
-    <h2 class="text-center">Group Tools</h2>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('updateGroup')}}">
-        Update for New Comments
-    </a>
-    <a class="btn btn-outline-info btn-block" href="{{=URL('')}}">
-        Smart Update of Past Comments
-    </a>
-        <a class="btn btn-outline-danger btn-block" href="{{=URL('bigUpdate')}}">
-        Update All Comments ({{=round(nComs*1.0/500/60,1)}} Minutes)
-    </a> <br>
+    {{if email != 'Guest': }}
+        <h2 class="text-center">Group Tools</h2>
+        <a class="btn btn-outline-info btn-block" href="{{=URL('updateGroup')}}">
+            Update for New Comments
+        </a>
+        <a class="btn btn-outline-info btn-block" href="{{=URL('smartUpdate')}}">
+            Smart Update of Past Comments
+        </a>
+            <a class="btn btn-outline-danger btn-block" href="{{=URL('bigUpdate')}}">
+            Update All Comments ({{=round(nComs*1.0/500/60,1)}} Minutes)
+        </a> <br>
+        <a class="btn btn-outline-danger btn-block" href="{{=URL('updateBot')}}">
+            Update Bot Information
+        </a>
         <a class="btn btn-outline-danger btn-block" href="{{=URL('delGroup')}}">
-        Delete All Group Data
-    </a>
+            Delete All Group Data
+        </a>
+    {{pass}}
 </div>
