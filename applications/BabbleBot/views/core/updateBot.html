@@ -1,0 +1,16 @@
+{{extend 'layout.html'}}
+<h1>Update Bot Information</h1>
+<p>
+Current Bot ID for {{=groupN}} is: {{=botID}} 
+</p>
+<p>
+Go to <a href="https://dev.groupme.com/bots">GroupMe Bots</a> and Login. Follow the steps to create a new bot.
+</p>
+
+<p> Paste your NEW botID here: </p>
+<div class="container text-center">
+    <form class="login" method="get" action="{{=URL('newBot')}}">
+        <input type="text" class="form-input" name="newBotID" placeholder="New Bot ID" style="margin-bottom: 10px;"> <br>
+        <button type="submit" class="btn btn-lg btn-info">Submit</button>
+    </form>
+</div>

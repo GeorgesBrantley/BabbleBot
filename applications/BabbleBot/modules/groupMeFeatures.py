@@ -5,6 +5,8 @@ import os
 import json
 import markovify
 import types
+import datetime
+import pytz
 
 def getBasicGroupInfo(comments):
     # total likes in a group
@@ -516,6 +518,7 @@ def getSexismTracker(comments, translator, genderDict):
     return [namedDict,ratio]
 
 def getAllComments(comments, translator, user = 'ALL'):
+    
     commentsDict= {}
     for k, val in comments.iteritems():
         try:
@@ -523,16 +526,21 @@ def getAllComments(comments, translator, user = 'ALL'):
             # global all comments
             if user == 'ALL' and v['sender_type'] == 'user':
                 output = v['text']
+                timeInt = v['created_at']
+                #.strftime('%m-%d-%Y, %H:%M:%S'
+                timeStamp = datetime.datetime.utcfromtimestamp(int(timeInt))
+                newTime = timeStamp - datetime.timedelta(hours=4)
+                timeStamp = newTime.strftime('%m-%d-%Y, %H:%M:%S')
                 try:
                     output2 = v['attachments'][0]['url']
                     if output == None or output == 'None' or output == '':
-                        commentsDict[v['id']] = [v['sender_id'], output2, len(v['favorited_by'])]
+                        commentsDict[v['id']] = [v['sender_id'], output2,timeStamp, len(v['favorited_by'])]
                     elif output2 != None and output2 != '' and output != output2:
-                        commentsDict[v['id']] = [v['sender_id'], output + ' -- ' + output2, len(v['favorited_by'])]
+                        commentsDict[v['id']] = [v['sender_id'], output + ' -- ' + output2, timeStamp, len(v['favorited_by'])]
                     else:
-                        commentsDict[v['id']] = [v['sender_id'], output, len(v['favorited_by'])]
+                        commentsDict[v['id']] = [v['sender_id'], output, timeStamp, len(v['favorited_by'])]
                 except:
-                    commentsDict[v['id']] = [v['sender_id'], output, len(v['favorited_by'])]
+                    commentsDict[v['id']] = [v['sender_id'], output, timeStamp, len(v['favorited_by'])]
         except:
             pass
     for k, val in commentsDict.iteritems():

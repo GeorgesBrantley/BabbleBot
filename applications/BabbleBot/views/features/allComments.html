@@ -1,29 +1,44 @@
 {{extend 'layout.html'}}
+
 <div class="container">
    <h1 class="text-center">All Comments!</h1>
-
+    <a class="btn btn-outline-secondary btn-block" href="{{=URL('core','featureList')}}">
+        Return to Group Page
+    </a> <br>
     <table class="table table-striped table-bordered">
+            <col style="width:10%">
+            <col style="width:60%">
+            <col style="width:30%">
         <thead>
+
             <tr>
+                <th>Time</th>
                 <th>Name</th>
                 <th>Message</th>
                 <th>Likes</th>
+                <th>Post Back!</th>
             </tr>
         </thead>
 
         <tbody>
-            {{for k,v in m.items()}}
+            {{for k,v in sorted(m.items(), key=lambda x: x[0], reverse=True): }}
             <tr>
-                <td>{{=v[0]}}</td>
-                <td>{{=v[1]}}</td>
                 <td>{{=v[2]}}</td>
+                <td>{{=v[0]}}</td>
+                <td>{{=v[1][:100]}}
+                {{if len(v[1]) > 100:}}
+                ...
+                {{pass}}</td>
+                <td>{{=v[3]}}</td>
+                {{msg = v[0].encode('utf-8') + " Said This At " + str(v[2]) + " With " + str(v[3]) + " Likes:\n>" + v[1][:470].encode('utf-8')}}
+                <td>  <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=msg))}}">
+        Post Back To GroupMe!
+    </a></td>
             </tr>
             {{pass}}
         </tbody>
     </table>
-    <a class="btn btn-outline-primary btn-block" href="{{=URL('core','postToGroupMe',vars=dict(message=rich))}}">
-        Post Comments To GroupMe
-    </a>
+  
 
     <a class="btn btn-outline-secondary btn-block" href="{{=URL('core','featureList')}}">
         Return to Group Page

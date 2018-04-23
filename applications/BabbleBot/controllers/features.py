@@ -69,7 +69,7 @@ def numComments():
     fig = {
     'data': [{'labels': names,
               'values': values,
-
+               'text': names,
               'type': 'pie'}],
     'layout': {'title': 'Number of comments'}}
 
@@ -132,8 +132,9 @@ def likesPerComment():
     values = []
     for k,v in sorted(ratio.items(), key=lambda x: x[1], reverse=True):
         richResponse += k + ': ' + str(v) + ' Likes/Comment\n'
-        names.append(k)
-        values.append(float(v))
+        if float(v) > 0:
+            names.append(k)
+            values.append(float(v))
 
     x = names
     y = values

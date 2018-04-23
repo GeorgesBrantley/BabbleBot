@@ -18,7 +18,9 @@ def index():
 def error():
     return dict()
 def about():
-    return dict()
+    if session.email and session.email != '':
+        return dict(t=True)
+    return dict(t=False)
 
 def login():
     if session.email:

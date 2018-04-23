@@ -15,6 +15,7 @@ def mostUsedWord(com, translator, sWord):
             msg = v['text'].lower().split()
 
             for word in msg:
+                word = word.strip('.').strip('?').strip(',').strip(';')
                 if word.lower() == sWord.lower():
                     if v['sender_id'] in wordCount and len(v['sender_id']) > 6:
                         wordCount[v['sender_id']] += 1

@@ -10,8 +10,6 @@ def getBestFriends(com, translator):
     backTranslate = {}
     for user in translator:
         backTranslate[translator[user]] = user
-    print translator
-    print backTranslate
     
     # Set up Dictionary : userScore = {'user' : {}, ...}
     userScore = {}
@@ -39,15 +37,18 @@ def getBestFriends(com, translator):
             if '@' in msg:
                 try:
                     userName = msg.split("@")[1].split(" ")[0]
-                    if userName in backTranslate:
+                    if userName in backTranslate and backTranslate[userName] in userScore:
                         userScore[user][backTranslate[userName]] += 3
-                    if userName2 in backTranslate:
+                        userScore[backTranslate[userName]][user] += 2
+                    userName2 = userName + ' ' + msg.split("@")[1].split(" ")[1]
+                    if userName2 in backTranslate and backTranslate[userName2] in userScore:
                         userScore[user][backTranslate[userName2]] += 3
+                        userScore[backTranslate[userName2]][user] += 2
                     userName3 = userName2 + ' ' + msg.split("@")[2].split(" ")[2]
-                    if userName3 in backTranslate:
+                    if userName3 in backTranslate and backTranslate[userName3] in userScore:
                         userScore[user][backTranslate[userName3]] += 3
+                        userScore[backTranslate[userName3]][user] += 2
                 except:
-                    print 'error'
                     pass
             
         except:

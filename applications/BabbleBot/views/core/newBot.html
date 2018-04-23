@@ -1,0 +1,23 @@
+{{extend 'layout.html'}}
+<div>
+    <center>
+<h1>Update Bot Information</h1>
+{{if success:}}
+
+<h1>
+    Success!
+</h1>
+<p>
+New Bot ID for {{=groupN}} is: {{=newBot}}
+</p>
+
+{{else:}}
+<h1>
+    Unknown Failure
+</h1>
+{{pass}}
+        </center>
+</div>
+ <a class="btn btn-outline-secondary btn-block" href="{{=URL('featureList')}}">
+        Return to Group Page
+    </a>
