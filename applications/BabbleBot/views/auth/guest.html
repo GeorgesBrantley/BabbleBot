@@ -3,7 +3,7 @@
 <div class="container text-center">
 	<form class="login" method="get" action="{{=URL('checkGuest')}}">
 		<h1>Guest Sign In</h1>
-
+<small class="form-text text-muted">Log into <a target="_blank" href="https://dev.groupme.com">here</a>, click 'Access Token', and copy and paste it above. Using Guest Sign In, BabbleBot will not permanently save any information.</small> <br>
         <div class="form-group row justify-content-md-center">
             <div class="col-md-4">
                 <input type="text" class="form-control" name="auth" placeholder="Personal Auth Token">
@@ -19,5 +19,8 @@
         {{pass}}
 
 		<button type="submit" class="btn btn-lg btn-info">Submit</button>
+        <a class="btn btn-lg btn-info" href="{{=URL('auth','index')}}">
+        Return
+        </a>
 	</form>
 </div>

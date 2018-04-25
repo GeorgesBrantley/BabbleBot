@@ -95,7 +95,7 @@ def downloadCommentsGuest():
     session.groupName =  name
     # get comments!
 
-    session.dictComments = groupMe.downloadFromAPI(session.myAuth, session.myGroupID, session.fileFound, session.maxComments, session.email, session.uKey)
+    session.dictComments = groupMe.downloadFromAPI(session.myAuth, session.myGroupID, session.fileFound, session.maxComments, 'Guest', session.uKey)
 
     translate = {}
     for k,val in session.dictComments.iteritems():
